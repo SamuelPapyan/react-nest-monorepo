@@ -17,7 +17,7 @@ export default function StudentTable(props)
             setData(data1);
             setHasData(true);
         }
-        if (!props.conencted && !hasData)
+        if (!props.connected && !hasData)
         {
             setData(<tr colSpan={8}><td>Connection failure. Try again later.</td></tr>);
             setHasData(true);

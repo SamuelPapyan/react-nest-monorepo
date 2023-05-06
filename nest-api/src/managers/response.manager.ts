@@ -7,12 +7,14 @@ export class ResponseManager<T> {
     message: string,
     statusCode: number = HttpStatus.OK,
     success = true,
+    validationErrors = []
   ): Promise<ResponseDTO<T>> {
     const response: ResponseDTO<T> = {
       success: success,
       data: data,
       message: message,
       statusCode: statusCode,
+      validation_errors: validationErrors
     };
     return response;
   }

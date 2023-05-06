@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import StudentTable from "./StudentTable";
 import { useState, useEffect } from "react";
-import StudentService from "../services/studentService";
+import StudentService from "../../services/studentService";
 
-export default function StudentsList(props)
+export default function StudentsList()
 {
     const [data, setData] = useState(null);
-    const [conencted, setConnected] = useState(true);
+    const [connected, setConnected] = useState(true);
     
     useEffect(()=>{
         document.title = "Students List";
@@ -22,8 +22,8 @@ export default function StudentsList(props)
     return (
         <div id="students-list-body">
             <h1>Students List</h1>
-            <StudentTable data={data} conencted={conencted}/>
-            <Link to="/create" className="btn btn-primary">Create Student</Link>
+            <StudentTable data={data} connected={connected}/>
+            <Link to="/students/create" className="btn btn-primary">Create Student</Link>
         </div>
     );
 }

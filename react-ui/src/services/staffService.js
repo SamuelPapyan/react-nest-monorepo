@@ -1,17 +1,7 @@
-export default class StudentService {
-    static async getAllStudents() {
+export default class StaffService {
+    static async getAllStaffs() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/students").then(res=>{
-                resolve(res.json());
-            }).catch(err=>{
-                reject(err);
-            })
-        });
-    }
-
-    static async getStudentById(id) {
-        return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/${id}`).then(res=>{
+            fetch(process.env.REACT_APP_API_URL + "/staff").then(res=>{
                 resolve(res.json());
             }).catch(err=>{
                 reject(err);
@@ -19,9 +9,19 @@ export default class StudentService {
         });
     }
 
-    static async addStudent(formData) {
+    static async getStaffById(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/students", {
+            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
+
+    static async addStaff(formData) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/staff", {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers:{
@@ -32,16 +32,16 @@ export default class StudentService {
                 resolve(res.json());
             }).catch(err=>{
                 reject(err);
-            })
-        })
+            });
+        });
     }
 
-    static async updateStudent(id, formData) {
+    static async updateStaff(id, formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`, {
                 method: 'PUT',
                 body: JSON.stringify(formData),
-                headers:{
+                headers: {
                     'Accept': "application/json",
                     'Content-Type': "application/json"
                 }
@@ -49,19 +49,19 @@ export default class StudentService {
                 resolve(res.json());
             }).catch(err=>{
                 reject(err);
-            })
-        })
+            });
+        });
     }
 
-    static async deleteStudent(id) {
+    static async deleteStaff(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`, {
                 method: 'DELETE',
             }).then(res=>{
                 resolve(res.json());
             }).catch(err=>{
                 reject(err);
             })
-        })
+        });
     }
 }

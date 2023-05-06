@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import StudentService from "../services/studentService";
+import StudentService from "../../services/studentService";
 
 export default function EditStudent(props)
 {
@@ -24,7 +24,7 @@ export default function EditStudent(props)
         StudentService.updateStudent(id, requestData).then(res=>{
             if (res.success)
             {
-                navigate("/");
+                navigate("/students");
             }
         }).catch(()=>{
             navigate('/error');
@@ -78,7 +78,7 @@ export default function EditStudent(props)
                     <input className="form-control" id="country-field" type="text" name="country" ref={(a) => _country = a}/>
                 </div>
                 <input type="submit" value="Save" className="btn btn-primary"/>
-                <Link to="/" className="btn btn-primary">Cancel</Link>
+                <Link to="/students" className="btn btn-primary">Cancel</Link>
             </form>
         </div>
     );
