@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import StudentService from "../services/studentService";
+import StudentService from "../../services/studentService";
 
-export default function CreateStudent(props)
+export default function CreateStudent()
 {
     const [errors, setErrors] = useState("");
     let _fullName, _age, _level, _experience, _maxExperience, _country;
@@ -23,7 +23,7 @@ export default function CreateStudent(props)
         StudentService.addStudent(requestData).then(res=>{
             if (res.success)
             {
-                navigate("/");
+                navigate("/students");
             }
         }).catch(()=>{
             navigate('/error');
@@ -64,7 +64,7 @@ export default function CreateStudent(props)
                     <input className="form-control" id="country-field" type="text" name="country" ref={(a) => _country = a}/>
                 </div>
                 <input type="submit" value="Create" className="btn btn-primary"/>
-                <Link to="/" className="btn btn-primary">Cancel</Link>
+                <Link to="/students" className="btn btn-primary">Cancel</Link>
             </form>
         </div>
     );

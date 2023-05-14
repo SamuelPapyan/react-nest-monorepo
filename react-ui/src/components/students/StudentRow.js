@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom"
 import { useNavigate } from "react-router";
-import StudentService from "../services/studentService";
+import StudentService from "../../services/studentService";
 
 export default function StudentRow(props)
 {
@@ -45,7 +45,7 @@ export default function StudentRow(props)
             <td>{maxExperience}</td>
             <td>{country}</td>
             <td>
-                <Link to={`/edit/${studentId}`} className="btn btn-primary">Edit</Link>
+                <Link to={`/students/edit/${studentId}`} className="btn btn-primary">Edit</Link>
             </td>
             <td>
                 <button className="btn btn-danger" onClick={removeStudent}>
