@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { ResponseDTO } from 'src/dto/response.dto';
+import { ResponseDTO } from 'src/app/response.dto';
 
 export class ResponseManager<T> {
   async getResponse(

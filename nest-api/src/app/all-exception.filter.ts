@@ -5,10 +5,10 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
-import { ResponseDTO } from 'src/dto/response.dto';
-import { ValidationErrorDTO } from 'src/dto/validation-error.dto';
-import { ExceptionManager } from 'src/managers/exception.manager';
-import { ResponseManager } from 'src/managers/response.manager';
+import { ResponseDTO } from 'src/app/response.dto';
+import { ValidationErrorDTO } from 'src/app/validation-error.dto';
+import { ExceptionManager } from 'src/app/managers/exception.manager';
+import { ResponseManager } from 'src/app/managers/response.manager';
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {

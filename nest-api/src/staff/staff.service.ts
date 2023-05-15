@@ -1,10 +1,10 @@
 import mongoose, { Model } from "mongoose";
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { StaffDTO } from "src/dto/staff.dto";
-import {Staff, StaffDocument } from 'src/schemas/staff.schema'
+import { StaffDTO } from "src/staff/staff.dto";
+import {Staff, StaffDocument } from 'src/staff/staff.schema'
 import * as bcrypt from 'bcrypt'
-import { hashConfig } from '../config'
+import { hashConfig } from '../app/config'
 
 @Injectable()
 export class StaffService {

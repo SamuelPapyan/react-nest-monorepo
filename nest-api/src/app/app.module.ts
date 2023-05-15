@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { AppController } from 'src/controllers/app.controller';
-import { AppService } from 'src/services/app.service';
-import { StudentsModule } from 'src/modules/student.module';
-import { StaffModule } from './staff.module';
+import { AppController } from 'src/app/app.controller';
+import { AppService } from 'src/app/app.service';
+import { StudentsModule } from 'src/students/student.module';
+import { StaffModule } from '../staff/staff.module';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({

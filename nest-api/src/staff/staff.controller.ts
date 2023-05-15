@@ -8,17 +8,17 @@ import {
     Param,
     UseFilters,
 } from '@nestjs/common';
-import { StaffService } from 'src/services/staff.service';
-import { StaffDTO } from 'src/dto/staff.dto';
-import { Staff } from 'src/schemas/staff.schema';
+import { StaffService } from 'src/staff/staff.service';
+import { StaffDTO } from 'src/staff/staff.dto';
+import { Staff } from 'src/staff/staff.schema';
 import mongoose from 'mongoose';
-import { ResponseDTO } from 'src/dto/response.dto';
-import { ResponseManager } from 'src/managers/response.manager';
+import { ResponseDTO } from 'src/app/response.dto';
+import { ResponseManager } from 'src/app/managers/response.manager';
 import { NotFoundException } from '@nestjs/common/exceptions';
-import { ExceptionManager } from 'src/managers/exception.manager';
-import { AllExceptionFilter } from 'src/filters/all-exception.filter';
-import { messages } from 'src/config';
-import { StaffValidationPipe } from 'src/pipes/staff-validation.pipe';
+import { ExceptionManager } from 'src/app/managers/exception.manager';
+import { AllExceptionFilter } from 'src/app/all-exception.filter';
+import { messages } from 'src/app/config';
+import { StaffValidationPipe } from 'src/staff/staff-validation.pipe';
 
 @Controller('staff')
 @UseFilters(AllExceptionFilter)
