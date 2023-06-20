@@ -8,16 +8,16 @@ import {
   Param,
   UseFilters,
 } from '@nestjs/common';
-import { StudentService } from 'src/services/student.service';
-import { StudentDTO } from 'src/dto/student.dto';
-import { Student } from 'src/schemas/student.schema';
+import { StudentService } from 'src/students/student.service';
+import { StudentDTO } from 'src/students/student.dto';
+import { Student } from 'src/students/student.schema';
 import mongoose from 'mongoose';
-import { ResponseDTO } from 'src/dto/response.dto';
-import { ResponseManager } from 'src/managers/response.manager';
+import { ResponseDTO } from 'src/app/response.dto';
+import { ResponseManager } from 'src/app/managers/response.manager';
 import { NotFoundException } from '@nestjs/common/exceptions';
-import { ExceptionManager } from 'src/managers/exception.manager';
-import { AllExceptionFilter } from 'src/filters/all-exception.filter';
-import { messages } from 'src/config';
+import { ExceptionManager } from 'src/app/managers/exception.manager';
+import { AllExceptionFilter } from 'src/app/all-exception.filter';
+import { messages } from 'src/app/config';
 
 @Controller('students')
 @UseFilters(AllExceptionFilter)
