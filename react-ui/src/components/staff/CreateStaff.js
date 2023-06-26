@@ -26,7 +26,8 @@ export default function CreateStaff()
             }
             else {
                 if (res.validation_errors.length > 0) {
-                    const valErrors = res.validation_errors.map((value, index)=><li key={index}>{value.message}</li>);
+                    console.log(res);
+                    const valErrors = res.validation_errors.map((value, index)=><li key={index}>{value}</li>);
                     setErrors(valErrors);
                 }
             }

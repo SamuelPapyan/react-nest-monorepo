@@ -16,9 +16,8 @@ import { ResponseDTO } from 'src/app/response.dto';
 import { ResponseManager } from 'src/app/managers/response.manager';
 import { NotFoundException } from '@nestjs/common/exceptions';
 import { ExceptionManager } from 'src/app/managers/exception.manager';
-import { AllExceptionFilter } from 'src/app/all-exception.filter';
 import { messages } from 'src/app/config';
-import { StaffValidationPipe } from 'src/staff/staff-validation.pipe';
+import { AllExceptionFilter } from 'src/app/all-exception.filter';
 
 @Controller('staff')
 @UseFilters(AllExceptionFilter)
@@ -54,19 +53,20 @@ export class StaffController {
 
     @Post()
     async addStaff(
-        @Body(new StaffValidationPipe()) staffDto: StaffDTO,
+        @Body() staffDto: StaffDTO,
     ) : Promise<ResponseDTO<Staff>> {
         try {
             const staff = await this.staffService.addStaff(staffDto);
             return this.responseManager.getResponse(staff, messages.STAFF_ADDED);
         } catch (e) {
+            console.log(e);
             this.exceptionManager.throwException(e);
         }
     }
 
     @Put(':id')
     async updateStaff(
-        @Body(new StaffValidationPipe()) staffDto: StaffDTO,
+        @Body() staffDto: StaffDTO,
         @Param('id') id: string,
     ): Promise<ResponseDTO<Staff>> {
         try {
