@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import { ResponseDTO } from 'src/app/response.dto';
-import { ValidationErrorDTO } from 'src/app/validation-error.dto';
 import { ExceptionManager } from 'src/app/managers/exception.manager';
 import { ResponseManager } from 'src/app/managers/response.manager';
 
@@ -26,10 +25,14 @@ export class AllExceptionFilter implements ExceptionFilter {
     const responseBody: ResponseDTO<null> =
       await this.responseManager.getResponse(
         null,
-        !(exception.response.message instanceof Array) ? exception.response.message : exception.response.error,
+        !(exception.response.message instanceof Array)
+          ? exception.response.message
+          : exception.response.error,
         httpStatus,
         false,
-        (exception.response.message instanceof Array) ? exception.response.message : []
+        exception.response.message instanceof Array
+          ? exception.response.message
+          : [],
       );
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
