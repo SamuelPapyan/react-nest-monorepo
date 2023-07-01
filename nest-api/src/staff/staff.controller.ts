@@ -32,7 +32,7 @@ export class StaffController {
     ) {}
 
     @Get()
-    @Roles(Role.Viewer)
+    @Roles(Role.Viewer, Role.Editor, Role.Admin)
     async getStaff(): Promise<ResponseDTO<Staff[]>> {
         const staffs = await this.staffService.getStaffs();
         return new ResponseManager<Staff[]>().getResponse(
@@ -71,7 +71,7 @@ export class StaffController {
     }
 
     @Put(':id')
-    @Roles(Role.Editor)
+    @Roles(Role.Editor, Role.Admin)
     async updateStaff(
         @Body() staffDto: StaffDTO,
         @Param('id') id: string,
