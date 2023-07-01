@@ -26,9 +26,11 @@ export default function CreateStaff()
             }
             else {
                 if (res.validation_errors.length > 0) {
-                    console.log(res);
                     const valErrors = res.validation_errors.map((value, index)=><li key={index}>{value}</li>);
                     setErrors(valErrors);
+                }
+                else {
+                    alert("You don't have permission to create a staff member.");
                 }
             }
         }).catch(()=>{

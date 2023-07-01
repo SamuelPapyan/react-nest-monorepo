@@ -18,7 +18,9 @@ export default function StaffRow(props)
         try{
             const res = await StaffService.deleteStaff(staffId);
             if (res.success)
-            window.location.reload();
+                window.location.reload();
+            else
+                alert("You don't have permission to delete a staff member.");
         }
         catch {
             navigate('/error');

@@ -21,10 +21,9 @@ import { messages } from 'src/app/config';
 import { AllExceptionFilter } from 'src/app/all-exception.filter';
 import { Roles } from 'src/roles/roles.decorator';
 import { Role } from 'src/roles/role.enum';
-import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('staff')
-//@UseFilters(AllExceptionFilter)
+@UseFilters(AllExceptionFilter)
 export class StaffController {
     constructor(
         private readonly staffService: StaffService,
@@ -43,7 +42,7 @@ export class StaffController {
     }
 
     @Get(':id')
-    @Roles(Role.Viewer)
+    @Roles(Role.Viewer, Role.Admin, Role.Editor)
     async getById(@Param('id') id: string): Promise<ResponseDTO<Staff>> {
         try {
             const mongoId = new mongoose.Types.ObjectId(id);
@@ -58,7 +57,7 @@ export class StaffController {
     }
 
     @Post()
-    @Roles(Role.Admin)
+    @Roles(Role.Admin, Role.Editor)
     async addStaff(
         @Body() staffDto: StaffDTO,
     ) : Promise<ResponseDTO<Staff>> {

@@ -32,6 +32,9 @@ export default function CreateStaff()
                     const valErrors = res.validation_errors.map((value, index)=><li key={index}>{value}</li>);
                     setErrors(valErrors);
                 }
+                else {
+                    alert("You don't have permission to edit the staff member.");
+                }
             }
         }).catch(()=>{
             navigate('/error');
