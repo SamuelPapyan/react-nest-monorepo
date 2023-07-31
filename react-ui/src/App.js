@@ -12,10 +12,12 @@ import EditStaff from './components/staff/EditStaff';
 import ConnectionError from './components/ConnectionError';
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css';
+import AuthPanel from './components/auth/AuthPanel';
 
 function App() {
   return (
     <div className="App container">
+      <AuthPanel/>
       <Router>
         <Routes>
           <Route exact path="/students" element={<StudentsList/>}/>

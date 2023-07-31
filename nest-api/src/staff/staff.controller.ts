@@ -1,12 +1,13 @@
 import {
-    Controller,
-    Get,
-    Post,
-    Put,
-    Delete,
-    Body,
-    Param,
-    UseFilters,
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Body,
+  Param,
+  UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { StaffService } from 'src/staff/staff.service';
 import { StaffDTO } from 'src/staff/staff.dto';
@@ -18,6 +19,8 @@ import { NotFoundException } from '@nestjs/common/exceptions';
 import { ExceptionManager } from 'src/app/managers/exception.manager';
 import { messages } from 'src/app/config';
 import { AllExceptionFilter } from 'src/app/all-exception.filter';
+import { Roles } from 'src/roles/roles.decorator';
+import { Role } from 'src/roles/role.enum';
 
 @Controller('staff')
 @UseFilters(AllExceptionFilter)
@@ -29,6 +32,7 @@ export class StaffController {
     ) {}
 
     @Get()
+    @Roles(Role.Viewer, Role.Editor, Role.Admin)
     async getStaff(): Promise<ResponseDTO<Staff[]>> {
         const staffs = await this.staffService.getStaffs();
         return new ResponseManager<Staff[]>().getResponse(
@@ -38,6 +42,7 @@ export class StaffController {
     }
 
     @Get(':id')
+    @Roles(Role.Viewer, Role.Admin, Role.Editor)
     async getById(@Param('id') id: string): Promise<ResponseDTO<Staff>> {
         try {
             const mongoId = new mongoose.Types.ObjectId(id);
@@ -52,6 +57,7 @@ export class StaffController {
     }
 
     @Post()
+    @Roles(Role.Admin, Role.Editor)
     async addStaff(
         @Body() staffDto: StaffDTO,
     ) : Promise<ResponseDTO<Staff>> {
@@ -65,6 +71,7 @@ export class StaffController {
     }
 
     @Put(':id')
+    @Roles(Role.Editor, Role.Admin)
     async updateStaff(
         @Body() staffDto: StaffDTO,
         @Param('id') id: string,
@@ -88,6 +95,7 @@ export class StaffController {
     }
 
     @Delete(':id')
+    @Roles(Role.Admin)
     async deleteStaff(@Param('id') id: string): Promise<ResponseDTO<Staff>> {
         try {
             const mongoId = new mongoose.Types.ObjectId(id);

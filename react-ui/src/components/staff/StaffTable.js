@@ -8,7 +8,11 @@ export default function StaffTable(props)
     const [hasData, setHasData] = useState(false);
 
     useEffect(()=>{
-        if (props.data && !hasData) {
+        if (!props.permitted && !hasData) {
+            setData(<tr colSpan={7}><td>You don't have permission to get staffs.</td></tr>);
+            setHasData(true);
+        }
+        else if (props.data && !hasData) {
             let data1;
             if (props.data.length > 0)
                 data1 = props.data.map((value, index) => <StaffRow key={index} data={value}/>);

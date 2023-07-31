@@ -1,7 +1,11 @@
 export default class StaffService {
     static async getAllStaffs() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/staff").then(res=>{
+            fetch(process.env.REACT_APP_API_URL + "/staff", {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                }
+            }).then(res=>{
                 resolve(res.json());
             }).catch(err=>{
                 reject(err);
@@ -11,7 +15,11 @@ export default class StaffService {
 
     static async getStaffById(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`).then(res=>{
+            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`,{
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                }
+            }).then(res=>{
                 resolve(res.json());
             }).catch(err=>{
                 reject(err);
@@ -26,7 +34,8 @@ export default class StaffService {
                 body: JSON.stringify(formData),
                 headers:{
                     'Accept': "application/json",
-                    'Content-Type': "application/json"
+                    'Content-Type': "application/json",
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -43,7 +52,8 @@ export default class StaffService {
                 body: JSON.stringify(formData),
                 headers: {
                     'Accept': "application/json",
-                    'Content-Type': "application/json"
+                    'Content-Type': "application/json",
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -57,6 +67,9 @@ export default class StaffService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/staff/${id}`, {
                 method: 'DELETE',
+                headers: {
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                }
             }).then(res=>{
                 resolve(res.json());
             }).catch(err=>{
