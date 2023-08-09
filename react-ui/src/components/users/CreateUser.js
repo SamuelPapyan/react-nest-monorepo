@@ -1,13 +1,11 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router";
-import StaffService from "../../services/staffService"
+import {Link} from "react-router-dom";
+import {useState, useEffect } from "react";
+import {useNavigate} from "react-router";
+import UserService from "../../services/userService";
 
-export default function CreateStaff()
+export default function CreateUser()
 {
     const [errors, setErrors] = useState("");
-    const [connectionErrorMessage, setConnectionErrorMessage] = useState("");
-    const {id} = useParams();
     let _firstName, _lastName, _email, _username, _password;
     const navigate = useNavigate();
 
@@ -21,18 +19,19 @@ export default function CreateStaff()
             password: _password.value
         }
 
-        StaffService.updateStaff(id, requestData).then(res=>{
-            if (res.success)
-            {
-                navigate("/staff");
+        UserService.addUser(requestData).then(res=>{
+            if (res.success) {
+                navigate('/users');
             }
             else {
                 if (res.validation_errors.length > 0) {
-                    const valErrors = res.validation_errors.map((value, index)=><li key={index}>{value}</li>);
+                    const valErrors = res.validation_errors.map((value, index)=>{
+                        <li key={index}>{value}</li>
+                    });
                     setErrors(valErrors);
                 }
                 else {
-                    alert("You don't have permission to edit the staff member.");
+                    alert("You don't have permission to create a user.");
                 }
             }
         }).catch(()=>{
@@ -41,23 +40,12 @@ export default function CreateStaff()
     }
 
     useEffect(()=>{
-        document.title = "Create Staff";
-        StaffService.getStaffById(id).then(res=>{
-            if (res.success){
-                _firstName.value = res.data.first_name;
-                _lastName.value = res.data.last_name;
-                _email.value = res.data.email;
-                _username.value = res.data.username;
-            }
-        }).catch(()=>{
-            setConnectionErrorMessage(<p>Connection fault: Try again later.</p>)
-        });
+        document.title = "Create User";
     })
 
     return(
-        <div id="create-staff-body">
-            <h1>Edit Staff</h1>
-            {connectionErrorMessage}
+        <div id="create-user-body">
+            <h1>Create User</h1>
             {errors}
             <form method="POST" onSubmit={submitForm}>
                 <div className="form-group">
@@ -80,8 +68,8 @@ export default function CreateStaff()
                     <label htmlFor="password-field">Password</label><br/>
                     <input className="form-control" id="password-field" type="password" name="password" ref={(a) => _password = a}/>
                 </div>
-                <input type="submit" value="Save" className="btn btn-primary"/>
-                <Link to="/staff" className="btn btn-primary">Cancel</Link>
+                <input type="submit" value="Create" className="btn btn-primary"/>
+                <Link to="/users" className="btn btn-primary">Cancel</Link>
             </form>
         </div>
     );

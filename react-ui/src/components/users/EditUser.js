@@ -1,15 +1,23 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
-import StaffService from "../../services/staffService"
+import UserService from "../../services/userService"
+import Multiselect from "multiselect-react-dropdown";
 
-export default function CreateStaff()
+export default function EditUser()
 {
     const [errors, setErrors] = useState("");
     const [connectionErrorMessage, setConnectionErrorMessage] = useState("");
     const {id} = useParams();
-    let _firstName, _lastName, _email, _username, _password;
+    const [roles, setRoles] = useState([]);
+    let _firstName, _lastName, _email, _username, _password, _roles = React.createRef();
     const navigate = useNavigate();
+
+    const rolesInput = [
+        { 'name': 'VIEWER', 'value': "viewer" },
+        { 'name': 'EDITOR', 'value': "editor" },
+        { 'name': 'ADMIN', 'value': "admin" }
+    ]
 
     function submitForm(event) {
         event.preventDefault();
@@ -18,13 +26,18 @@ export default function CreateStaff()
             last_name: _lastName.value,
             email: _email.value,
             username: _username.value,
-            password: _password.value
+            password: _password.value,
+            roles: []
+        }
+        const selectedRoles = _roles.current.getSelectedItems();
+        for (let i = 0; i < selectedRoles.length; i++) {
+            requestData.roles.push(selectedRoles[i].value);
         }
 
-        StaffService.updateStaff(id, requestData).then(res=>{
+        UserService.updateUser(id, requestData).then(res=>{
             if (res.success)
             {
-                navigate("/staff");
+                navigate("/users");
             }
             else {
                 if (res.validation_errors.length > 0) {
@@ -32,7 +45,7 @@ export default function CreateStaff()
                     setErrors(valErrors);
                 }
                 else {
-                    alert("You don't have permission to edit the staff member.");
+                    alert("You don't have permission to edit the user.");
                 }
             }
         }).catch(()=>{
@@ -41,22 +54,23 @@ export default function CreateStaff()
     }
 
     useEffect(()=>{
-        document.title = "Create Staff";
-        StaffService.getStaffById(id).then(res=>{
+        document.title = "Edit";
+        UserService.getUserById(id).then(res=>{
             if (res.success){
-                _firstName.value = res.data.first_name;
-                _lastName.value = res.data.last_name;
-                _email.value = res.data.email;
-                _username.value = res.data.username;
+                if (_firstName) _firstName.value = res.data.first_name;
+                if (_lastName) _lastName.value = res.data.last_name;
+                if (_email) _email.value = res.data.email;
+                if (_username) _username.value = res.data.username;
+                setRoles(res.data.roles.map((value)=>{return {'name':value.toUpperCase(), 'value':value}}));
             }
-        }).catch(()=>{
+        }).catch((err)=>{
             setConnectionErrorMessage(<p>Connection fault: Try again later.</p>)
         });
     })
 
     return(
-        <div id="create-staff-body">
-            <h1>Edit Staff</h1>
+        <div id="create-user-body">
+            <h1>Edit User</h1>
             {connectionErrorMessage}
             {errors}
             <form method="POST" onSubmit={submitForm}>
@@ -80,8 +94,17 @@ export default function CreateStaff()
                     <label htmlFor="password-field">Password</label><br/>
                     <input className="form-control" id="password-field" type="password" name="password" ref={(a) => _password = a}/>
                 </div>
+                <div className="form-group">
+                    <label>Roles</label>
+                    <Multiselect
+                        options={rolesInput}
+                        selectedValues={roles}
+                        displayValue="name"
+                        ref={_roles}
+                    />
+                </div>
                 <input type="submit" value="Save" className="btn btn-primary"/>
-                <Link to="/staff" className="btn btn-primary">Cancel</Link>
+                <Link to="/users" className="btn btn-primary">Cancel</Link>
             </form>
         </div>
     );
