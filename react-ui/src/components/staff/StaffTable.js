@@ -17,7 +17,7 @@ export default function StaffTable(props)
             if (props.data.length > 0)
                 data1 = props.data.map((value, index) => <StaffRow key={index} data={value}/>);
             else
-                data1 = <tr colSpan={7}><td>There is no students yet.</td></tr>
+                data1 = <tr colSpan={7}><td>There is no staff members yet.</td></tr>
             setData(data1);
             setHasData(true);
             if (!props.connected && !hasData)

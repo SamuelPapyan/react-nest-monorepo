@@ -24,6 +24,12 @@ export default function LoginModal(props) {
         });
     }
 
+    function openSignUpModal(event) {
+        event.preventDefault();
+        props.hide();
+        props.showSignUp();
+    }
+
     return (
         <Modal show={props.show} onHide={props.hide} centered>
             <Modal.Body>
@@ -41,6 +47,7 @@ export default function LoginModal(props) {
                     <br/>
                     <input type="submit" value="Log In" className="btn btn-primary"/>
                 </form>
+                <span>Don't have an account? <a href="#" onClick={openSignUpModal}>Sign Up</a></span>
             </Modal.Body>
         </Modal>
     )

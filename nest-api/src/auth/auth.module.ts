@@ -8,6 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from 'src/roles/roles.guard';
 import { ResponseManager } from 'src/app/managers/response.manager';
 import { ExceptionManager } from 'src/app/managers/exception.manager';
+import { UsersService } from 'src/users/users.service';
 
 @Module({
   imports: [

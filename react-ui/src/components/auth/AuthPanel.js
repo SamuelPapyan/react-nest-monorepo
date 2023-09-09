@@ -2,15 +2,26 @@ import React, { useState } from 'react'
 import AuthService from '../../services/authService';
 import { Button } from 'react-bootstrap'
 import LoginModal from './LoginModal';
+import SignUpModal from './SignUpModal';
 
 export default function AuthPanel() {
     const [loginShow, setLoginShow] = useState(false);
+    const [signUpShow, setSignUpShow] = useState(false);
+
     const handleLoginShow = () => setLoginShow(true);
     const handleLoginHide = () => setLoginShow(false);
+    const handleSignUpShow = () => setSignUpShow(true);
+    const handleSignUpHide = () => setSignUpShow(false);
+
     const [switchComponent, setSwitchComponent] = useState(
-      <Button variant="primary" onClick={handleLoginShow}>
+    <span>
+      <Button variant="primary" onClick={handleSignUpShow}>
+        Sign Up
+      </Button>
+      <Button variant="primary-outline" onClick={handleLoginShow}>
         Log In
       </Button>
+    </span>
     );
 
     const logout = () => {
@@ -38,7 +49,8 @@ export default function AuthPanel() {
   return (
     <>
       { switchComponent }
-      <LoginModal show={loginShow} hide={handleLoginHide}/>
+      <LoginModal show={loginShow} hide={handleLoginHide} showSignUp={handleSignUpShow}/>
+      <SignUpModal show={signUpShow} hide={handleSignUpHide} showLogin={handleLoginShow}/>
     </>
   );
 }

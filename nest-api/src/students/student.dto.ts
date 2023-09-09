@@ -1,10 +1,10 @@
-import { IsString, IsNumberString, IsNotEmpty } from "class-validator";
+import { IsString, IsNumberString, IsNotEmpty } from 'class-validator';
 
 export class StudentDTO {
   @IsString()
   @IsNotEmpty()
   full_name: string;
-  
+
   @IsNumberString()
   @IsNotEmpty()
   age: number;
