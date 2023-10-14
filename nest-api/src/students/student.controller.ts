@@ -7,6 +7,7 @@ import {
   Body,
   Param,
   UseFilters,
+  Query,
 } from '@nestjs/common';
 import { StudentService } from 'src/students/student.service';
 import { StudentDTO } from 'src/students/student.dto';
@@ -18,6 +19,8 @@ import { NotFoundException } from '@nestjs/common/exceptions';
 import { ExceptionManager } from 'src/app/managers/exception.manager';
 import { AllExceptionFilter } from 'src/app/all-exception.filter';
 import { messages } from 'src/app/config';
+import { Roles } from 'src/roles/roles.decorator';
+import { Role } from 'src/roles/role.enum';
 
 @Controller('students')
 @UseFilters(AllExceptionFilter)
@@ -29,8 +32,17 @@ export class StudentController {
   ) {}
 
   @Get()
-  async getStudents(): Promise<ResponseDTO<Student[]>> {
-    const students = await this.studentService.getStudents();
+  @Roles(Role.Viewer, Role.Editor, Role.Admin)
+  async getStudents(
+    @Query('q') query,
+    @Query('best') best,
+    @Query('count') count,
+  ): Promise<ResponseDTO<Student[]>> {
+    const students = await this.studentService.getStudents({
+      query,
+      best,
+      count,
+    });
     return new ResponseManager<Student[]>().getResponse(
       students,
       messages.STUDENT_GENERATED,
@@ -38,6 +50,7 @@ export class StudentController {
   }
 
   @Get(':id')
+  @Roles(Role.Editor, Role.Admin)
   async getById(@Param('id') id: string): Promise<ResponseDTO<Student>> {
     try {
       const mongoId = new mongoose.Types.ObjectId(id);
@@ -52,6 +65,7 @@ export class StudentController {
   }
 
   @Post()
+  @Roles(Role.Admin)
   async addStudent(
     @Body() studentDto: StudentDTO,
   ): Promise<ResponseDTO<Student>> {
@@ -64,6 +78,7 @@ export class StudentController {
   }
 
   @Put(':id')
+  @Roles(Role.Admin, Role.Editor)
   async updateStudent(
     @Body() studentDto: StudentDTO,
     @Param('id') id: string,
@@ -87,6 +102,7 @@ export class StudentController {
   }
 
   @Delete(':id')
+  @Roles(Role.Admin)
   async deleteStudent(@Param('id') id: string): Promise<ResponseDTO<Student>> {
     try {
       const mongoId = new mongoose.Types.ObjectId(id);

@@ -4,7 +4,9 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
+  Put,
   Request,
   UseFilters,
   UseGuards,
@@ -17,6 +19,8 @@ import { ExceptionManager } from 'src/app/managers/exception.manager';
 import { UsersService } from 'src/users/users.service';
 import { UserDTO } from 'src/users/user.dto';
 import { AllExceptionFilter } from 'src/app/all-exception.filter';
+import { MailService } from 'src/mail/mail.service';
+import mongoose from 'mongoose';
 
 @Controller('auth')
 export class AuthController {
@@ -25,6 +29,7 @@ export class AuthController {
     private userService: UsersService,
     private readonly responseManager: ResponseManager<any>,
     private readonly exceptionManager: ExceptionManager,
+    private readonly mailService: MailService
   ) {}
 
   @HttpCode(HttpStatus.OK)
@@ -58,6 +63,34 @@ export class AuthController {
     try {
       const user = await this.userService.addUser(signUpDto);
       return this.responseManager.getResponse(user, 'USER_ADDED');
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
+  @Post('send_mail')
+  @UseFilters(AllExceptionFilter)
+  async sendPasswordRecovery(
+    @Body() body: Record<string, any>,
+  ): Promise<ResponseDTO<string>> {
+    try {
+      await this.mailService.sendPasswordRecovery(body.email);
+      return new ResponseManager<string>().getResponse(body.email, 'EMAIL_SENT')
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
+  @Put('reset/:id')
+  @UseFilters(AllExceptionFilter)
+  async resetPassword(
+    @Param('id') id: string,
+    @Body() body: Record<string, any>,
+  ): Promise<ResponseDTO<UserDTO>> {
+    try {
+      const mongoId = new mongoose.Types.ObjectId(id);
+      const user = await this.userService.resetPassword(mongoId, body.password);
+      return this.responseManager.getResponse(user, 'PASSWORD_RESET')
     } catch (e) {
       this.exceptionManager.throwException(e);
     }

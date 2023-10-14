@@ -1,0 +1,90 @@
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router";
+import AuthService from "../../../services/authService"
+import {Link} from 'react-router-dom'
+
+function useQuery() {
+    const { search } = useLocation();
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
+export default function ResetPassword(){
+    const [updated, setUpdated] = useState(false)
+    const [box, setBox] = useState("");
+    let _newPassword, _confirmPassword, _errorMessage;
+    const query = useQuery();
+
+    function resetPassword(event) {
+        event.preventDefault();
+        if (_newPassword.value !== _confirmPassword.value) {
+            _errorMessage.textContent = "Two fields must be identical.";
+            return ;
+        }
+        AuthService.resetPassword(query.get('id'), _newPassword.value).then(res=>{
+            if (res.success) {
+                setBox(boxes.finish)
+            }
+            else {
+                _errorMessage.textContent = res.message
+            }
+        }).catch(err=>{
+            _errorMessage.textContent = "Connection fault. Try again later.";
+        })
+    }
+
+    const boxes = {
+        reset: <>
+            <h1 className="text-light text-center">Reset Password</h1>
+            <form method="POST" onSubmit={resetPassword}>
+                <div className="form-group">
+                    <label htmlFor="username-field" className="text-light">New Password</label><br/>
+                    <input className="form-control" id="username-field" type="password" name="new_password" ref={(a) => _newPassword = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password-field" className="text-light">Confirm Password</label><br/>
+                    <input className="form-control" id="password-field" type="password" name="confirm_password" ref={(a) => _confirmPassword = a}/>
+                </div>
+                <p className="text-center text-light" ref={a => _errorMessage = a}></p>
+                <input
+                    type="submit"
+                    value="Reset"
+                    className="btn text-light"
+                    style={{
+                        display: "block",
+                        backgroundColor: "#03045E",
+                        margin: "auto"
+                    }}/>
+            </form>
+        </>,
+        finish: (<>
+            <h1 className="text-center text-light">Password reset</h1>
+            <p className="text-center text-light">Go back to login page</p>
+            <div className="text-center">
+                <Link to="/admin/login" className="btn btn-primary">Back To Login</Link>
+            </div>
+        </>
+        )
+    }
+
+    useEffect(()=>{
+        if (!updated) {
+            if (!query.get("id"))
+                window.history.back();
+            setBox(boxes.reset);
+            setUpdated(true);
+        }
+    })
+
+    return(<div style={{
+        width:"100%",
+        height: "715px",
+        backgroundColor: "#0196C7"
+    }} className="d-flex justify-content-center align-items-center">
+        <div style={{
+            width: "30%",
+            backgroundColor: "#033E8A"
+        }} className="rounded p-2">
+            {box}
+        </div>
+    </div>)
+}

@@ -77,4 +77,18 @@ export default class StaffService {
             })
         });
     }
+
+    static async searchStaff(query) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/staff?q=" + query, {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
 }

@@ -20,8 +20,25 @@ export class StudentService {
     return student;
   }
 
-  async getStudents(): Promise<Student[]> {
-    return this.studentModel.find().exec();
+  async getStudents(queryOb: any): Promise<Student[]> {
+    const options = {};
+    if (queryOb.query) {
+      options['$or'] = [];
+      options['$or'].push({
+        full_name: { $regex: new RegExp(queryOb.query), $options: 'i' },
+      });
+      options['$or'].push({
+        country: { $regex: new RegExp(queryOb.query), $options: 'i' },
+      });
+    }
+    if (queryOb.best && queryOb.count) {
+      return this.studentModel
+        .find(options)
+        .sort({ level: 'desc', experience: 'desc' })
+        .limit(+queryOb.count)
+        .exec();
+    }
+    return this.studentModel.find(options).exec();
   }
 
   async updateStudent(

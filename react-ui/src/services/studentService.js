@@ -1,7 +1,11 @@
 export default class StudentService {
     static async getAllStudents() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/students").then(res=>{
+            fetch(process.env.REACT_APP_API_URL + "/students", {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                }
+            }).then(res=>{
                 resolve(res.json());
             }).catch(err=>{
                 reject(err);
@@ -11,7 +15,11 @@ export default class StudentService {
 
     static async getStudentById(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/${id}`).then(res=>{
+            fetch(process.env.REACT_APP_API_URL + `/students/${id}`, {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                }
+            }).then(res=>{
                 resolve(res.json());
             }).catch(err=>{
                 reject(err);
@@ -26,7 +34,8 @@ export default class StudentService {
                 body: JSON.stringify(formData),
                 headers:{
                     'Accept': "application/json",
-                    'Content-Type': "application/json"
+                    'Content-Type': "application/json",
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -43,7 +52,8 @@ export default class StudentService {
                 body: JSON.stringify(formData),
                 headers:{
                     'Accept': "application/json",
-                    'Content-Type': "application/json"
+                    'Content-Type': "application/json",
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -57,11 +67,42 @@ export default class StudentService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/students/${id}`, {
                 method: 'DELETE',
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                }
             }).then(res=>{
                 resolve(res.json());
             }).catch(err=>{
                 reject(err);
             })
         })
+    }
+
+    static async searchStudents(query) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/students?q=" + query, {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            })
+        });
+    }
+
+    static async getBestStudents(count) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/students?best=true&count=" + count, {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            })
+        });
     }
 }
