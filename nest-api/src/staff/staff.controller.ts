@@ -8,6 +8,7 @@ import {
   Param,
   UseFilters,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { StaffService } from 'src/staff/staff.service';
 import { StaffDTO } from 'src/staff/staff.dto';
@@ -33,8 +34,8 @@ export class StaffController {
 
   @Get()
   @Roles(Role.Viewer, Role.Editor, Role.Admin)
-  async getStaff(): Promise<ResponseDTO<Staff[]>> {
-    const staffs = await this.staffService.getStaffs();
+  async getStaff(@Query('q') query): Promise<ResponseDTO<Staff[]>> {
+    const staffs = await this.staffService.getStaffs(query);
     return new ResponseManager<Staff[]>().getResponse(
       staffs,
       messages.STAFF_GENERATED,
@@ -42,7 +43,7 @@ export class StaffController {
   }
 
   @Get(':id')
-  @Roles(Role.Viewer, Role.Admin, Role.Editor)
+  @Roles(Role.Admin, Role.Editor)
   async getById(@Param('id') id: string): Promise<ResponseDTO<Staff>> {
     try {
       const mongoId = new mongoose.Types.ObjectId(id);
@@ -57,7 +58,7 @@ export class StaffController {
   }
 
   @Post()
-  @Roles(Role.Admin, Role.Editor)
+  @Roles(Role.Admin)
   async addStaff(@Body() staffDto: StaffDTO): Promise<ResponseDTO<Staff>> {
     try {
       const staff = await this.staffService.addStaff(staffDto);
@@ -68,7 +69,7 @@ export class StaffController {
   }
 
   @Put(':id')
-  @Roles(Role.Editor, Role.Admin)
+  @Roles(Role.Admin)
   async updateStaff(
     @Body() staffDto: StaffDTO,
     @Param('id') id: string,

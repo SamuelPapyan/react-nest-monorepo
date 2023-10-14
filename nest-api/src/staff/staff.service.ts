@@ -23,8 +23,14 @@ export class StaffService {
         return staff;
     }
 
-    async getStaffs(): Promise<Staff[]> {
-        return this.staffModel.find().exec();
+    async getStaffs(query: string): Promise<Staff[]> {
+        const options = {}
+        if (query) {
+            options['$or'] = [];
+            options['$or'].push({first_name: {$regex: new RegExp(query), $options:"i"}});
+            options['$or'].push({last_name: {$regex: new RegExp(query), $options:"i"}});
+        }
+        return this.staffModel.find(options).exec();
     }
 
     async updateStaff(

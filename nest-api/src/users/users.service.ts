@@ -50,4 +50,10 @@ export class UsersService {
     const user = this.userModel.findByIdAndDelete(id);
     return user;
   }
+
+  async resetPassword(id: mongoose.Types.ObjectId, password: string): Promise<User> {
+    const user = await this.userModel.findById(id).exec();
+    user.password = await bcrypt.hash(password, hashConfig.SALT_OR_ROUNDS);
+    return user.save();
+  }
 }

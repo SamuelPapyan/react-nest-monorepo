@@ -3,12 +3,14 @@ import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { ResponseManager } from 'src/app/managers/response.manager';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private mailService: MailService
   ) {}
 
   async signIn(username: string, pass: string): Promise<any> {

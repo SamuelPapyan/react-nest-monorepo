@@ -47,4 +47,38 @@ export default class AuthService {
             });
         });
     }
+
+    static async sendPasswordRecoveryMail(email) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + `/auth/send_mail`, {
+                method: 'POST',
+                body: JSON.stringify({email: email}),
+                headers:{
+                    'Accept': "application/json",
+                    'Content-Type': "application/json"
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
+
+    static async resetPassword(id, password) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + `/auth/reset/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify({password: password}),
+                headers:{
+                    'Accept': "application/json",
+                    'Content-Type': "application/json"
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
 }
