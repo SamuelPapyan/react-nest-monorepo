@@ -11,7 +11,7 @@ function useQuery() {
 export default function ResetPassword(){
     const [updated, setUpdated] = useState(false)
     const [box, setBox] = useState("");
-    let _newPassword, _confirmPassword, _errorMessage;
+    let _newPassword, _confirmPassword, _errorMessage, userId = "";
     const query = useQuery();
 
     function resetPassword(event) {
@@ -20,7 +20,7 @@ export default function ResetPassword(){
             _errorMessage.textContent = "Two fields must be identical.";
             return ;
         }
-        AuthService.resetPassword(query.get('id'), _newPassword.value).then(res=>{
+        AuthService.resetPassword(userId, _newPassword.value).then(res=>{
             if (res.success) {
                 setBox(boxes.finish)
             }
@@ -33,6 +33,13 @@ export default function ResetPassword(){
     }
 
     const boxes = {
+        loading: <>
+            <p className="text-light text-center">Loading...</p>
+        </>,
+        invalid: <>
+            <h1 className="text-light text-center">Invalid Reset Link</h1>
+            <p className="text-light text-center">This link was expired or used or invalid.</p>
+        </>,
         reset: <>
             <h1 className="text-light text-center">Reset Password</h1>
             <form method="POST" onSubmit={resetPassword}>
@@ -68,10 +75,22 @@ export default function ResetPassword(){
 
     useEffect(()=>{
         if (!updated) {
-            if (!query.get("id"))
-                window.history.back();
-            setBox(boxes.reset);
-            setUpdated(true);
+            setBox(boxes.loading);
+            if (!query.get("id")) {
+                setBox(boxes.invalid)
+            }
+            else {
+                AuthService.validateResetLink(query.get("id")).then(res=>{
+                    if (res.success && res.data.isValid) {
+                        setBox(boxes.reset);
+                        userId = res.data.user_id;
+                    }
+                    else {
+                        setBox(boxes.invalid);
+                    }
+                })
+                setUpdated(true);
+            }
         }
     })
 

@@ -1,7 +1,7 @@
-export default class StaffService {
-    static async getAllStaffs() {
+export default class WorkshopsService {
+    static async getAllWorkshops() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/staff", {
+            fetch(process.env.REACT_APP_API_URL + "/workshops", {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -13,9 +13,9 @@ export default class StaffService {
         });
     }
 
-    static async getStaffById(id) {
+    static async getWorkshopById(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`,{
+            fetch(process.env.REACT_APP_API_URL + `/workshops/${id}`,{
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -27,9 +27,9 @@ export default class StaffService {
         });
     }
 
-    static async addStaff(formData) {
+    static async addWorkshop(formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/staff", {
+            fetch(process.env.REACT_APP_API_URL + "/workshops", {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers:{
@@ -45,9 +45,9 @@ export default class StaffService {
         });
     }
 
-    static async updateStaff(id, formData) {
+    static async updateWorkshop(id, formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/workshops/${id}`, {
                 method: 'PUT',
                 body: JSON.stringify(formData),
                 headers: {
@@ -63,9 +63,9 @@ export default class StaffService {
         });
     }
 
-    static async deleteStaff(id) {
+    static async deleteWorkshop(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/workshops/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
@@ -78,9 +78,9 @@ export default class StaffService {
         });
     }
 
-    static async searchStaff(query) {
+    static async searchWorkshops(query) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/staff?q=" + query, {
+            fetch(process.env.REACT_APP_API_URL + "/workshops?q=" + query, {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }

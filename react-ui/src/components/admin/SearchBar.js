@@ -1,11 +1,13 @@
 import StudentService from "../../services/studentService";
 import StaffService from "../../services/staffService";
+import WorkshopsService from "../../services/workshopsService";
 
 export default function SearchBar(props) {
 
     const searchFunctions = {
         "staff": StaffService.searchStaff,
-        "students": StudentService.searchStudents
+        "students": StudentService.searchStudents,
+        "workshops": WorkshopsService.searchWorkshops,
     }
 
     let _search;

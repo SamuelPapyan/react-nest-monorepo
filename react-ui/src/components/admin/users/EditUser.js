@@ -54,7 +54,7 @@ export default function EditUser()
     }
 
     useEffect(()=>{
-        document.title = "Edit";
+        document.title = "Edit User";
         UserService.getUserById(id).then(res=>{
             if (res.success){
                 if (_firstName) _firstName.value = res.data.first_name;

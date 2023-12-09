@@ -19,7 +19,7 @@ export default function StudentsList()
                 if (res.success){
                     setData(res.data);
                 }
-                AuthService.getProfile(null).then(res=>{
+                AuthService.getProfile().then(res=>{
                     if (res.success) {
                         if (res.data.roles.includes('editor')) {
                             setUserType("EDITOR");

@@ -6,7 +6,7 @@ import StudentService from "../../../services/studentService";
 export default function CreateStudent()
 {
     const [errors, setErrors] = useState("");
-    let _fullName, _age, _level, _experience, _maxExperience, _country;
+    let _fullName, _age, _level, _experience, _maxExperience, _country, _username, _email, _password;
     const navigate = useNavigate();
     
     function submitForm(event){
@@ -18,6 +18,9 @@ export default function CreateStudent()
             experience: _experience.value,
             max_experience: _maxExperience.value,
             country: _country.value,
+            username: _username.value,
+            email: _email.value,
+            password: _password.value
         }
         
         StudentService.addStudent(requestData).then(res=>{
@@ -29,9 +32,6 @@ export default function CreateStudent()
                 if (res.validation_errors.length > 0) {
                     const valErrors = res.validation_errors.map((value, index)=><li key={index}>{value}</li>);
                     setErrors(valErrors);
-                }
-                else {
-                    alert("You don't have permission to create a staff member.");
                 }
             }
         }).catch(()=>{
@@ -54,6 +54,18 @@ export default function CreateStudent()
                 <div className="form-group">
                     <label htmlFor="full-name-field">Full Name</label><br/>
                     <input className="form-control" id="full-name-field" type="text" name="full-name" ref={(a) => _fullName = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="username-field">Username</label><br/>
+                    <input className="form-control" id="username-field" type="text" name="username" ref={(a) => _username = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="email-field">Email</label><br/>
+                    <input className="form-control" id="email-field" type="text" name="email" ref={(a) => _email = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password-field">Password</label><br/>
+                    <input className="form-control" id="password-field" type="password" name="password" ref={(a) => _password = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="age-field">Age</label><br/>

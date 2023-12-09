@@ -8,7 +8,7 @@ export default function EditStudent(props)
     const [errors, setErrors] = useState("");
     const [connectionErrorMessage, setConnectionErrorMessage] = useState("")
     const {id} = useParams();
-    let _fullName, _age, _level, _experience, _maxExperience, _country;
+    let _fullName, _age, _level, _experience, _maxExperience, _country, _username, _password, _email;
     const navigate = useNavigate();
     
     function submitForm(event){
@@ -20,6 +20,9 @@ export default function EditStudent(props)
             experience: _experience.value,
             max_experience: _maxExperience.value,
             country: _country.value,
+            username: _username.value,
+            password: _password.value,
+            email: _email.value
         }
         StudentService.updateStudent(id, requestData).then(res=>{
             if (res.success)
@@ -30,9 +33,6 @@ export default function EditStudent(props)
                 if (res.validation_errors.length > 0) {
                     const valErrors = res.validation_errors.map((value, index)=><li key={index}>{value}</li>);
                     setErrors(valErrors);
-                }
-                else {
-                    alert("You don't have permission to edit the staff member.");
                 }
             }
         }).catch((err)=>{
@@ -50,6 +50,8 @@ export default function EditStudent(props)
                 _experience.value = res.data.experience;
                 _maxExperience.value = res.data.max_experience;
                 _country.value = res.data.country;
+                _username.value = res.data.username;
+                _email.value = res.data.email;
             }
         }).catch(()=>{
             setConnectionErrorMessage(<p>Connection fault: Try again later.</p>)
@@ -68,6 +70,18 @@ export default function EditStudent(props)
                 <div className="form-group">
                     <label htmlFor="full-name-field">Full Name</label><br/>
                     <input className="form-control" id="full-name-field" type="text" name="full-name" ref={(a) => _fullName = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="username-field">Username</label><br/>
+                    <input className="form-control" id="username-field" type="text" name="username" ref={(a) => _username = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="email-field">Email</label><br/>
+                    <input className="form-control" id="email-field" type="text" name="email" ref={(a) => _email = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password-field">Password</label><br/>
+                    <input className="form-control" id="password-field" type="password" name="password" ref={(a) => _password = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="age-field">Age</label><br/>

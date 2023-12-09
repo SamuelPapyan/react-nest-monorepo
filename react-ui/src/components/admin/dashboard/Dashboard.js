@@ -7,6 +7,7 @@ import { useEffect, useState } from "react"
 export default function Dashboard() {
     const [studentCount, setStudentCount] = useState("")
     const [staffCount, setStaffCount] = useState("")
+    const [workshopsCount, setWorkshopsCount] = useState("");
     const [bestStudents, setBestStudents] = useState([])
     const [updated, setUpdated] = useState(false);
 
@@ -29,6 +30,7 @@ export default function Dashboard() {
             DashboardService.getDashboardData().then(res=>{
                 setStudentCount(res.studentsCount);
                 setStaffCount(res.staffCount);
+                setWorkshopsCount(res.workshopsCount);
                 setBestStudents(res.bestStudents);
             });
             setUpdated(true);
@@ -43,6 +45,7 @@ export default function Dashboard() {
             <div className="d-flex justify-content-center p-3">
                 <DataCard data={{title: "Students", count: studentCount}}/>
                 <DataCard data={{title: "Staff", count: staffCount}}/>
+                <DataCard data={{title: "Workshops", count: workshopsCount}}/>
             </div>
             <StudentList data={bestStudents}/>
         </div>

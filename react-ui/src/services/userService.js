@@ -3,7 +3,7 @@ export default class UserService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + "/users",{
                 headers:{
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -17,7 +17,7 @@ export default class UserService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/users/${id}`,{
                 headers: {
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -35,7 +35,7 @@ export default class UserService {
                 headers: {
                     'Accept': "application/json",
                     'Content-Type': "application/json",
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -53,7 +53,7 @@ export default class UserService {
                 headers: {
                     'Accept': "application/json",
                     'Content-Type': "application/json",
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -68,7 +68,7 @@ export default class UserService {
             fetch(process.env.REACT_APP_API_URL + `/users/${id}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());

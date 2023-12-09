@@ -28,7 +28,7 @@ import { MailModule } from 'src/mail/mail.module';
       useClass: RolesGuard,
     },
     ResponseManager,
-    ExceptionManager,
+    ExceptionManager
   ],
   exports: [AuthService],
 })

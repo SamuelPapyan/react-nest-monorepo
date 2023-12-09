@@ -7,7 +7,6 @@ import {
   Body,
   Param,
   UseFilters,
-  UseGuards,
   Query,
 } from '@nestjs/common';
 import { StaffService } from 'src/staff/staff.service';
