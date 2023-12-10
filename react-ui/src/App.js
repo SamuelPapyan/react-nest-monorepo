@@ -24,9 +24,16 @@ import UserList from "./components/admin/users/UserList";
 import CreateUser from "./components/admin/users/CreateUser";
 import EditUser from "./components/admin/users/EditUser";
 import ResetPassword from './components/admin/auth/ResetPassword';
+import StudentDashboard from './components/student/Dashboard';
+import StudentService from './services/studentService';
+import ResetStudentPassword from './components/student/ResetStudentPassword';
+import WorkshopsList from "./components/admin/workshops/WorkshopsList";
+import CreateWorkshop from "./components/admin/workshops/CreateWorkshop";
+import EditWorkshop from "./components/admin/workshops/EditWorkshop";
 
 function App() {
   const [token, setToken] = useState(true);
+  const [studentToken, setStudentToken] = useState(true);
   const ProtectedRoute =  ({ user, redirectPath="/admin/login", children }) =>{
     if (!user)
         return <Navigate
@@ -36,33 +43,55 @@ function App() {
   }
 
   useEffect(()=>{
-    AuthService.getProfile(null).then(res=>{
+    AuthService.getProfile().then(res=>{
       if (!res.success)
         setToken(false);
       }).catch(err=>{
-        // console.log(err.message);
       })
+    StudentService.getProfile().then(res=>{
+      if (!res.success)
+        setStudentToken(false);
+    }).catch(err=>{
+      
+    })
   });
 
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<StudentLogin/>}/>
+        <Route exact path="/">
+          <Route path="login" element={<StudentLogin setToken={setStudentToken}/>}/>
+          <Route path="reset" element={<ResetStudentPassword/>}/>
+          <Route element={<ProtectedRoute user={studentToken} redirectPath='/login'/>}>
+            <Route path="" element={<StudentDashboard/>}/>
+          </Route>
+        </Route>
         <Route path="/admin">
           <Route path="login" element={<Login setToken={setToken}/>}/>
           <Route path="reset" element={<ResetPassword/>}/>
           <Route element={<ProtectedRoute user={token}/>}>
             <Route element={<AdminBody/>}>
               <Route exact path="" element={<Dashboard/>}/>
-              <Route exact path="students" element={<StudentsList/>}/>
-              <Route path="students/create" element={<CreateStudent />}/>
-              <Route path="students/edit/:id" element={<EditStudent />}/>
-              <Route exact path="staff" element={<StaffList />}/>
-              <Route path="staff/create" element={<CreateStaff />}/>
-              <Route path="staff/edit/:id" element={<EditStaff />}/>
-              <Route exact path="users" element={<UserList />}/>
-              <Route path="users/create" element={<CreateUser />}/>
-              <Route path="users/edit/:id" element={<EditUser />}/>
+              <Route path="students">
+                <Route exact path="" element={<StudentsList/>}/>
+                <Route path="create" element={<CreateStudent />}/>
+                <Route path="edit/:id" element={<EditStudent />}/>
+              </Route>
+              <Route path="staff">
+                <Route exact path="" element={<StaffList />}/>
+                <Route path="create" element={<CreateStaff />}/>
+                <Route path="edit/:id" element={<EditStaff />}/>
+              </Route>
+              <Route path="users">
+                <Route exact path="" element={<UserList />}/>
+                <Route path="create" element={<CreateUser />}/>
+                <Route path="edit/:id" element={<EditUser />}/>
+              </Route>
+              <Route path="workshops">
+                <Route exact path="" element={<WorkshopsList/>}/>
+                <Route exact path="create" element={<CreateWorkshop/>}/>
+                <Route exact path="edit/:id" element={<EditWorkshop/>}/>
+              </Route>
             </Route>
           </Route>
         </Route>

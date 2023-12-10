@@ -6,10 +6,18 @@ import mongoose, { Model } from 'mongoose';
 import { UserDTO } from './user.dto';
 import * as bcrypt from 'bcrypt';
 import { hashConfig } from '../app/config';
+import {
+  ResetPassword,
+  ResetPasswordDocument,
+} from 'src/mail/reset_password.schema';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(ResetPassword.name)
+    private resetPasswordModel: Model<ResetPasswordDocument>,
+  ) {}
 
   async addUser(userDTO: UserDTO): Promise<User> {
     userDTO.password = await bcrypt.hash(
@@ -51,9 +59,24 @@ export class UsersService {
     return user;
   }
 
-  async resetPassword(id: mongoose.Types.ObjectId, password: string): Promise<User> {
+  async getResetPasswordDto(id: string): Promise<ResetPassword> {
+    const data = await this.resetPasswordModel.findOne({
+      hashed_id: id,
+      user_type: 'user',
+    });
+    return data;
+  }
+
+  async resetPassword(
+    id: mongoose.Types.ObjectId,
+    password: string,
+  ): Promise<User> {
     const user = await this.userModel.findById(id).exec();
     user.password = await bcrypt.hash(password, hashConfig.SALT_OR_ROUNDS);
+    await this.resetPasswordModel.findOneAndUpdate(
+      { user_id: id, user_type: 'user' },
+      { is_used: true },
+    );
     return user.save();
   }
 }

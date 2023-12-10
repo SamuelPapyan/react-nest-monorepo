@@ -8,14 +8,13 @@ export default function AuthPanel() {
     const [updated, setUpdated] = useState(false);
     const navigate = useNavigate();
     const logout = () => {
-        window.localStorage.removeItem('REACT_NEST_MONOREPO_AUTH_TOKEN');
+        window.localStorage.removeItem(process.env.REACT_APP_ADMIN_TOKEN);
         navigate('/admin/login');
     }
     useEffect(()=>{
       if (!updated) {
-        if (window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')) {
-          AuthService.getProfile(window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')).then(res=>{
-              console.log(res);
+        if (window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)) {
+          AuthService.getProfile().then(res=>{
               if (res.success) {
                   setSwitchComponent(
                     <div>
@@ -26,7 +25,7 @@ export default function AuthPanel() {
                     </div>
                   );
               } else {
-                  window.localStorage.removeItem('REACT_NEST_MONOREPO_AUTH_TOKEN');
+                  window.localStorage.removeItem(process.env.REACT_APP_ADMIN_TOKEN);
               }
           })
         }

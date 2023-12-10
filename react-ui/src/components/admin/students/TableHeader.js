@@ -5,6 +5,8 @@ export default function TableHeader(props){
         <thead>
             <tr>
                 <th>Full Name</th>
+                <th>Username</th>
+                <th>Email</th>
                 <th>Age</th>
                 <th>Level</th>
                 <th>Experience</th>

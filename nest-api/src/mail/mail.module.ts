@@ -5,6 +5,8 @@ import { MailService } from './mail.service';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from 'src/users/user.schema';
+import { ResetPassword, ResetPasswordSchema } from './reset_password.schema';
+import { Student, StudentSchema } from 'src/students/student.schema';
 
 @Module({
   imports: [
@@ -29,7 +31,11 @@ import { User, UserSchema } from 'src/users/user.schema';
         },
       },
     }),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: Student.name, schema: StudentSchema },
+      { name: ResetPassword.name, schema: ResetPasswordSchema },
+    ]),
   ],
   providers: [MailService],
   exports: [MailService],

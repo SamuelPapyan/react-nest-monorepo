@@ -43,7 +43,7 @@ export class StaffService {
     }
 
     async deleteStaff(id: mongoose.Types.ObjectId): Promise<Staff> {
-        const student = this.staffModel.findByIdAndDelete(id);
-        return student;
+        const staff = this.staffModel.findByIdAndDelete(id);
+        return staff;
     }
 }

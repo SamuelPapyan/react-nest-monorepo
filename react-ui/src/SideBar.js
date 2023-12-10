@@ -43,6 +43,13 @@ export default function SideBar() {
                 Staff
               </MDBListGroupItem>
             </MDBRipple>
+
+            <MDBRipple rippleTag='span' className='bg-dark'>
+              <MDBListGroupItem tag='a' href='/admin/workshops' className='elem border-0 rounded' active={(window.location.pathname.indexOf('/admin/workshops') > -1) ? true : false}>
+                <MDBIcon fas icon="lock me-3" />
+                Workshops
+              </MDBListGroupItem>
+            </MDBRipple>
           </MDBListGroup>
         </div>
       </MDBCollapse>

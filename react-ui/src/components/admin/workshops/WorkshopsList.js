@@ -1,22 +1,21 @@
 import { Link } from "react-router-dom";
-import StaffTable from "./StaffTable";
-import { useState, useEffect } from "react";
-import StaffService from "../../../services/staffService";
-import SearchBar from "../SearchBar";
+import WorkshopsTable from "./WorkshopTable";
+import { useEffect, useState } from "react";
+import WorkshopsServices from "../../../services/workshopsService";
 import AuthService from "../../../services/authService";
+import SearchBar from "../SearchBar";
 
-export default function StaffList()
-{
+export default function WorkshopsList() {
     const [data, setData] = useState(null);
-    const [updated, setUpdated] = useState(false);
     const [connected, setConnected] = useState(true);
+    const [updated, setUpdated] = useState(false);
     const [userType, setUserType] = useState("VIEWER");
 
     useEffect(()=>{
         if (!updated) {
-            document.title = "Staff List";
-            StaffService.getAllStaffs().then(res=>{
-                if (res.success){
+            document.title = "Workshops List";
+            WorkshopsServices.getAllWorkshops().then(res=>{
+                if (res.success) {
                     setData(res.data);
                 }
                 AuthService.getProfile().then(res=>{
@@ -33,24 +32,24 @@ export default function StaffList()
                 }).finally(()=>{
                     setUpdated(true);
                 })
-            }).catch(()=>{
+            }).catch((err)=>{
                 setConnected(false);
             });
         }
-    });
+    })
 
     function searchCallback(newData) {
         setData(newData);
     }
 
     return (
-        <div id="staffs-list-body" style={{
+        <div id="workshops-list-body" style={{
             margin:"0 30px"
         }}>
-            <h1>Staff List</h1>
-            <SearchBar searchFunc="staff" cb={searchCallback}/>
-            <StaffTable data={data} connected={connected} userType={userType}/>
-            {userType === "ADMIN" ? <Link to="/admin/staff/create" className="btn btn-primary">Create</Link> : ""}
+            <h1>Workshops List</h1>
+            <SearchBar searchFunc="workshops" cb={searchCallback}/>
+            <WorkshopsTable data={data} connected={connected} userType={userType}/>
+            {( userType === "ADMIN") ? <Link to="/admin/workshops/create" className="btn btn-primary">Create Workshop</Link> : ""}
         </div>
     )
 }

@@ -12,6 +12,8 @@ export default function StudentRow(props)
     const [experience, setExperience] = useState(0);
     const [maxExperience, setMaxExperience] = useState(0);
     const [country, setCountry] = useState("");
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
 
     const navigate = useNavigate();
 
@@ -34,11 +36,15 @@ export default function StudentRow(props)
         setExperience(props.data.experience);
         setMaxExperience(props.data.max_experience);
         setCountry(props.data.country);
-    }, [props.data._id, props.data.full_name, props.data.age, props.data.level, props.data.experience, props.data.max_experience, props.data.country]);
+        setUsername(props.data.username);
+        setEmail(props.data.email)
+    }, [props.data._id, props.data.full_name, props.data.age, props.data.level, props.data.experience, props.data.max_experience, props.data.country, props.data.username, props.data.email]);
 
     return (
         <tr>
             <td>{fullName}</td>
+            <td>{username}</td>
+            <td>{email}</td>
             <td>{age}</td>
             <td>{level}</td>
             <td>{experience}</td>

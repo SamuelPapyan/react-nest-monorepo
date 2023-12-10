@@ -3,7 +3,7 @@ export default class StudentService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + "/students", {
                 headers:{
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -17,7 +17,7 @@ export default class StudentService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/students/${id}`, {
                 headers:{
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -35,7 +35,7 @@ export default class StudentService {
                 headers:{
                     'Accept': "application/json",
                     'Content-Type': "application/json",
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -53,7 +53,7 @@ export default class StudentService {
                 headers:{
                     'Accept': "application/json",
                     'Content-Type': "application/json",
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -68,7 +68,7 @@ export default class StudentService {
             fetch(process.env.REACT_APP_API_URL + `/students/${id}`, {
                 method: 'DELETE',
                 headers:{
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -82,7 +82,7 @@ export default class StudentService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + "/students?q=" + query, {
                 headers:{
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
@@ -96,13 +96,91 @@ export default class StudentService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + "/students?best=true&count=" + count, {
                 headers:{
-                    'Authorization': "Bearer " + window.localStorage.getItem('REACT_NEST_MONOREPO_AUTH_TOKEN')
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());
             }).catch(err=>{
                 reject(err);
             })
+        });
+    }
+
+    static async login(username, password) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/students/login", {
+                method: 'POST',
+                body: JSON.stringify({username, password}),
+                headers:{
+                    'Accept': "application/json",
+                    'Content-Type': "application/json"
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            })
+        })
+    }
+
+    static async getProfile() {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/auth/profile", {
+                method: 'GET',
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
+
+    static async sendPasswordRecoveryMail(email) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + `/students/send_mail`, {
+                method: 'POST',
+                body: JSON.stringify({email: email}),
+                headers:{
+                    'Accept': "application/json",
+                    'Content-Type': "application/json"
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
+
+    static async resetPassword(id, password) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + `/students/reset/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify({password: password}),
+                headers:{
+                    'Accept': "application/json",
+                    'Content-Type': "application/json"
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
+
+    static async validateResetLink(id) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + `/students/reset/validate/${id}`, {
+                method: 'GET',
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
         });
     }
 }

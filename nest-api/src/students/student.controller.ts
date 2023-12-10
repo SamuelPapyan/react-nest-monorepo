@@ -7,7 +7,9 @@ import {
   Body,
   Param,
   UseFilters,
+  Request,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { StudentService } from 'src/students/student.service';
 import { StudentDTO } from 'src/students/student.dto';
@@ -21,6 +23,8 @@ import { AllExceptionFilter } from 'src/app/all-exception.filter';
 import { messages } from 'src/app/config';
 import { Roles } from 'src/roles/roles.decorator';
 import { Role } from 'src/roles/role.enum';
+import { ResetPassword } from 'src/mail/reset_password.schema';
+import { MailService } from 'src/mail/mail.service';
 
 @Controller('students')
 @UseFilters(AllExceptionFilter)
@@ -29,6 +33,7 @@ export class StudentController {
     private readonly studentService: StudentService,
     private readonly responseManager: ResponseManager<Student>,
     private readonly exceptionManager: ExceptionManager,
+    private readonly mailService: MailService,
   ) {}
 
   @Get()
@@ -114,6 +119,78 @@ export class StudentController {
         student,
         messages.STUDENT_DELETED,
       );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
+  @Post('login')
+  async studentLogin(
+    @Body() body: Record<string, any>,
+  ): Promise<ResponseDTO<any>> {
+    try {
+      const payload = await this.studentService.signIn(
+        body.username,
+        body.password,
+      );
+      return this.responseManager.getResponse(
+        payload.access_token,
+        'Log In Successful',
+      );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
+  @Post('send_mail')
+  @UseFilters(AllExceptionFilter)
+  async sendPasswordRecovery(
+    @Body() body: Record<string, any>,
+  ): Promise<ResponseDTO<ResetPassword>> {
+    try {
+      const data = await this.mailService.sendPasswordRecovery(
+        body.email,
+        'student',
+      );
+      return new ResponseManager<ResetPassword>().getResponse(
+        data,
+        'EMAIL_SENT',
+      );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
+  @Get('reset/validate/:id')
+  @UseFilters(AllExceptionFilter)
+  async validateResetLink(@Param('id') id: string): Promise<ResponseDTO<any>> {
+    try {
+      const data = await this.studentService.getResetPasswordDto(id);
+      let bool = true;
+      if (!data || data.is_used || data.expiration_date < Date.now())
+        bool = false;
+      return new ResponseManager<any>().getResponse(
+        { user_id: data.user_id, isValid: bool },
+        'VALIDATION',
+      );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
+  @Put('reset/:id')
+  @UseFilters(AllExceptionFilter)
+  async resetPassword(
+    @Param('id') id: string,
+    @Body() body: Record<string, any>,
+  ): Promise<ResponseDTO<StudentDTO>> {
+    try {
+      const mongoId = new mongoose.Types.ObjectId(id);
+      const user = await this.studentService.resetPassword(
+        mongoId,
+        body.password,
+      );
+      return this.responseManager.getResponse(user, 'PASSWORD_RESET');
     } catch (e) {
       this.exceptionManager.throwException(e);
     }

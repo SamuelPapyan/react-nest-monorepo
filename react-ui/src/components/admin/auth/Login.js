@@ -18,7 +18,7 @@ export default function Login(props) {
         };
         AuthService.login(requestData).then(res=>{
             if (res.success){
-                window.localStorage.setItem('REACT_NEST_MONOREPO_AUTH_TOKEN', res.data);
+                window.localStorage.setItem(process.env.REACT_APP_ADMIN_TOKEN, res.data);
                 props.setToken(true);
                 if (location.state && location.state.from && !location.state.from !== '/login')
                     navigate(location.state.from)
@@ -34,16 +34,14 @@ export default function Login(props) {
 
     function sendPasswordRecoveryMail(event) {
         event.preventDefault()
-        console.log(_email.value);
         AuthService.sendPasswordRecoveryMail(_email.value).then(res=>{
-            console.log(res)
             if (res.success){
                 setBox(boxes.sendMail)
             } else {
                 _emailMessage.textContent = res.message
             }
         }).catch(err=>{
-            _loginMessage.textContent = 'Connection fault. Try again later.'
+            _emailMessage.textContent = 'Connection fault. Try again later.'
         });
     }
 

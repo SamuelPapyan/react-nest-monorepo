@@ -41,7 +41,7 @@ export default function CreateStaff()
     }
 
     useEffect(()=>{
-        document.title = "Create Staff";
+        document.title = "Edit Staff";
         StaffService.getStaffById(id).then(res=>{
             if (res.success){
                 _firstName.value = res.data.first_name;
