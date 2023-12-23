@@ -22,6 +22,7 @@ export default function CreateWorkshop() {
             start_time: _startTime.value,
             end_time: _endTime.value,
             days: [],
+            students: []
         }
         for (let i = 0; i < days.length; i++) {
             requestData.days.push(days[i].value);

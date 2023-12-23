@@ -183,4 +183,68 @@ export default class StudentService {
             });
         });
     }
+
+    static async getWorkshops() {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + `/students/workshops`, {
+                method: 'GET',
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
+
+    static async registerToWorkshop(username, workshopId) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + `/students/workshops/${workshopId}`, {
+                method: 'PUT',
+                body: JSON.stringify({username: username}),
+                headers:{
+                    'Accept': "application/json",
+                    'Content-Type': "application/json",
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            })
+        })
+    }
+
+    static async unregisterToWorkshop(username, workshopId) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + `/students/workshops/${workshopId}`, {
+                method: 'DELETE',
+                body: JSON.stringify({username: username}),
+                headers:{
+                    'Accept': "application/json",
+                    'Content-Type': "application/json",
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            })
+        })
+    }
+    static async getRegisteredWorkshops(student) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/students/workshops?studentName=" + student, {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            })
+        });
+    }
 }

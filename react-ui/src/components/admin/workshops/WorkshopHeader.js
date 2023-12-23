@@ -9,6 +9,7 @@ export default function WorkshopHeader(props) {
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Count of Days</th>
+                <th>Registered Students</th>
                 { (props.userType === "ADMIN" || props.userType === "EDITOR") ?
                 <th colSpan={2}>Action</th>
                 : ""}

@@ -19,8 +19,6 @@ import { Role } from "src/roles/role.enum";
 import { ResponseDTO } from "src/app/response.dto";
 import mongoose from "mongoose";
 import { WorkshopDTO } from "./workshop.dto";
-import { Student } from "src/students/student.schema";
-import { messages } from "src/app/config";
 import { Roles } from "src/roles/roles.decorator";
 
 @Controller('workshops')
@@ -36,8 +34,9 @@ export class WorkshopController {
     @Roles(Role.Viewer, Role.Editor, Role.Admin)
     async getWorkshops(
         @Query('q') query,
+        @Query('studentName') username,
     ): Promise<ResponseDTO<Workshop[]>> {
-        const workshops = await this.workshopService.getWorkshops(query);
+        const workshops = await this.workshopService.getWorkshops(query, username);
         return new ResponseManager<Workshop[]>().getResponse(
             workshops,
             'WORKSHOPS_GENERATED_SUCCESSFULLY'

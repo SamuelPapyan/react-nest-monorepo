@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 export default function WorkshopTable(props)
 {
     const [data, setData] = useState(
-        (<tr colSpan={7}><td>Loading...</td></tr>)
+        (<tr colSpan={8}><td>Loading...</td></tr>)
     );
 
     useEffect(()=>{

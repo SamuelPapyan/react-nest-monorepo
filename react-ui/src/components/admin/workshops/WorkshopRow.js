@@ -10,6 +10,7 @@ export default function WorkshopRow(props) {
     const [startTime, setStartTime] = useState("");
     const [endTime, setEndTime] = useState("");
     const [count, setCount] = useState(0);
+    const [students, setStudents] = useState(0);
 
     const navigate = useNavigate();
 
@@ -30,7 +31,8 @@ export default function WorkshopRow(props) {
         setStartTime(props.data.start_time);
         setEndTime(props.data.end_time);
         setCount(props.data.days.length);
-    }, [props.data._id, props.data.title, props.data.description, props.data.start_time, props.data.end_time, props.data.days.length])
+        setStudents(props.data.students ? props.data.students.length : 0);
+    }, [props.data._id, props.data.title, props.data.description, props.data.start_time, props.data.end_time, props.data.days.length, props.data.students])
 
     return (
         <tr>
@@ -39,6 +41,7 @@ export default function WorkshopRow(props) {
             <td>{startTime}</td>
             <td>{endTime}</td>
             <td>{count}</td>
+            <td>{students}</td>
             {(props.userType === "ADMIN" || props.userType === "EDITOR") ? 
             <td>
                 <Link to={`/admin/workshops/edit/${workshopId}`} className="btn btn-primary">Edit</Link>

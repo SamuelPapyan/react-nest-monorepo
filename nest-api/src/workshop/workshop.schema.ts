@@ -19,6 +19,9 @@ export class Workshop {
 
     @Prop()
     days: string[];
+
+    @Prop()
+    students: string[];
 }
 
 export const WorkshopSchema = SchemaFactory.createForClass(Workshop);

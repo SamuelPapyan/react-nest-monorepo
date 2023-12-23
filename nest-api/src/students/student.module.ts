@@ -12,17 +12,20 @@ import {
   ResetPasswordSchema,
 } from 'src/mail/reset_password.schema';
 import { MailModule } from 'src/mail/mail.module';
+import { WorkshopService } from 'src/workshop/workshop.service';
+import { Workshop, WorkshopSchema } from 'src/workshop/workshop.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Student.name, schema: StudentSchema },
       { name: ResetPassword.name, schema: ResetPasswordSchema },
+      { name: Workshop.name, schema: WorkshopSchema},
     ]),
     JwtModule.register({
       global: true,
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '600s' },
+      signOptions: { expiresIn: '3600s' },
     }),
     MailModule,
   ],
@@ -31,6 +34,7 @@ import { MailModule } from 'src/mail/mail.module';
     StudentService,
     ResponseManager,
     ExceptionManager,
+    WorkshopService,
   ],
 })
 export class StudentsModule {}
