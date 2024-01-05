@@ -79,7 +79,6 @@ export default function StudentLogin(props) {
             }
         }).catch(err=>{
             _loginMessage.textContent = "Connection fault. Try again later.";
-            console.log(err.message);
         })
     }
 

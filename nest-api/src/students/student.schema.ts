@@ -31,6 +31,9 @@ export class Student {
 
   @Prop({ required: true })
   country: string;
+
+  @Prop({ required: true})
+  coach: string;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

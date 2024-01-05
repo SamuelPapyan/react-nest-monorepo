@@ -8,7 +8,6 @@ export default function StudentDashboard() {
     const studentData = useOutletContext();
     
     useEffect(()=>{
-        console.log(studentData);
         if (!updated && studentData)
         StudentService.getRegisteredWorkshops(studentData.username).then(res=>{
             if (res.success) {

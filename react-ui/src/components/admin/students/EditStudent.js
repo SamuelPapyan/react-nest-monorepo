@@ -2,13 +2,18 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import StudentService from "../../../services/studentService";
+import UserService from "../../../services/userService";
+import Form from 'react-bootstrap/Form';
 
 export default function EditStudent(props)
 {
     const [errors, setErrors] = useState("");
+    const [updated, setUpdated] = useState(false);
     const [connectionErrorMessage, setConnectionErrorMessage] = useState("")
     const {id} = useParams();
-    let _fullName, _age, _level, _experience, _maxExperience, _country, _username, _password, _email;
+    let _fullName, _age, _level, _experience, _maxExperience, _country, _username, _password, _email, _coach;
+    const [coaches, setCoaches] = useState([]);
+    const [defaultCoach, setDefaultCoach] = useState("");
     const navigate = useNavigate();
     
     function submitForm(event){
@@ -22,7 +27,8 @@ export default function EditStudent(props)
             country: _country.value,
             username: _username.value,
             password: _password.value,
-            email: _email.value
+            email: _email.value,
+            coach: _coach.value,
         }
         StudentService.updateStudent(id, requestData).then(res=>{
             if (res.success)
@@ -42,20 +48,35 @@ export default function EditStudent(props)
 
     useEffect(()=>{
         document.title = "Edit Student";
-        StudentService.getStudentById(id).then(res=>{
-            if (res.success){
-                _fullName.value = res.data.full_name;
-                _age.value = res.data.age;
-                _level.value = res.data.level;
-                _experience.value = res.data.experience;
-                _maxExperience.value = res.data.max_experience;
-                _country.value = res.data.country;
-                _username.value = res.data.username;
-                _email.value = res.data.email;
-            }
-        }).catch(()=>{
-            setConnectionErrorMessage(<p>Connection fault: Try again later.</p>)
-        })
+        if (!updated) {
+            StudentService.getStudentById(id).then(res=>{
+                if (res.success){
+                    _fullName.value = res.data.full_name;
+                    _age.value = res.data.age;
+                    _level.value = res.data.level;
+                    _experience.value = res.data.experience;
+                    _maxExperience.value = res.data.max_experience;
+                    _country.value = res.data.country;
+                    _username.value = res.data.username;
+                    _email.value = res.data.email;
+                    _coach.value = res.data.coach;
+                }
+                UserService.getCoaches().then(res1=>{
+                    if (res1.success) {
+                        res1.data.forEach((value,index)=>{
+                            if (value == res.data.coach)
+                                [res1.data[0], res1.data[index]] = [res1.data[index], res1.data[0]]
+                        });
+                        setCoaches(res1.data.map((val, key)=>{
+                            return (<option key={key} value={val}>{val}</option>)
+                        }));
+                        setUpdated(true);
+                    }
+                })
+            }).catch((err)=>{
+                setConnectionErrorMessage(<p>Connection fault: Try again later.</p>)
+            })
+        }
     });
 
     return(
@@ -102,6 +123,12 @@ export default function EditStudent(props)
                 <div className="form-group">
                     <label htmlFor="country-field">Country</label><br/>
                     <input className="form-control" id="country-field" type="text" name="country" ref={(a) => _country = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="coach-field">Coach</label><br/>
+                    <Form.Select defaultValue="Cakes" ref={a=> _coach = a}>
+                        {coaches}
+                    </Form.Select>
                 </div>
                 <div
                     className="d-flex justify-content-center"

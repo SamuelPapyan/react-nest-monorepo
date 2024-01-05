@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import WorkshopsService from '../../../services/workshopsService';
 import Multiselect from "multiselect-react-dropdown";
+import StudentRow from './StudentRow';
 
 export default function EditWorkshop() {
     const [errors, setErrors] = useState("");
@@ -46,7 +47,6 @@ export default function EditWorkshop() {
                 }
             }
         }).catch((err)=>{
-            console.log(err.message);
             navigate('/error');
         });
     }
@@ -68,10 +68,10 @@ export default function EditWorkshop() {
     function removeStudent(username) {
         const arr = students;
         const index = arr.findIndex(x=>x === username);
-        console.log(username, index);
         if (index !== -1) {
             arr.splice(index, 1);
             setStudents(arr);
+            console.log(students);
         }
     }
 
@@ -88,7 +88,6 @@ export default function EditWorkshop() {
                 setStudents(res.data.students);
             }
         }).catch((err)=>{
-            console.log(err);
             setConnectionErrorMessage(<p>Connection fault: Try again later.</p>)
         }).finally(()=>{
             setUpdated(true);
@@ -135,13 +134,7 @@ export default function EditWorkshop() {
                 <div>
                     <h2>Registered Students</h2>
                     { students.map((value, index)=>
-                        <div key={index} className='d-flex justify-content-between'>
-                            <p>{value}</p>
-                            <button className='btn btn-danger' onClick={(e)=> {
-                                e.preventDefault();
-                                removeStudent(value)
-                            }}>Unregister</button>
-                        </div>
+                        <StudentRow key={index} remove={removeStudent} value={value}/>
                     ) }
                 </div>
                 <div

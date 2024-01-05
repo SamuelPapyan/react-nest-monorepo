@@ -40,7 +40,7 @@ export default function CreateUser()
     }
 
     useEffect(()=>{
-        document.title = "Create User";
+        document.title = "Create Staff";
     })
 
     return(
@@ -48,7 +48,7 @@ export default function CreateUser()
             width: "90%",
             margin: "auto",
         }}>
-            <h1>Create User</h1>
+            <h1>Create Staff</h1>
             {errors}
             <form method="POST" onSubmit={submitForm}>
                 <div className="form-group">

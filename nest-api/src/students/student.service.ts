@@ -95,6 +95,7 @@ export class StudentService {
       level: user.level,
       experience: user.experience,
       max_experience: user.max_experience,
+      coach: user.coach,
     };
     return {
       access_token: await this.jwtService.signAsync(payload),

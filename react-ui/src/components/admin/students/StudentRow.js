@@ -14,6 +14,7 @@ export default function StudentRow(props)
     const [country, setCountry] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
+    const [coach, setCoach] = useState("");
 
     const navigate = useNavigate();
 
@@ -37,7 +38,8 @@ export default function StudentRow(props)
         setMaxExperience(props.data.max_experience);
         setCountry(props.data.country);
         setUsername(props.data.username);
-        setEmail(props.data.email)
+        setEmail(props.data.email);
+        setCoach(props.data.coach);
     }, [props.data._id, props.data.full_name, props.data.age, props.data.level, props.data.experience, props.data.max_experience, props.data.country, props.data.username, props.data.email]);
 
     return (
@@ -50,6 +52,7 @@ export default function StudentRow(props)
             <td>{experience}</td>
             <td>{maxExperience}</td>
             <td>{country}</td>
+            <td>{coach}</td>
             {(props.userType === "ADMIN" || props.userType === "EDITOR") ? 
             <td>
                 <Link to={`/admin/students/edit/${studentId}`} className="btn btn-primary">Edit</Link>

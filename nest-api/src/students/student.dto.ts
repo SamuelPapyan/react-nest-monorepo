@@ -42,4 +42,7 @@ export class StudentDTO {
 
   @IsString()
   country: string;
+
+  @IsString()
+  coach: string;
 }

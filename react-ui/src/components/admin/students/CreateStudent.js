@@ -2,11 +2,14 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import StudentService from "../../../services/studentService";
+import UserService from "../../../services/userService";
+import Form from 'react-bootstrap/Form';
 
 export default function CreateStudent()
 {
     const [errors, setErrors] = useState("");
-    let _fullName, _age, _level, _experience, _maxExperience, _country, _username, _email, _password;
+    const [coaches, setCoaches] = useState([]);
+    let _fullName, _age, _level, _experience, _maxExperience, _country, _username, _email, _password, _coach;
     const navigate = useNavigate();
     
     function submitForm(event){
@@ -20,7 +23,8 @@ export default function CreateStudent()
             country: _country.value,
             username: _username.value,
             email: _email.value,
-            password: _password.value
+            password: _password.value,
+            coach: _coach.value
         }
         
         StudentService.addStudent(requestData).then(res=>{
@@ -41,6 +45,13 @@ export default function CreateStudent()
 
     useEffect(()=>{
         document.title = "Create Student";
+        UserService.getCoaches().then(res=>{
+            if (res.success) {
+                setCoaches(res.data.map((val, key)=>{
+                    return (<option key={key} value={val}>{val}</option>)
+                }));
+            }
+        })
     });
 
     return(
@@ -86,6 +97,12 @@ export default function CreateStudent()
                 <div className="form-group">
                     <label htmlFor="country-field">Country</label><br/>
                     <input className="form-control" id="country-field" type="text" name="country" ref={(a) => _country = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="coach-field">Coach</label><br/>
+                    <Form.Select defaultValue="Cakes" ref={a=> _coach = a}>
+                        {coaches}
+                    </Form.Select>
                 </div>
                 <div
                     className="d-flex justify-content-center"

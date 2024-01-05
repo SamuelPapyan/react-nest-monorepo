@@ -43,7 +43,6 @@ export default function CreateWorkshop() {
                 }
             }
         }).catch((err)=>{
-            console.log(err.message);
             navigate('/error');
         });
     }

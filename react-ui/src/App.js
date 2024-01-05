@@ -93,9 +93,9 @@ function App() {
                 <Route path="edit/:id" element={<EditStudent />}/>
               </Route>
               <Route path="staff">
-                <Route exact path="" element={<StaffList />}/>
-                <Route path="create" element={<CreateStaff />}/>
-                <Route path="edit/:id" element={<EditStaff />}/>
+                <Route exact path="" element={<UserList />}/>
+                <Route path="create" element={<CreateUser />}/>
+                <Route path="edit/:id" element={<EditUser />}/>
               </Route>
               <Route path="users">
                 <Route exact path="" element={<UserList />}/>

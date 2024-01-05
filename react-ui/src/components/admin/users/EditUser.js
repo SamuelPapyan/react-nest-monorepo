@@ -16,7 +16,8 @@ export default function EditUser()
     const rolesInput = [
         { 'name': 'VIEWER', 'value': "viewer" },
         { 'name': 'EDITOR', 'value': "editor" },
-        { 'name': 'ADMIN', 'value': "admin" }
+        { 'name': 'ADMIN', 'value': "admin" },
+        { 'name': 'COACH', 'value': "coach"}
     ]
 
     function submitForm(event) {
@@ -54,7 +55,7 @@ export default function EditUser()
     }
 
     useEffect(()=>{
-        document.title = "Edit User";
+        document.title = "Edit Staff";
         UserService.getUserById(id).then(res=>{
             if (res.success){
                 if (_firstName) _firstName.value = res.data.first_name;
@@ -73,7 +74,7 @@ export default function EditUser()
             width: "90%",
             margin: "auto",
         }}>
-            <h1>Edit User</h1>
+            <h1>Edit Staff</h1>
             {connectionErrorMessage}
             {errors}
             <form method="POST" onSubmit={submitForm}>

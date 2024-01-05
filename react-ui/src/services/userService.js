@@ -13,6 +13,20 @@ export default class UserService {
         });
     }
 
+    static async getCoaches() {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/users/coaches",{
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
+
     static async getUserById(id) {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/users/${id}`,{
@@ -68,6 +82,20 @@ export default class UserService {
             fetch(process.env.REACT_APP_API_URL + `/users/${id}`, {
                 method: 'DELETE',
                 headers: {
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
+
+    static async searchUsers(query) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/users?q=" + query, {
+                headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
