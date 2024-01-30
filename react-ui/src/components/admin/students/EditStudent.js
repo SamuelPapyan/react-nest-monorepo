@@ -133,7 +133,7 @@ export default function EditStudent(props)
                 <div
                     className="d-flex justify-content-center"
                     style={{
-                        margin: "10px 0 0 0",
+                        margin: "10px 0",
                     }}>
                         <input
                             type="submit"
