@@ -7,6 +7,7 @@ import {
   Body,
   Param,
   UseFilters,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDTO } from './user.dto';
@@ -31,14 +32,24 @@ export class UserController {
   ) {}
 
   @Get()
-  @Roles(Role.Admin)
-  async getUsers(): Promise<ResponseDTO<User[]>> {
-    const users = await this.userService.getUsers();
+  @Roles(Role.Admin, Role.Editor, Role.Viewer)
+  async getUsers(@Query('q') query): Promise<ResponseDTO<User[]>> {
+    const users = await this.userService.getUsers(query);
     return new ResponseManager<User[]>().getResponse(users, 'USERS_GENERATED');
   }
 
-  @Get(':id')
+  @Get('coaches')
   @Roles(Role.Admin)
+  async getCoaches(): Promise<ResponseDTO<string[]>> {
+    const coaches = await this.userService.getCoaches();
+    return new ResponseManager<string[]>().getResponse(
+      coaches,
+      'COACHES_GENERATED',
+    );
+  }
+
+  @Get(':id')
+  @Roles(Role.Admin, Role.Editor)
   async getById(@Param('id') id: string): Promise<ResponseDTO<User>> {
     try {
       const mongoId = new mongoose.Types.ObjectId(id);

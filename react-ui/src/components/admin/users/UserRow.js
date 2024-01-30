@@ -34,7 +34,7 @@ export default function UserRow(props)
         setEmail(props.data.email);
         setUsername(props.data.username);
         setRoles(props.data.roles.map(value=>value.toUpperCase()).join(" | "));
-    });
+    }, [props.data._id, props.data.first_name, props.data.last_name, props.data.email, props.data.username, props.data.roles]);
 
     return (
         <tr>
@@ -43,14 +43,18 @@ export default function UserRow(props)
             <td>{email}</td>
             <td>{username}</td>
             <td>{roles}</td>
+            { props.userType === "ADMIN" ?
             <td>
-                <Link to={`/admin/users/edit/${userId}`} className="btn btn-primary">Edit</Link>
+                <Link to={`/admin/users/edit/${userId}`} className='btn btn-primary'>Edit</Link>
             </td>
+            : ""}
+            { props.userType === "ADMIN" ?
             <td>
                 <button className='btn btn-danger' onClick={removeUser}>
                     Delete
                 </button>
             </td>
+            : ""}
         </tr>
     );
 }

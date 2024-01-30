@@ -38,8 +38,20 @@ export class UsersService {
     return user;
   }
 
-  async getUsers(): Promise<User[]> {
-    return this.userModel.find().exec();
+  async getUsers(query: string): Promise<User[]> {
+    const options = {};
+    if (query) {
+        options['$or'] = [];
+        options['$or'].push({first_name: {$regex: new RegExp(query), $options:"i"}});
+        options['$or'].push({last_name: {$regex: new RegExp(query), $options:"i"}});
+        options['$or'].push({username: {$regex: new RegExp(query), $options:"i"}});
+    }
+    return this.userModel.find(options).exec();
+  }
+  
+  async getCoaches(): Promise<string[]> {
+    const users = await this.userModel.find({ roles: Role.Coach }).exec();
+    return [...users].map((x) => x.username);
   }
 
   async updateUser(

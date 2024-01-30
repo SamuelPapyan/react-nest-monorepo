@@ -78,7 +78,7 @@ export default function StudentLogin(props) {
                 _loginMessage.textContent = "Invalid username or password";
             }
         }).catch(err=>{
-            _loginMessage.textContent = "connection fault. Try again later.";
+            _loginMessage.textContent = "Connection fault. Try again later.";
         })
     }
 

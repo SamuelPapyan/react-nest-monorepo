@@ -1,6 +1,7 @@
 import StudentService from "../../services/studentService";
 import StaffService from "../../services/staffService";
 import WorkshopsService from "../../services/workshopsService";
+import UserService from "../../services/userService";
 
 export default function SearchBar(props) {
 
@@ -8,6 +9,7 @@ export default function SearchBar(props) {
         "staff": StaffService.searchStaff,
         "students": StudentService.searchStudents,
         "workshops": WorkshopsService.searchWorkshops,
+        "users": UserService.searchUsers,
     }
 
     let _search;

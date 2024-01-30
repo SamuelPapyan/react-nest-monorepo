@@ -1,11 +1,11 @@
 import StudentService from "./studentService";
-import StaffService from "./staffService"
+import UserService from "./userService"
 import WorkshopsService from './workshopsService'
 
 export default class DashboardServices {
     static async getDashboardData() {
         const students = await StudentService.getAllStudents();
-        const staff = await StaffService.getAllStaffs();
+        const staff = await UserService.getAllUsers();
         const workshops = await WorkshopsService.getAllWorkshops();
         const top3BestStudents = await StudentService.getBestStudents(3);
 

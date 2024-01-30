@@ -25,6 +25,8 @@ import { Roles } from 'src/roles/roles.decorator';
 import { Role } from 'src/roles/role.enum';
 import { ResetPassword } from 'src/mail/reset_password.schema';
 import { MailService } from 'src/mail/mail.service';
+import { WorkshopService } from 'src/workshop/workshop.service';
+import { Workshop } from 'src/workshop/workshop.schema';
 
 @Controller('students')
 @UseFilters(AllExceptionFilter)
@@ -33,6 +35,7 @@ export class StudentController {
     private readonly studentService: StudentService,
     private readonly responseManager: ResponseManager<Student>,
     private readonly exceptionManager: ExceptionManager,
+    private readonly workshopService: WorkshopService,
     private readonly mailService: MailService,
   ) {}
 
@@ -52,6 +55,23 @@ export class StudentController {
       students,
       messages.STUDENT_GENERATED,
     );
+  }
+
+  @Get('workshops')
+  @UseFilters(AllExceptionFilter)
+  async getWorkshops(
+    @Query('q') query,
+    @Query('studentName') username,
+  ): Promise<ResponseDTO<Workshop[]>> {
+    try {
+      const data = await this.workshopService.getWorkshops(query, username);
+      return new ResponseManager<Workshop[]>().getResponse(
+        data,
+        'WORKSHOPS_GET_SUCCESSFUL',
+      );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
   }
 
   @Get(':id')
@@ -82,6 +102,29 @@ export class StudentController {
     }
   }
 
+  @Put('workshops/:id')
+  async registerToWorkshop(
+    @Body() body: Record<string, string>,
+    @Param('id') id: string,
+  ): Promise<ResponseDTO<Workshop>> {
+    try {
+      const workshopId = new mongoose.Types.ObjectId(id);
+      const workshop = await this.workshopService.registerStudedntToWorkshop(
+        workshopId,
+        body.username,
+      );
+      if (!workshop) {
+        throw new NotFoundException('WORKSHOP_NOT_FOUND');
+      }
+      return new ResponseManager<Workshop>().getResponse(
+        workshop,
+        'STUDENT REGISTERED TO WORKSHOP SUCCESSFULLY',
+      );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
   @Put(':id')
   @Roles(Role.Admin, Role.Editor)
   async updateStudent(
@@ -100,6 +143,29 @@ export class StudentController {
       return this.responseManager.getResponse(
         student,
         messages.STUDENT_UPDATED,
+      );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
+  @Delete('workshops/:id')
+  async unregisterFromWorkshop(
+    @Param('id') id: string,
+    @Body() body: Record<string, string>
+  ) : Promise<ResponseDTO<Workshop>> {
+    try {
+      const workshopId = new mongoose.Types.ObjectId(id);
+      const workshop = await this.workshopService.unregisterStudedntToWorkshop(
+        workshopId,
+        body.username,
+      );
+      if (!workshop) {
+        throw new NotFoundException('WORKSHOP_NOT_FOUND');
+      }
+      return new ResponseManager<Workshop>().getResponse(
+        workshop,
+        'STUDENT REGISTERED TO WORKSHOP SUCCESSFULLY',
       );
     } catch (e) {
       this.exceptionManager.throwException(e);

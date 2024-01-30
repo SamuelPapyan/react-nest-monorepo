@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import WorkshopsService from '../../../services/workshopsService';
 import Multiselect from "multiselect-react-dropdown";
+import StudentRow from './StudentRow';
 
 export default function EditWorkshop() {
     const [errors, setErrors] = useState("");
@@ -10,6 +11,7 @@ export default function EditWorkshop() {
     const [days, setDays] = useState([]);
     const {id} = useParams();
     const [updated, setUpdated] = useState(false);
+    const [students, setStudents] = useState([]);
     let _title, _description, _startTime, _endTime, _dateInput;
     const navigate = useNavigate();
 
@@ -24,7 +26,8 @@ export default function EditWorkshop() {
             description: _description.value,
             start_time: _startTime.value,
             end_time: _endTime.value,
-            days: []
+            days: [],
+            students: students
         }
         for (let i = 0; i < days.length; i++) {
             requestData.days.push(days[i].value);
@@ -44,7 +47,6 @@ export default function EditWorkshop() {
                 }
             }
         }).catch((err)=>{
-            console.log(err.message);
             navigate('/error');
         });
     }
@@ -56,10 +58,20 @@ export default function EditWorkshop() {
 
     function onRemoveDay(list, removed) {
         const arr = days;
-        let index = arr.findIndex(x=>x['name'] === removed['name']);
+        const index = arr.findIndex(x=>x['name'] === removed['name']);
         if (index !== -1) {
             arr.splice(index, 1);
             setDays(arr);
+        }
+    }
+
+    function removeStudent(username) {
+        const arr = students;
+        const index = arr.findIndex(x=>x === username);
+        if (index !== -1) {
+            arr.splice(index, 1);
+            setStudents(arr);
+            console.log(students);
         }
     }
 
@@ -68,13 +80,14 @@ export default function EditWorkshop() {
         if (!updated) {
         WorkshopsService.getWorkshopById(id).then(res=>{
             if (res.success) {
-                _title.value = res.data.title;
-                _description.value = res.data.description;
-                _startTime.value = res.data.start_time;
-                _endTime.value = res.data.end_time;
-                setDays(res.data.days.map(x=>{return {'name': x, 'value': x}}))
+                if (_title) _title.value = res.data.title;
+                if (_description) _description.value = res.data.description;
+                if (_startTime) _startTime.value = res.data.start_time;
+                if (_endTime) _endTime.value = res.data.end_time;
+                setDays(res.data.days.map(x=>{return {'name': x, 'value': x}}));
+                setStudents(res.data.students);
             }
-        }).catch(()=>{
+        }).catch((err)=>{
             setConnectionErrorMessage(<p>Connection fault: Try again later.</p>)
         }).finally(()=>{
             setUpdated(true);
@@ -117,6 +130,12 @@ export default function EditWorkshop() {
                         displayValue="name"
                         onRemove={onRemoveDay}
                     />
+                </div>
+                <div>
+                    <h2>Registered Students</h2>
+                    { students.map((value, index)=>
+                        <StudentRow key={index} remove={removeStudent} value={value}/>
+                    ) }
                 </div>
                 <div
                     className="d-flex justify-content-center"

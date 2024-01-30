@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function UserHeader() {
+export default function UserHeader(props) {
     return (
         <thead>
             <tr>
@@ -9,7 +9,9 @@ export default function UserHeader() {
                 <th>Email</th>
                 <th>Username</th>
                 <th>Roles</th>
+                {props.userType === "ADMIN" ? 
                 <th colSpan={2}>Action</th>
+                : ""}
             </tr>
         </thead>
     );

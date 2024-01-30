@@ -12,6 +12,7 @@ export default function TableHeader(props){
                 <th>Experience</th>
                 <th>Max Experience</th>
                 <th>Country</th>
+                <th>Coach</th>
                 { (props.userType === "ADMIN" || props.userType === "EDITOR") ?
                 <th colSpan={2}>Action</th>
                 : ""}
