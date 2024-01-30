@@ -13,7 +13,6 @@ export default function EditStudent(props)
     const {id} = useParams();
     let _fullName, _age, _level, _experience, _maxExperience, _country, _username, _password, _email, _coach;
     const [coaches, setCoaches] = useState([]);
-    const [defaultCoach, setDefaultCoach] = useState("");
     const navigate = useNavigate();
     
     function submitForm(event){
@@ -64,7 +63,7 @@ export default function EditStudent(props)
                 UserService.getCoaches().then(res1=>{
                     if (res1.success) {
                         res1.data.forEach((value,index)=>{
-                            if (value == res.data.coach)
+                            if (value === res.data.coach)
                                 [res1.data[0], res1.data[index]] = [res1.data[index], res1.data[0]]
                         });
                         setCoaches(res1.data.map((val, key)=>{
