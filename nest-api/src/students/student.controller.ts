@@ -7,9 +7,7 @@ import {
   Body,
   Param,
   UseFilters,
-  Request,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { StudentService } from 'src/students/student.service';
 import { StudentDTO } from 'src/students/student.dto';
@@ -74,6 +72,40 @@ export class StudentController {
     }
   }
 
+  @Get('coach/:coach')
+  @UseFilters(AllExceptionFilter)
+  async getStudentsByCoach(
+    @Param('coach') coach: string,
+  ): Promise<ResponseDTO<Student[]>> {
+    try {
+      const data = await this.studentService.getStudentsByCoach(coach);
+      return new ResponseManager<Student[]>().getResponse(
+        data,
+        'COACH_STUDENTS_GET_SUCCESSFULLY',
+      );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
+  @Get('username/:username')
+  @UseFilters(AllExceptionFilter)
+  async getStudentByUsername(
+    @Param('username') username: string,
+  ): Promise<ResponseDTO<Student>> {
+    try {
+      const data = await this.studentService.getStudentByUsername(username);
+      if (!data)
+        throw new NotFoundException('Student Not Found');
+      return this.responseManager.getResponse(
+        data,
+        'STUDENT_GET_SUCCESSFULLY',
+      );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
   @Get(':id')
   @Roles(Role.Editor, Role.Admin)
   async getById(@Param('id') id: string): Promise<ResponseDTO<Student>> {
@@ -119,6 +151,28 @@ export class StudentController {
       return new ResponseManager<Workshop>().getResponse(
         workshop,
         'STUDENT REGISTERED TO WORKSHOP SUCCESSFULLY',
+      );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
+  @Put(':username/handUp')
+  async studentHandUp(
+    @Body() body: Record<string, any>,
+    @Param('username') username: string
+  ): Promise<ResponseDTO<Student>> {
+    try {
+      const student = await this.studentService.studentHandUp(
+        username,
+        body.handUp,
+      );
+      if (!student) {
+        throw new NotFoundException(messages.STUDENT_NOT_FOUND);
+      }
+      return this.responseManager.getResponse(
+        student,
+        'STUDENT_HAND_UP_COMPLETED_SUCCESSFULLY',
       );
     } catch (e) {
       this.exceptionManager.throwException(e);

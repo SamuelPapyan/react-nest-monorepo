@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   MDBIcon,
   MDBCollapse,
@@ -7,8 +7,21 @@ import {
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
 import './style/SideBar.css';
+import AuthService from './services/authService';
 
 export default function SideBar() {
+  const [isCoach, setIsCoach] = useState(false);
+  useEffect(()=>{
+    AuthService.getProfile().then(res=>{
+        if (res.success) {
+            if (res.data.roles.includes('coach')) {
+                setIsCoach(true);
+            }
+        }
+    }).catch((err)=>{
+      console.log(err.message);
+    })
+  })
   return (
     <div className="main-div" style={
       {
@@ -50,6 +63,16 @@ export default function SideBar() {
                 Workshops
               </MDBListGroupItem>
             </MDBRipple>
+            {
+              isCoach ? (
+                <MDBRipple rippleTag='span' className='bg-dark'>
+                  <MDBListGroupItem tag='a' href='/admin/coach' className='elem border-0 rounded' active={(window.location.pathname.indexOf('/admin/coach') > -1) ? true : false}>
+                    <MDBIcon fas icon="lock me-3" />
+                    Coach Dashboard
+                  </MDBListGroupItem>
+                </MDBRipple>
+              ) : ""
+            }
           </MDBListGroup>
         </div>
       </MDBCollapse>

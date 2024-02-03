@@ -17,9 +17,6 @@ import Dashboard from "./components/admin/dashboard/Dashboard";
 import StudentsList from "./components/admin/students/StudentsList";
 import CreateStudent from "./components/admin/students/CreateStudent";
 import EditStudent from "./components/admin/students/EditStudent";
-import StaffList from "./components/admin/staff/StaffList";
-import CreateStaff from "./components/admin/staff/CreateStaff";
-import EditStaff from './components/admin/staff/EditStaff';
 import UserList from "./components/admin/users/UserList";
 import CreateUser from "./components/admin/users/CreateUser";
 import EditUser from "./components/admin/users/EditUser";
@@ -32,12 +29,14 @@ import WorkshopsList from "./components/admin/workshops/WorkshopsList";
 import CreateWorkshop from "./components/admin/workshops/CreateWorkshop";
 import EditWorkshop from "./components/admin/workshops/EditWorkshop";
 import SWorkshopsList from './components/student/workshops/WorkshopsList';
+import CoachDashboard from './components/admin/coach/CoachDashboard';
 
 function App() {
   const [token, setToken] = useState(true);
   const [studentToken, setStudentToken] = useState(true);
   const [studentData, setStudentData] = useState(null);
   const [updated, setUpdated] = useState(false);
+
   const ProtectedRoute =  ({ user, redirectPath="/admin/login", children }) =>{
     if (!user)
         return <Navigate
@@ -87,6 +86,9 @@ function App() {
           <Route element={<ProtectedRoute user={token}/>}>
             <Route element={<AdminBody/>}>
               <Route exact path="" element={<Dashboard/>}/>
+              <Route path="coach">
+                <Route exact path="" element={<CoachDashboard/>}/>
+              </Route>
               <Route path="students">
                 <Route exact path="" element={<StudentsList/>}/>
                 <Route path="create" element={<CreateStudent />}/>

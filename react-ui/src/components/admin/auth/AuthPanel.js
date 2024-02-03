@@ -36,7 +36,8 @@ export default function AuthPanel() {
     <div className="bg-dark d-flex justify-content-end p-2" style={{
       position: "sticky",
       top:"0",
-      margin: "0 0 10px 0"
+      margin: "0 0 10px 0",
+      zIndex: "3"
     }}>
       { switchComponent }
     </div>

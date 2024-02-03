@@ -8,6 +8,7 @@ export default function StudentDashboard() {
     const studentData = useOutletContext();
     
     useEffect(()=>{
+        document.title = "Student Dashboard"
         if (!updated && studentData)
         StudentService.getRegisteredWorkshops(studentData.username).then(res=>{
             if (res.success) {

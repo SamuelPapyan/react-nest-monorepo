@@ -10,7 +10,6 @@ export default function WorkshopsList() {
 
     useEffect(()=>{
         if (!updated) {
-            console.log(studentData);
             StudentService.getWorkshops().then((res)=>{
                 if (res.success) {
                     const arr = res.data.map(elem=>{
