@@ -122,4 +122,20 @@ export class StudentService {
     );
     return student.save();
   }
+
+  async getStudentsByCoach(coach: string): Promise<Student[]> {
+    return this.studentModel.find({ coach: coach }).exec();
+  }
+
+  async studentHandUp(username: string, handUp: boolean): Promise<Student> {
+    const student = this.studentModel.findOneAndUpdate(
+      { username: username },
+      { handUp: handUp },
+    );
+    return student;
+  }
+
+  async getStudentByUsername(username: string): Promise<Student> {
+    return this.studentModel.findOne({ username: username }).exec();
+  }
 }

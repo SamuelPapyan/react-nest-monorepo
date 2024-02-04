@@ -7,6 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from 'src/auth/auth.module';
 import { UsersModule } from 'src/users/users.module';
 import { WorkshopModule } from 'src/workshop/workshop.module';
+import { EventsModule } from 'src/events/events.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { WorkshopModule } from 'src/workshop/workshop.module';
     MongooseModule.forRoot(
       'mongodb+srv://samvelpapyan1:tumo1234@cluster0.261k0xm.mongodb.net/?retryWrites=true&w=majority',
     ),
+    EventsModule
   ],
   controllers: [AppController],
   providers: [AppService],

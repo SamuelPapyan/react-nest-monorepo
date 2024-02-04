@@ -27,6 +27,20 @@ export default class StudentService {
         });
     }
 
+    static async getStudentByUsername(username) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + `/students/username/${username}`, {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
+
     static async addStudent(formData) {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + "/students", {
@@ -246,5 +260,35 @@ export default class StudentService {
                 reject(err);
             })
         });
+    }
+    static async getStudentsByCoach(coach) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/students/coach/" + coach, {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            })
+        });
+    }
+    static async handUp(username, handUp) {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + `/students/${username}/handUp`, {
+                method: 'PUT',
+                body: JSON.stringify({handUp: handUp}),
+                headers:{
+                    'Accept': "application/json",
+                    'Content-Type': "application/json",
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            })
+        })
     }
 }

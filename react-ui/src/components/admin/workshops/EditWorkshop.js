@@ -71,7 +71,6 @@ export default function EditWorkshop() {
         if (index !== -1) {
             arr.splice(index, 1);
             setStudents(arr);
-            console.log(students);
         }
     }
 

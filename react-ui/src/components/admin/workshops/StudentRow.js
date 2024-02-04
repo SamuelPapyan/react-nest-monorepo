@@ -9,9 +9,7 @@ export default function StudentRow(props) {
             <p>{props.value}</p>
             <button className='btn btn-danger' onClick={(e)=> {
                 e.preventDefault();
-                console.log(hidden);
                 setHidden(true);
-                console.log(hidden);
                 props.remove(props.value)
             }}>Unregister</button>
         </div>) : ""}
