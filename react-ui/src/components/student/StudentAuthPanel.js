@@ -21,24 +21,18 @@ export default function StudentAuthPanel(props) {
     }
 
     function callCoach(){
-        StudentService.handUp(props.data.username, !coachCall).then(res=>{
-            if (res.success) {
-                socket.emit('hand up', {
-                    student: props.data.username,
-                    handUp: !coachCall
-                });
-                setCoachCall(!coachCall);
-                if (coachCall) {
-                    setCallCoachText("Call Coach");
-                    setCallCoachColor("success");
-                } else {
-                    setCallCoachText("Uncall Coach");
-                    setCallCoachColor("secondary");
-                }
-            }
-        }).catch(err=>{
-            console.log(err.message);
-        })
+        socket.emit('hand up', {
+            student: props.data.username,
+            handUp: !coachCall
+        });
+        setCoachCall(!coachCall);
+        if (coachCall) {
+            setCallCoachText("Call Coach");
+            setCallCoachColor("success");
+        } else {
+            setCallCoachText("Uncall Coach");
+            setCallCoachColor("secondary");
+        }
     }
 
     useEffect(()=>{
