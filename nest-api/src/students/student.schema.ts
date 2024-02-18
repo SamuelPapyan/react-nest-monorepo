@@ -34,9 +34,6 @@ export class Student {
 
   @Prop({ required: true})
   coach: string;
-
-  @Prop({default: false})
-  handUp: boolean;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

@@ -274,21 +274,4 @@ export default class StudentService {
             })
         });
     }
-    static async handUp(username, handUp) {
-        return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/${username}/handUp`, {
-                method: 'PUT',
-                body: JSON.stringify({handUp: handUp}),
-                headers:{
-                    'Accept': "application/json",
-                    'Content-Type': "application/json",
-                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
-                }
-            }).then(res=>{
-                resolve(res.json());
-            }).catch(err=>{
-                reject(err);
-            })
-        })
-    }
 }

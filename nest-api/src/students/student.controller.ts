@@ -8,6 +8,7 @@ import {
   Param,
   UseFilters,
   Query,
+  Inject,
 } from '@nestjs/common';
 import { StudentService } from 'src/students/student.service';
 import { StudentDTO } from 'src/students/student.dto';
@@ -25,6 +26,7 @@ import { ResetPassword } from 'src/mail/reset_password.schema';
 import { MailService } from 'src/mail/mail.service';
 import { WorkshopService } from 'src/workshop/workshop.service';
 import { Workshop } from 'src/workshop/workshop.schema';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
 @Controller('students')
 @UseFilters(AllExceptionFilter)
@@ -35,6 +37,7 @@ export class StudentController {
     private readonly exceptionManager: ExceptionManager,
     private readonly workshopService: WorkshopService,
     private readonly mailService: MailService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
   @Get()
@@ -76,11 +79,20 @@ export class StudentController {
   @UseFilters(AllExceptionFilter)
   async getStudentsByCoach(
     @Param('coach') coach: string,
-  ): Promise<ResponseDTO<Student[]>> {
+  ): Promise<ResponseDTO<any>> {
     try {
       const data = await this.studentService.getStudentsByCoach(coach);
-      return new ResponseManager<Student[]>().getResponse(
-        data,
+      if (!(await this.cacheManager.get('handUps')))
+        await this.cacheManager.set('handUps', {});
+      const handUps = await this.cacheManager.get('handUps');
+      const responseData = data.map((value) => {
+        return {
+          username: value.username,
+          handUp: handUps[value.username] ? true : false,
+        }
+      })
+      return new ResponseManager<any>().getResponse(
+        responseData,
         'COACH_STUDENTS_GET_SUCCESSFULLY',
       );
     } catch (e) {
@@ -92,13 +104,19 @@ export class StudentController {
   @UseFilters(AllExceptionFilter)
   async getStudentByUsername(
     @Param('username') username: string,
-  ): Promise<ResponseDTO<Student>> {
+  ): Promise<ResponseDTO<any>> {
     try {
       const data = await this.studentService.getStudentByUsername(username);
-      if (!data)
-        throw new NotFoundException('Student Not Found');
-      return this.responseManager.getResponse(
-        data,
+      if (!data) throw new NotFoundException('Student Not Found');
+      if (!(await this.cacheManager.get('handUps')))
+        await this.cacheManager.set('handUps', {});
+      const handUps = await this.cacheManager.get('handUps');
+      return new ResponseManager<any>().getResponse(
+        {
+          username: data.username,
+          coach: data.coach,
+          handUp: handUps[data.username] ? true : false
+        },
         'STUDENT_GET_SUCCESSFULLY',
       );
     } catch (e) {
@@ -151,28 +169,6 @@ export class StudentController {
       return new ResponseManager<Workshop>().getResponse(
         workshop,
         'STUDENT REGISTERED TO WORKSHOP SUCCESSFULLY',
-      );
-    } catch (e) {
-      this.exceptionManager.throwException(e);
-    }
-  }
-
-  @Put(':username/handUp')
-  async studentHandUp(
-    @Body() body: Record<string, any>,
-    @Param('username') username: string
-  ): Promise<ResponseDTO<Student>> {
-    try {
-      const student = await this.studentService.studentHandUp(
-        username,
-        body.handUp,
-      );
-      if (!student) {
-        throw new NotFoundException(messages.STUDENT_NOT_FOUND);
-      }
-      return this.responseManager.getResponse(
-        student,
-        'STUDENT_HAND_UP_COMPLETED_SUCCESSFULLY',
       );
     } catch (e) {
       this.exceptionManager.throwException(e);
