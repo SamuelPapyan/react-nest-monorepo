@@ -27,4 +27,21 @@ export class EventsGateway {
     await this.cacheManager.set('handUps', handUps);
     this.server.emit('hand up', data);
   }
+
+  @SubscribeMessage('refresh chat')
+  async refreshChat(@MessageBody() coachName: any) {
+    if (!(await this.cacheManager.get('chat:' + coachName)))
+      await this.cacheManager.set('chat:' + coachName, []);
+    const chat = await this.cacheManager.get('chat:' + coachName);
+    this.server.emit('refresh', chat);
+  }
+  @SubscribeMessage('send chat message')
+  async sendChatMessage(@MessageBody() data: any) {
+    if (!(await this.cacheManager.get('chat:' + data.coach)))
+      await this.cacheManager.set('chat:' + data.coach, []);
+    const chat: any = await this.cacheManager.get('chat:' + data.coach);
+    chat.push(data);
+    await this.cacheManager.set('chat:' + data.coach, chat);
+    this.server.emit('refresh', chat);
+  }
 }

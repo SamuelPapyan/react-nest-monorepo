@@ -118,17 +118,19 @@ export default function Login(props) {
         }
     }, [updated, boxes.login]);
 
-    return (<div style={{
-        width:"100%",
-        height: "715px",
-        backgroundColor: "#0196C7"
-    }} className="d-flex justify-content-center align-items-center">
+    return (
         <div style={{
-            width: "30%",
-            backgroundColor: "#033E8A"
-        }} className="rounded p-2">
-            {box}
+            width:"100%",
+            height: "737px",
+            backgroundColor: "#0196C7"
+        }} className="d-flex justify-content-center align-items-center">
+            <div style={{
+                width: "30%",
+                backgroundColor: "#033E8A"
+            }} className="rounded p-2">
+                {box}
+            </div>
+            
         </div>
-        
-    </div>)
+    )
 }
