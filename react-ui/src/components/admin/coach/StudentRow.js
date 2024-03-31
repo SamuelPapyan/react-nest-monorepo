@@ -38,6 +38,7 @@ export default function StudentRow(props) {
                         coach: props.userData.username,
                       }}
                       visible={visible}
+                      zIndex={props.zIndex}
                       chatUsername={props.data.username}
                     />
                 </div>

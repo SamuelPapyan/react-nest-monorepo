@@ -82,6 +82,7 @@ export default function ChatWindow(props) {
             style={{
                 ...styles.modalWindow,
                 visibility: props.visible ? 'visible' : 'collapse',
+                zIndex: props.zIndex,
             }}
         >
             <div className="d-flex justify-content-between" style={{
