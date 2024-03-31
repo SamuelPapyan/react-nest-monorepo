@@ -1,7 +1,6 @@
-import SideBar from "../../SideBar";
+import SideBar from "../common/SideBar";
 import AuthPanel from "./auth/AuthPanel";
 import { Outlet } from "react-router";
-import ChatBox from "../common/ChatBox";
 import '../../style/App.css';
 import AuthService from "../../services/authService";
 import { useEffect, useState } from "react";

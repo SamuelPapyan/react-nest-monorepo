@@ -6,8 +6,8 @@ import {
   MDBListGroup,
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
-import './style/SideBar.css';
-import AuthService from './services/authService';
+import '../../style/SideBar.css';
+import AuthService from '../../services/authService';
 
 export default function SideBar() {
   const [isCoach, setIsCoach] = useState(false);
