@@ -17,9 +17,16 @@ export default function ChatBox(props) {
      }
      return (
         <div>
-        <ChatWindow isStaff={props.isStaff} styles={{...props.styles}} data={{
-          user: props.user, coach: props.coach
-          }} visible={visible}/>
+        <ChatWindow
+          setVisible={setVisible}
+          isStaff={props.isStaff}
+          styles={{...props.styles}}
+          data={{
+            user: props.user,
+            coach: props.coach
+          }}
+          visible={visible}
+          chatUsername={props.user}/>
           <div
             style={{
               ...styles.chatWidget

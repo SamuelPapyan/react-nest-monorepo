@@ -29,19 +29,27 @@ export class EventsGateway {
   }
 
   @SubscribeMessage('refresh chat')
-  async refreshChat(@MessageBody() coachName: any) {
-    if (!(await this.cacheManager.get('chat:' + coachName)))
-      await this.cacheManager.set('chat:' + coachName, []);
-    const chat = await this.cacheManager.get('chat:' + coachName);
-    this.server.emit('refresh', chat);
+  async refreshChat(@MessageBody() data: any) {
+    const coachName = data.coachName;
+    const studentName = data.studentName;
+    if (!(await this.cacheManager.get('chat:' + coachName + ':' + studentName)))
+      await this.cacheManager.set('chat:' + coachName + ':' + studentName, []);
+    const chat = await this.cacheManager.get(
+      'chat:' + coachName + ':' + studentName,
+    );
+    this.server.emit('refresh:' + coachName + ':' + studentName, chat);
   }
   @SubscribeMessage('send chat message')
   async sendChatMessage(@MessageBody() data: any) {
-    if (!(await this.cacheManager.get('chat:' + data.coach)))
-      await this.cacheManager.set('chat:' + data.coach, []);
-    const chat: any = await this.cacheManager.get('chat:' + data.coach);
+    const coach = data.coach;
+    const student = data.student;
+    if (!(await this.cacheManager.get('chat:' + coach + ':' + student)))
+      await this.cacheManager.set('chat:' + coach + ':' + student, []);
+    const chat: any = await this.cacheManager.get(
+      'chat:' + coach + ':' + student,
+    );
     chat.push(data);
-    await this.cacheManager.set('chat:' + data.coach, chat);
-    this.server.emit('refresh', chat);
+    await this.cacheManager.set('chat:' + coach + ':' + student, chat);
+    this.server.emit('refresh:' + coach + ':' + student, chat);
   }
 }

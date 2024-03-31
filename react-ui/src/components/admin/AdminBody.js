@@ -31,21 +31,10 @@ export default function AdminBody() {
                     <SideBar/>
                     <div className="router-screen">
                         <AuthPanel/>
-                        <Outlet/>
+                        <Outlet context={userData}/>
                     </div>
                 </div>
             </div>
-            {
-                userData && userData.roles.some(role => role === 'coach') ?
-                <ChatBox
-                styles={{
-                    primaryColor: "#033E8A", 
-                }}
-                isStaff={true}
-                user={userData.username}
-                coach={userData.username}/>
-                : ""
-            }
         </>
     )
 }

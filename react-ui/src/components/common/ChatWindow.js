@@ -8,15 +8,20 @@ export default function ChatWindow(props) {
     let _chatInput, _window;
     useEffect(()=>{
         socket.connect();
-        return () => {
-            socket.disconnect();
-        };
     })
+
+    function refreshChat() {
+        socket.emit('refresh chat',
+        {
+            coachName: props.data.coach,
+            studentName: props.chatUsername
+        });
+    }
 
     useEffect(()=>{
         if (!updated) {
-            socket.emit('refresh chat', props.data.coach);
-            socket.on('refresh', (res)=>{
+            refreshChat();
+            socket.on('refresh:' + props.data.coach + ':' + props.chatUsername, (res)=>{
                 const arr = res.map((value, index)=>{
                     return <ChatContent key={index} data={value} styles={props.styles} isStaff={props.isStaff}/>
                 })
@@ -27,13 +32,12 @@ export default function ChatWindow(props) {
     }, [data])
 
     useEffect(()=>{
-        _window = document.querySelector('#chatWindow');
         _window.scrollTop = _window.scrollHeight;
     })
 
     useEffect(()=>{
         return ()=>{
-            socket.off('refresh');
+            socket.off('refresh:' + props.data.coach + ':' + props.chatUsername);
         }
     },[])
     const styles = {
@@ -62,6 +66,7 @@ export default function ChatWindow(props) {
                 content: _chatInput.value,
                 timestamp: Date.now(),
                 coach: props.data.coach,
+                student: props.chatUsername
             })
             _chatInput.value = "";
         }
@@ -74,13 +79,23 @@ export default function ChatWindow(props) {
 
     return (
         <div
-            hidden={!props.visible}
             style={{
                 ...styles.modalWindow,
+                visibility: props.visible ? 'visible' : 'collapse',
             }}
         >
+            <div className="d-flex justify-content-between" style={{
+                padding: "0 10px",
+            }}>
+                <h5>{props.isStaff ? props.chatUsername : "Chat with your coach."}</h5>
+                <p onClick={()=>props.setVisible(false)}
+                style={{
+                    cursor: "pointer",
+                    fontWeight: 'bolder',
+                }}>x</p>
+            </div>
             <div style={{
-                height:'80%',
+                height:'70%',
                 width:'90%',
                 margin:'auto',
                 overflow: 'auto',
@@ -88,11 +103,11 @@ export default function ChatWindow(props) {
                 backgroundColor: "#ececec",
                 padding: '10px'
             }}
-            id="chatWindow">
+            ref={a=>_window = a}>
                 {data}
                 {data.length == 0 ? (
                     props.isStaff ?
-                    <p style={{...defaultTextStyle}}>Chat with your students.</p> :
+                    <p style={{...defaultTextStyle}}>Chat with student {props.chatUsername}.</p> :
                     <p style={{...defaultTextStyle}}>Chat with your coach.</p>
                 ) 
                 : 
