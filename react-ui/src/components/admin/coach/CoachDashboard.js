@@ -3,10 +3,12 @@ import AuthService from '../../../services/authService';
 import StudentService from "../../../services/studentService";
 import StudentList from "./StudentList";
 import { socket } from "../../../socket";
+import { useOutletContext } from "react-router";
 
 export default function CoachDashboard(props) {
     const [data, setData] = useState(null);
     const [updated, setUpdated] = useState(false);
+    const userData = useOutletContext();
 
     useEffect(()=>{
         socket.connect();
@@ -53,7 +55,7 @@ export default function CoachDashboard(props) {
 
     return (
         <div>
-            <StudentList data={data}/>
+            <StudentList data={data} userData={userData}/>
         </div>
     )
 }

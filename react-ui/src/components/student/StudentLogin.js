@@ -123,12 +123,7 @@ export default function StudentLogin(props) {
                 width: "40%",
                 backgroundColor: "#a1a1a1AA",
             }}>
-                <div className="student-login" style={{
-                    width:"600px",
-                    padding: "10px"
-                }}>
                     {box}
-                </div>
             </div>
         </div>
     )

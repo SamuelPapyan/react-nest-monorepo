@@ -7,7 +7,7 @@ export default function StudentList(props) {
     useEffect(()=>{
         if (props.data) {
             const list1 = props.data.map((value, index) => {
-                return <StudentRow data={value} key={index}/>
+                return <StudentRow data={value} key={index} userData={props.userData} zIndex={3 + props.data.length - 1 - index}/>
             });
             setList(list1);
         }
