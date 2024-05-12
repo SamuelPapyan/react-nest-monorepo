@@ -29,8 +29,8 @@ export class UsersService {
     return createdUser.save();
   }
 
-  async findOne(username: string): Promise<User | undefined> {
-    return this.userModel.findOne({ username: username });
+  async findOne(username: string): Promise<User | any> {
+    return this.userModel.findOne({ username: username }).lean();
   }
 
   async getById(id: mongoose.Types.ObjectId): Promise<User> {

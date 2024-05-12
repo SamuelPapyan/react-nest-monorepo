@@ -30,8 +30,8 @@ export class StudentService {
     return createdStudent.save();
   }
 
-  async findOne(username: string): Promise<Student | undefined> {
-    return this.studentModel.findOne({ username: username });
+  async findOne(username: string): Promise<Student | any> {
+    return this.studentModel.findOne({ username: username }).lean();
   }
 
   async getById(id: mongoose.Types.ObjectId): Promise<Student> {
@@ -89,6 +89,7 @@ export class StudentService {
     if (!(await bcrypt.compare(pass, user.password)))
       throw new UnauthorizedException();
     const payload = {
+      id: user._id,
       username: user.username,
       email: user.email,
       country: user.country,
@@ -123,8 +124,15 @@ export class StudentService {
     return student.save();
   }
 
-  async getStudentsByCoach(coach: string): Promise<Student[]> {
-    return this.studentModel.find({ coach: coach }).exec();
+  async getStudentsByCoach(coach: string): Promise<any> {
+    const data = await this.studentModel.find({ coach: coach }).lean().exec();
+    const result = data.map((value) => {
+      return {
+        id: value._id,
+        username: value.username
+      }
+    });
+    return result;
   }
 
   async getStudentByUsername(username: string): Promise<Student> {

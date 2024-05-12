@@ -14,6 +14,8 @@ import {
 import { MailModule } from 'src/mail/mail.module';
 import { WorkshopService } from 'src/workshop/workshop.service';
 import { Workshop, WorkshopSchema } from 'src/workshop/workshop.schema';
+import { GroupChatService } from 'src/group_chat/group_chat.service';
+import { GroupChat, GroupChatSchema } from 'src/group_chat/group_chat.schema';
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { Workshop, WorkshopSchema } from 'src/workshop/workshop.schema';
       { name: Student.name, schema: StudentSchema },
       { name: ResetPassword.name, schema: ResetPasswordSchema },
       { name: Workshop.name, schema: WorkshopSchema},
+      { name: GroupChat.name, schema: GroupChatSchema},
     ]),
     JwtModule.register({
       global: true,
@@ -35,6 +38,7 @@ import { Workshop, WorkshopSchema } from 'src/workshop/workshop.schema';
     ResponseManager,
     ExceptionManager,
     WorkshopService,
+    GroupChatService
   ],
 })
 export class StudentsModule {}

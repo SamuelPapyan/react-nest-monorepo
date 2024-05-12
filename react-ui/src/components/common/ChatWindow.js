@@ -1,33 +1,97 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { socket } from "../../socket";
 import ChatContent from "./ChatContent";
+import GroupChatService from "../../services/groupChatService";
 
 export default function ChatWindow(props) {
     const [data, setData] = useState([]);
     const [updated, setUpdated] = useState(false);
-    let _chatInput, _window;
+    const [selectBar, setSelectBar] = useState("");
+    const [chatId, setChatId] = useState("");
+    // const [chatName, setChatName] = useState("DM with Coach");
+    let _chatInput, _window, _select = React.useRef();
+    let chatName;
     useEffect(()=>{
         socket.connect();
     })
 
-    function refreshChat() {
-        socket.emit('refresh chat',
-        {
-            coachName: props.data.coach,
-            studentName: props.chatUsername
+    function refreshChat(chatId, user) {
+        socket.emit('refresh chat', {
+            chatId: chatId,
+            user: user,
         });
     }
 
     useEffect(()=>{
         if (!updated) {
-            refreshChat();
-            socket.on('refresh:' + props.data.coach + ':' + props.chatUsername, (res)=>{
-                const arr = res.map((value, index)=>{
-                    return <ChatContent key={index} data={value} styles={props.styles} isStaff={props.isStaff}/>
+            if (props.type === "dm") {
+                setChatId(props.data.coach + ':' + props.userId);
+                refreshChat(props.data.coach + ':' + props.userId, props.data.coach);
+                socket.on('refresh:' + props.data.coach + ':' + props.userId, (res)=>{
+                    console.log("Response from socket: " + res.user);
+                    const arr = res.data.map((value, index)=>{
+                        return <ChatContent key={index} data={value} user={props.data.user}  styles={props.styles} isStaff={props.isStaff}/>
+                    })
+                    setData(arr);
                 })
-                setData(arr);
-            })
-            setUpdated(true);
+                setUpdated(true);
+            }
+            else if (props.type == "group_chat") {
+                setChatId(props.chatId)
+                refreshChat(props.chatId, props.data.coach);
+                socket.on('refresh:' + props.chatId, function(res){
+                    const arr = res.data.map((value, index)=>{
+                        return <ChatContent key={index} data={value} user={props.data.user}  styles={props.styles} isStaff={props.isStaff}/>
+                    })
+                    setData(arr);
+                })
+                setUpdated(true);
+            }
+            else if (props.type == "common") {
+                setChatId(props.data.coach + ':' + props.userId)
+                refreshChat(props.data.coach + ':' + props.userId, props.userId);
+                socket.on('refresh:' + props.data.coach + ':' + props.userId, (res)=>{
+                    if (res.user === props.userId || res.user === undefined) {
+                        const arr = res.data.map((value, index)=>{
+                            return <ChatContent key={index} data={value} user={props.data.user}  styles={props.styles} isStaff={props.isStaff}/>
+                        })
+                        setData(arr);
+                    }
+                })
+                GroupChatService.getGroupChatsByStudent(props.userId).then(res=>{
+                    if (res.success) {
+                        const options = res.data.map((v, i)=>{
+                            return (<option key={i + 1} value={v._id}>{v.chat_name}</option>)
+                        });
+                        options.unshift(<option key={0} value={props.data.coach + ':' + props.userId}>DM with Coach</option>)
+                        setSelectBar(
+                            <select
+                            id="chat-select"
+                            style={{
+                                width:"95%",
+                                borderRadius: "25px",
+                                marginBottom: "5px",
+                            }} onChange={switchChat} ref={_select}>
+                                {options}
+                            </select>
+                        )
+                        res.data.map((v, i)=>{
+                            socket.on('refresh:' + v._id, function(res){
+                                console.log(chatName, res.data[res.data.length - 1].chatName);
+                                if (res.user === props.userId || res.user === undefined) {
+                                    const arr = res.data.map((value, index)=>{
+                                        return <ChatContent key={index} data={value} user={props.data.user} styles={props.styles} isStaff={props.isStaff}/>
+                                    })
+                                    setData(arr);
+                                }
+                            })
+                        })
+                        setUpdated(true);
+                    }
+                }).catch(err=>{
+                    console.log(err.message);
+                })
+            }
         }
     }, [data])
 
@@ -37,7 +101,7 @@ export default function ChatWindow(props) {
 
     useEffect(()=>{
         return ()=>{
-            socket.off('refresh:' + props.data.coach + ':' + props.chatUsername);
+            socket.off('refresh:' + props.data.coach + ':' + props.userId);
         }
     },[])
     const styles = {
@@ -59,14 +123,18 @@ export default function ChatWindow(props) {
     }
 
     function sendChatMessage() {
+        console.log(chatName)
         if (_chatInput.value) {
             socket.emit('send chat message', {
-                from: props.data.user,
-                to: props.isStaff ? 'student' : 'staff',
-                content: _chatInput.value,
-                timestamp: Date.now(),
-                coach: props.data.coach,
-                student: props.chatUsername
+                chatId: chatId,
+                data: {
+                    from: props.data.user,
+                    content: _chatInput.value,
+                    timestamp: Date.now(),
+                    coach: props.data.coach,
+                    student: props.userId,
+                    chatName: chatName
+                },
             })
             _chatInput.value = "";
         }
@@ -75,6 +143,13 @@ export default function ChatWindow(props) {
     const defaultTextStyle = {
         textAlign: 'center',
         marginTop: '50%'
+    }
+
+    function switchChat(event){
+        setChatId(event.target.value);
+        const elem = [...event.target.children].find(val=>val.value === event.target.value);
+        chatName = elem.innerText;
+        refreshChat(event.target.value, props.userId);
     }
 
     return (
@@ -88,7 +163,10 @@ export default function ChatWindow(props) {
             <div className="d-flex justify-content-between" style={{
                 padding: "0 10px",
             }}>
+                {props.type !== "common" ? 
                 <h5>{props.isStaff ? props.chatUsername : "Chat with your coach."}</h5>
+                : 
+                selectBar}
                 <p onClick={()=>props.setVisible(false)}
                 style={{
                     cursor: "pointer",

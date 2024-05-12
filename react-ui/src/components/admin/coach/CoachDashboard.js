@@ -4,6 +4,7 @@ import StudentService from "../../../services/studentService";
 import StudentList from "./StudentList";
 import { socket } from "../../../socket";
 import { useOutletContext } from "react-router";
+import GroupChatView from "./GroupChatView";
 
 export default function CoachDashboard(props) {
     const [data, setData] = useState(null);
@@ -41,6 +42,7 @@ export default function CoachDashboard(props) {
                     if (res.success) {
                         StudentService.getStudentsByCoach(res.data.username).then(res=>{
                             if (res.success) {
+                                console.log(res.data)
                                 setData(res.data);
                                 setUpdated(true);
                             }
@@ -56,6 +58,7 @@ export default function CoachDashboard(props) {
     return (
         <div>
             <StudentList data={data} userData={userData}/>
+            <GroupChatView data={data} userData={userData}/>
         </div>
     )
 }
