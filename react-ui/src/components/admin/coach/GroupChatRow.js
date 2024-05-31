@@ -59,8 +59,8 @@ export default function GroupChatRow(props) {
             members: _members.current.getSelectedItems().map(mem=>mem.value)
         }
         GroupChatService.updateGroupChat(props.data._id, requestData).then(res=>{
-            console.log(res);
             props.updateFunction(false);
+            window.location.reload();
         }).catch(err=>{
             console.log(err.message);
         })
@@ -112,7 +112,7 @@ export default function GroupChatRow(props) {
             </div>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Edit Group Chat</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="form-group">

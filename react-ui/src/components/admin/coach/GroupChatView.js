@@ -41,6 +41,7 @@ export default function GroupChatView(props) {
         }
         GroupChatService.addGroupChat(requestData).then(res=>{
             setUpdated(false);
+            handleClose();
         }).catch(err=>{
             console.log(err.message);
         })
@@ -56,7 +57,7 @@ export default function GroupChatView(props) {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Create Group Chat</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="form-group">
