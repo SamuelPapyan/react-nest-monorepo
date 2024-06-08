@@ -36,7 +36,6 @@ export class EventsGateway {
     const chat = await this.cacheManager.get('chat:' + chatName);
     this.server.emit('refresh:' + chatName, {
       data: chat,
-      user: data.user
     });
   }
   @SubscribeMessage('send chat message')

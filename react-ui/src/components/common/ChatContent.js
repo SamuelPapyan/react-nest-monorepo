@@ -1,7 +1,7 @@
 export default function ChatContent(props) {
     const styleMap = {}
     let sender;
-    if (props.data.from === props.user) {
+    if (props.data.user === props.user) {
         styleMap.float = 'left';
         styleMap.backgroundColor = props.styles.primaryColor;
         styleMap.color = 'white';
@@ -12,10 +12,9 @@ export default function ChatContent(props) {
         styleMap.backgroundColor = "#acacac";
         styleMap.color = 'black';
         styleMap.textAlign = "right";
-        sender = (props.data.from === props.data.coach) ? ("Coach " + props.data.from) : props.data.from;
+        sender = (props.data.user === props.user && props.isStaff) ? ("Coach " + props.data.user) : props.data.user;
     }
-    
-    const date = new Date(props.data.timestamp);
+    const date = new Date(props.data.timeSent);
     const dateString = date.toLocaleDateString() + " | " + date.getHours() + ":" + date.getMinutes();
     return <>
         <div style={{
@@ -26,7 +25,7 @@ export default function ChatContent(props) {
             borderRadius: '5px'
 
         }}>
-            <span>{props.data.content}</span>
+            <span>{props.data.message}</span>
             <h6 style={{fontSize:"12px"}}>{sender} | {dateString}</h6>
         </div>
         <div style={{clear:"both"}}><br/></div>

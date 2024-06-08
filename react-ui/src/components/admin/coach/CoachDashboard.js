@@ -42,7 +42,6 @@ export default function CoachDashboard(props) {
                     if (res.success) {
                         StudentService.getStudentsByCoach(res.data.username).then(res=>{
                             if (res.success) {
-                                console.log(res.data)
                                 setData(res.data);
                                 setUpdated(true);
                             }

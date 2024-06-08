@@ -5,6 +5,8 @@ import { GroupChat, GroupChatSchema } from "./group_chat.schema";
 import { ResponseManager } from "src/app/managers/response.manager";
 import { ExceptionManager } from "src/app/managers/exception.manager";
 import { GroupChatController } from "./group_chat.controller";
+import { ChatService } from "./chat.service";
+import { ChatGateway } from "./chat.gateway";
 
 
 @Module({
@@ -13,7 +15,13 @@ import { GroupChatController } from "./group_chat.controller";
       { name: GroupChat.name, schema: GroupChatSchema },
     ]),
   ],
-  providers: [GroupChatService, ResponseManager, ExceptionManager],
+  providers: [
+    GroupChatService,
+    ChatService,
+    ChatGateway,
+    ResponseManager,
+    ExceptionManager,
+  ],
   controllers: [GroupChatController],
 })
 export class GroupChatModule {}
