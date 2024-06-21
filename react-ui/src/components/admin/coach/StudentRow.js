@@ -28,6 +28,7 @@ export default function StudentRow(props) {
                         cursor: "pointer",
                     }}/>
                     <ChatWindow
+                      type="dm"
                       setVisible={setVisible}
                       isStaff={true}
                       styles={{
@@ -40,6 +41,7 @@ export default function StudentRow(props) {
                       visible={visible}
                       zIndex={props.zIndex}
                       chatUsername={props.data.username}
+                      userId={props.data.id}
                     />
                 </div>
             </div>

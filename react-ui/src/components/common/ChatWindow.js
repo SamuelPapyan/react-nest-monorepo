@@ -1,33 +1,89 @@
-import { useEffect, useState } from "react";
-import { socket } from "../../socket";
+import React, { useEffect, useState } from "react";
 import ChatContent from "./ChatContent";
+import GroupChatService from "../../services/groupChatService";
+import { io } from "socket.io-client";
+
+let chatId = "";
 
 export default function ChatWindow(props) {
     const [data, setData] = useState([]);
     const [updated, setUpdated] = useState(false);
-    let _chatInput, _window;
-    useEffect(()=>{
-        socket.connect();
-    })
+    const [selectBar, setSelectBar] = useState("");
+    const [socket, setSocket] = useState(io('http://localhost:2023/chat'))
+    let _chatInput, _window, _select = React.useRef();
 
-    function refreshChat() {
-        socket.emit('refresh chat',
-        {
-            coachName: props.data.coach,
-            studentName: props.chatUsername
+    function refreshChat(oldChat, newChat, user) {
+        socket.emit('join_room', {
+            prevRoom: oldChat,
+            nextRoom: newChat,
+            user: {
+                userId: "",
+                userName: user,
+                socketId: socket.id
+            },
         });
+    }
+
+    function generateChat() {
+        if (socket.connected) {
+            if (props.type === "dm") {
+                refreshChat(null, props.data.coach + ':' + props.userId, props.data.coach);
+            }
+            else if (props.type === "group_chat") {
+                refreshChat(null, props.chatId, props.data.coach);
+            }
+            else if (props.type === "common") {
+                refreshChat(null, props.data.coach + ':' + props.userId, props.userId);
+            }
+        }
     }
 
     useEffect(()=>{
         if (!updated) {
-            refreshChat();
-            socket.on('refresh:' + props.data.coach + ':' + props.chatUsername, (res)=>{
-                const arr = res.map((value, index)=>{
-                    return <ChatContent key={index} data={value} styles={props.styles} isStaff={props.isStaff}/>
+            socket.on('connect', (res)=>{
+                generateChat();
+            })
+            socket.on('chat', (res)=>{
+                const arr = res.data.map((value, index)=>{
+                    return <ChatContent key={index} data={value} user={props.data.user}  styles={props.styles} isStaff={props.isStaff}/>
                 })
                 setData(arr);
             })
-            setUpdated(true);
+            if (props.type === "dm") {
+                chatId = props.data.coach + ':' + props.userId;
+                setUpdated(true);
+            }
+            else if (props.type === "group_chat") {
+                chatId = props.chatId;
+                setUpdated(true);
+            }
+            else if (props.type === "common") {
+                chatId = props.data.coach + ':' + props.userId;
+                GroupChatService.getGroupChatsByStudent(props.userId).then(res=>{
+                    if (res.success) {
+                        const options = res.data.map((v, i)=>{
+                            return (<option key={i + 1} value={v._id}>{v.chat_name}</option>)
+                        });
+                        options.unshift(<option key={0} value={props.data.coach + ':' + props.userId}>DM with Coach</option>)
+                        setSelectBar(
+                            <select
+                            id="chat-select"
+                            style={{
+                                width:"95%",
+                                borderRadius: "25px",
+                                marginBottom: "5px",
+                            }} onChange={switchChat} ref={_select}>
+                                {options}
+                            </select>
+                        )
+                        setUpdated(true);
+                    }
+                }).catch(err=>{
+                    console.log(err.message);
+                })
+            }
+        } else {
+            setUpdated(updated);
         }
     }, [data])
 
@@ -35,11 +91,6 @@ export default function ChatWindow(props) {
         _window.scrollTop = _window.scrollHeight;
     })
 
-    useEffect(()=>{
-        return ()=>{
-            socket.off('refresh:' + props.data.coach + ':' + props.chatUsername);
-        }
-    },[])
     const styles = {
         modalWindow: {
             position: "fixed",
@@ -60,13 +111,24 @@ export default function ChatWindow(props) {
 
     function sendChatMessage() {
         if (_chatInput.value) {
-            socket.emit('send chat message', {
-                from: props.data.user,
-                to: props.isStaff ? 'student' : 'staff',
-                content: _chatInput.value,
-                timestamp: Date.now(),
-                coach: props.data.coach,
-                student: props.chatUsername
+            let chatName = chatId;
+            if (props.isStaff) {
+                if (props.type === "dm") {
+                    chatName = props.data.coach + ':' + props.userId
+                }
+                if (props.type === "group_chat") {
+                    chatName = props.chatId;
+                }
+            }
+            socket.emit('chat', {
+                user: {
+                    userId: "",
+                    userName: props.data.user,
+                    socketId: socket.id
+                },
+                timeSent: Date.now(),
+                message: _chatInput.value,
+                roomName: chatName,
             })
             _chatInput.value = "";
         }
@@ -75,6 +137,11 @@ export default function ChatWindow(props) {
     const defaultTextStyle = {
         textAlign: 'center',
         marginTop: '50%'
+    }
+
+    function switchChat(event){
+        refreshChat(chatId, event.target.value, props.userId);
+        chatId = event.target.value;
     }
 
     return (
@@ -88,8 +155,13 @@ export default function ChatWindow(props) {
             <div className="d-flex justify-content-between" style={{
                 padding: "0 10px",
             }}>
+                {props.type !== "common" ? 
                 <h5>{props.isStaff ? props.chatUsername : "Chat with your coach."}</h5>
-                <p onClick={()=>props.setVisible(false)}
+                : 
+                selectBar}
+                <p onClick={()=>{
+                    props.setVisible(false)
+                }}
                 style={{
                     cursor: "pointer",
                     fontWeight: 'bolder',

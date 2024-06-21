@@ -8,6 +8,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { UsersModule } from 'src/users/users.module';
 import { WorkshopModule } from 'src/workshop/workshop.module';
 import { EventsModule } from 'src/events/events.module';
+import { GroupChatModule } from 'src/group_chat/group_chat.module';
 import { CacheModule } from '@nestjs/cache-manager'
 import * as redisStore from 'cache-manager-redis-store';
 import type { RedisClientOptions } from 'redis'; 
@@ -18,11 +19,13 @@ import type { RedisClientOptions } from 'redis';
     AuthModule,
     UsersModule,
     WorkshopModule,
+    GroupChatModule,
     MongooseModule.forRoot(
       'mongodb+srv://samvelpapyan1:tumo1234@cluster0.261k0xm.mongodb.net/?retryWrites=true&w=majority',
     ),
     EventsModule,
     CacheModule.register<RedisClientOptions>({
+      max: 100,
       ttl: 24 * 3600,
       store: redisStore,
       isGlobal: true

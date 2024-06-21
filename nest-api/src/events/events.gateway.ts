@@ -30,26 +30,24 @@ export class EventsGateway {
 
   @SubscribeMessage('refresh chat')
   async refreshChat(@MessageBody() data: any) {
-    const coachName = data.coachName;
-    const studentName = data.studentName;
-    if (!(await this.cacheManager.get('chat:' + coachName + ':' + studentName)))
-      await this.cacheManager.set('chat:' + coachName + ':' + studentName, []);
-    const chat = await this.cacheManager.get(
-      'chat:' + coachName + ':' + studentName,
-    );
-    this.server.emit('refresh:' + coachName + ':' + studentName, chat);
+    const chatName = data.chatId;
+    if (!(await this.cacheManager.get('chat:' + chatName)))
+      await this.cacheManager.set('chat:' + chatName, []);
+    const chat = await this.cacheManager.get('chat:' + chatName);
+    this.server.emit('refresh:' + chatName, {
+      data: chat,
+    });
   }
   @SubscribeMessage('send chat message')
   async sendChatMessage(@MessageBody() data: any) {
-    const coach = data.coach;
-    const student = data.student;
-    if (!(await this.cacheManager.get('chat:' + coach + ':' + student)))
-      await this.cacheManager.set('chat:' + coach + ':' + student, []);
-    const chat: any = await this.cacheManager.get(
-      'chat:' + coach + ':' + student,
-    );
-    chat.push(data);
-    await this.cacheManager.set('chat:' + coach + ':' + student, chat);
-    this.server.emit('refresh:' + coach + ':' + student, chat);
+    const chatId = data.chatId;
+    if (!(await this.cacheManager.get('chat:' + chatId)))
+      await this.cacheManager.set('chat:' + chatId, []);
+    const chat: any = await this.cacheManager.get('chat:' + chatId);
+    chat.push(data.data);
+    await this.cacheManager.set('chat:' + chatId, chat);
+    this.server.emit('refresh:' + chatId, {
+      data: chat,
+    });
   }
 }

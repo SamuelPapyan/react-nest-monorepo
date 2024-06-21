@@ -37,9 +37,9 @@ export default function StudentAuthPanel(props) {
 
     useEffect(()=>{
         socket.connect();
-        return () => {
-            socket.disconnect();
-        };
+        // return () => {
+        //     socket.disconnect();
+        // };
     })
 
     useEffect(()=>{

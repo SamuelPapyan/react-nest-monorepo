@@ -26,8 +26,10 @@ export default function StudentBody(props) {
             styles={{
                 primaryColor: "#198754"
             }}
+            type="dm"
             isStaff={false}
             user={props.data.username}
+            userId={props.data.id}
             coach={props.data.coach}/>
             : ""}
         </>

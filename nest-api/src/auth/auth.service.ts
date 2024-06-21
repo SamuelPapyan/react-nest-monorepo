@@ -16,6 +16,7 @@ export class AuthService {
     if (!(await bcrypt.compare(pass, user.password)))
       throw new UnauthorizedException();
     const payload = {
+      id: user._id,
       username: user.username,
       roles: user.roles,
     };

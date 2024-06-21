@@ -27,6 +27,9 @@ import { MailService } from 'src/mail/mail.service';
 import { WorkshopService } from 'src/workshop/workshop.service';
 import { Workshop } from 'src/workshop/workshop.schema';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { StudentDocument } from 'src/students/student.schema';
+import { GroupChatService } from 'src/group_chat/group_chat.service';
+import { GroupChat } from 'src/group_chat/group_chat.schema';
 
 @Controller('students')
 @UseFilters(AllExceptionFilter)
@@ -36,6 +39,7 @@ export class StudentController {
     private readonly responseManager: ResponseManager<Student>,
     private readonly exceptionManager: ExceptionManager,
     private readonly workshopService: WorkshopService,
+    private readonly groupChatService: GroupChatService,
     private readonly mailService: MailService,
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
@@ -75,6 +79,24 @@ export class StudentController {
     }
   }
 
+  @Get('group_chats/:studentId')
+  @UseFilters(AllExceptionFilter)
+  async getGroupChats(
+    @Param('studentId') studentId: string
+  ): Promise<ResponseDTO<GroupChat[]>> {
+    try {
+      const data = await this.groupChatService.getGroupChatstByStudent(
+        studentId
+      );
+      return new ResponseManager<GroupChat[]>().getResponse(
+        data,
+        'GROUP_CHATS_GOT_SUCCESSFULLY',
+      );
+    } catch (e) {
+      this.exceptionManager.throwException(e);
+    }
+  }
+
   @Get('coach/:coach')
   @UseFilters(AllExceptionFilter)
   async getStudentsByCoach(
@@ -87,7 +109,7 @@ export class StudentController {
       const handUps = await this.cacheManager.get('handUps');
       const responseData = data.map((value) => {
         return {
-          username: value.username,
+          ...value,
           handUp: handUps[value.username] ? true : false,
         }
       })
