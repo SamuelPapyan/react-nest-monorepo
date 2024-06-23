@@ -7,7 +7,7 @@ export default function ChatBox(props) {
         chatWidget: {
             position: "fixed",
             bottom: "20px",
-            right: "20px",
+            right: "90px",
             backgroundColor: props.styles.primaryColor,
             padding: "10px",
             borderRadius: "25px",
