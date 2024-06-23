@@ -12,12 +12,12 @@ export default function StudentAuthPanel(props) {
     const [callCoachText, setCallCoachText] = useState("Call Coach");
     const [callCoachColor, setCallCoachColor] = useState("success");
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     
     const logout = () => {
         window.localStorage.removeItem(process.env.REACT_APP_STUDENT_TOKEN);
         props.setData(null);
-        navigate('/login');
+        window.location.reload();
     }
 
     function callCoach(){
