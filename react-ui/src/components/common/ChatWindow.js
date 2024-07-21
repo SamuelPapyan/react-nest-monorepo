@@ -62,8 +62,9 @@ export default function ChatWindow(props) {
                 GroupChatService.getGroupChatsByStudent(props.userId).then(res=>{
                     if (res.success) {
                         const options = res.data.map((v, i)=>{
-                            return (<option key={i + 1} value={v._id}>{v.chat_name}</option>)
+                            return (<option key={i + 2} value={v._id}>{v.chat_name}</option>)
                         });
+                        options.unshift(<option key={1} value={"chatbot" + ':' + props.userId}>Chat with AI</option>)
                         options.unshift(<option key={0} value={props.data.coach + ':' + props.userId}>DM with Coach</option>)
                         setSelectBar(
                             <select

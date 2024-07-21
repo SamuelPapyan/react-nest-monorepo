@@ -7,12 +7,19 @@ import { ExceptionManager } from "src/app/managers/exception.manager";
 import { GroupChatController } from "./group_chat.controller";
 import { ChatService } from "./chat.service";
 import { ChatGateway } from "./chat.gateway";
+import { WorkshopService } from "src/workshop/workshop.service";
+import { Workshop, WorkshopSchema } from "src/workshop/workshop.schema";
+import { User, UserSchema } from "src/users/user.schema";
+import { Student, StudentSchema } from "src/students/student.schema";
 
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: GroupChat.name, schema: GroupChatSchema },
+      { name: Workshop.name, schema: WorkshopSchema },
+      { name: User.name, schema: UserSchema },
+      { name: Student.name, schema: StudentSchema },
     ]),
   ],
   providers: [
@@ -21,6 +28,7 @@ import { ChatGateway } from "./chat.gateway";
     ChatGateway,
     ResponseManager,
     ExceptionManager,
+    WorkshopService,
   ],
   controllers: [GroupChatController],
 })
