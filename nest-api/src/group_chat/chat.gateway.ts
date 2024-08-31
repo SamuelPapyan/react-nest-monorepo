@@ -51,7 +51,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     chat.push({
       user: payload.user.userName,
       timeSent: payload.timeSent,
-      message: payload.message,
+      message: [payload.message],
       roomName: payload.roomName,
     });
     await this.cacheManager.set('chat:' + chatId, chat);

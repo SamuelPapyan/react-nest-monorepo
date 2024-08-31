@@ -144,7 +144,6 @@ export default function ChatWindow(props) {
     function switchChat(event){
         refreshChat(chatId, event.target.value, props.userId);
         if (event.target.value.indexOf("chatbot") > -1) {
-            console.log(windowMessage)
             setWindowMessage("Chat With AI.")
         } else {
             setWindowMessage("Chat with your coach.")

@@ -49,5 +49,5 @@ export function chatbotResponse(label: string | null): string {
   let arr;
   if (label) arr = CHATBOT_RESPONSE[label];
   else arr = CHATBOT_RESPONSE['404'];
-  return arr[Math.floor(Math.random() * arr.length)]
+  return arr[Math.floor(Math.random() * arr.length)];
 }

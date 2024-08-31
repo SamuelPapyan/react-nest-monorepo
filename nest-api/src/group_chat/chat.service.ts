@@ -103,30 +103,28 @@ export class ChatService {
     return predict(chatbotModel, tokens)
   }
 
-  async chatbotResponse(label: string, username: string): Promise<string> {
-    let res = chatbotResponse(label) + '\n'
-    res += await this.chatbotExtraResponse(label, username)
+  async chatbotResponse(label: string, username: string): Promise<any> {
+    let res = [chatbotResponse(label)];
+    res = [...res, ...(await this.chatbotExtraResponse(label, username))];
     return res;
   }
 
   async chatbotExtraResponse(
     label: string | null,
     username: string,
-  ): Promise<string> {
+  ): Promise<any> {
     if (label) {
       if (label === 'workshops') {
         const workshops = (await this.workshopModel.find().lean().exec()).map(
           (item) => item.title,
         );
-        const extraResponse = workshops.join('\n - ');
-        return 'List of workshops: ' + extraResponse;
+        return ['List of workshops: ', workshops];
       }
       if (label === 'my_workshops') {
         const workshops = (
           await this.workshopModel.find({ students: username }).lean().exec()
         ).map((item) => item.title);
-        const extraResponse = workshops.join('\n - ');
-        return '\n' + extraResponse;
+        return [workshops];
       }
       if (label.indexOf('coach') > -1) {
         const student: Student = await this.studentModel.findOne({
@@ -140,17 +138,17 @@ export class ChatService {
           username: coach.username,
           email: coach.email,
         }
-        if (label.indexOf('email') > -1) return coachMetadata.email;
-        if (label.indexOf('name') > -1) return coachMetadata.name;
+        if (label.indexOf('email') > -1) return [coachMetadata.email];
+        if (label.indexOf('name') > -1) return [coachMetadata.name];
         if (label.indexOf('data') > -1) {
-          return Object.keys(coachMetadata)
-            .map((key) => {
-              return ` - ${key}: ${coachMetadata[key]}`;
-            })
-            .join('\n');
+          return [
+            Object.keys(coachMetadata).map((key) => {
+              return ` ${key.toUpperCase()}: ${coachMetadata[key]}`;
+            }),
+          ];
         }
       }
     }
-    return ''
+    return []
   } 
 }
