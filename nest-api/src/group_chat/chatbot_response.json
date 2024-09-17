@@ -1,0 +1,64 @@
+{
+    "coach": [
+        "The coach is the person who asist and help you complete attachments.",
+        "The coach help you solve the problem and provides your knowledges",
+        "The coach always correcting your mistakes and teaching you based on your mistakes."
+    ],
+    "workshops": [
+        "Workshops are the events which involves your knowledges and experience for making projects.",
+        "Workshops involve students to show their knowledges and make projects.",
+        "Workshops open the doors to the next experience in the sphere."
+    ],
+    "my_workshops": [
+        "Here are your workshops.",
+        "Your ongoin workshops.",
+        "Here are your ongoing workshops."
+    ],
+    "coach_data": [
+        "Here's your coache's data.",
+        "Your coach's data.",
+        "Here's coach's data"
+    ],
+    "coach_phone": [
+        "Coach's phone: ",
+        "Your coach's phone: ",
+        "Call your coach with this number: "
+    ],
+    "coach_email": [
+        "Here's email address of your coach: ",
+        "Coach's email: ",
+        "Coach's email is "
+    ],
+    "coach_name": [
+        "Your coach's name is ",
+        "Coach's name: ",
+        "Coach name is "
+    ],
+    "greeting": [
+        "Hello. What can I asist you?",
+        "Hello. What can I help you?",
+        "Hi. What can I asist you?",
+        "Hi. What can I help you?",
+        "Hello. Ask me something.",
+        "Hi. Ask me something."
+    ],
+    "goodbye": [
+        "See you soon.",
+        "Ask me if you have another question.",
+        "It's honor asisting you."
+    ],
+    "good": [
+        "OK",
+        "Well",
+        "Fine"
+    ],
+    "thank": [
+        "You're Welcome",
+        "Not at all"
+    ],
+    "404": [
+        "Sorry, I can't recognise your request.",
+        "Sorry. I'm not able to understand your question.",
+        "My knowledges are limited. I can't answer it. Sorry."
+    ]
+}

@@ -51,11 +51,26 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     chat.push({
       user: payload.user.userName,
       timeSent: payload.timeSent,
-      message: payload.message,
+      message: [payload.message],
       roomName: payload.roomName,
     });
     await this.cacheManager.set('chat:' + chatId, chat);
     this.server.to(payload.roomName).emit('chat', { data: chat });
+    if (chatId.indexOf('chatbot') > -1) {
+      const prediction = this.chatService.predict(payload.message)
+      const response = await this.chatService.chatbotResponse(
+        prediction,
+        payload.user.userName,
+      );
+      chat.push({
+        user: 'Chatbot AI',
+        timeSent: Date.now(),
+        message: response,
+        roomName: payload.roomName,
+      });
+      await this.cacheManager.set('chat:' + chatId, chat);
+      this.server.to(payload.roomName).emit('chat', { data: chat });
+    }
     return payload;
   }
 

@@ -10,6 +10,7 @@ export default function ChatWindow(props) {
     const [updated, setUpdated] = useState(false);
     const [selectBar, setSelectBar] = useState("");
     const [socket, setSocket] = useState(io('http://localhost:2023/chat'))
+    const [windowMessage, setWindowMessage] = useState("Chat with your coach.")
     let _chatInput, _window, _select = React.useRef();
 
     function refreshChat(oldChat, newChat, user) {
@@ -62,8 +63,9 @@ export default function ChatWindow(props) {
                 GroupChatService.getGroupChatsByStudent(props.userId).then(res=>{
                     if (res.success) {
                         const options = res.data.map((v, i)=>{
-                            return (<option key={i + 1} value={v._id}>{v.chat_name}</option>)
+                            return (<option key={i + 2} value={v._id}>{v.chat_name}</option>)
                         });
+                        options.unshift(<option key={1} value={"chatbot" + ':' + props.userId}>Chat with AI</option>)
                         options.unshift(<option key={0} value={props.data.coach + ':' + props.userId}>DM with Coach</option>)
                         setSelectBar(
                             <select
@@ -141,6 +143,11 @@ export default function ChatWindow(props) {
 
     function switchChat(event){
         refreshChat(chatId, event.target.value, props.userId);
+        if (event.target.value.indexOf("chatbot") > -1) {
+            setWindowMessage("Chat With AI.")
+        } else {
+            setWindowMessage("Chat with your coach.")
+        }
         chatId = event.target.value;
     }
 
@@ -156,7 +163,7 @@ export default function ChatWindow(props) {
                 padding: "0 10px",
             }}>
                 {props.type !== "common" ? 
-                <h5>{props.isStaff ? props.chatUsername : "Chat with your coach."}</h5>
+                <h5>{props.isStaff ? props.chatUsername : windowMessage}</h5>
                 : 
                 selectBar}
                 <p onClick={()=>{
@@ -181,7 +188,7 @@ export default function ChatWindow(props) {
                 {data.length == 0 ? (
                     props.isStaff ?
                     <p style={{...defaultTextStyle}}>Chat with student {props.chatUsername}.</p> :
-                    <p style={{...defaultTextStyle}}>Chat with your coach.</p>
+                    <p style={{...defaultTextStyle}}>{windowMessage}</p>
                 ) 
                 : 
                 ""}
