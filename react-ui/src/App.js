@@ -31,11 +31,21 @@ import EditWorkshop from "./components/admin/workshops/EditWorkshop";
 import SWorkshopsList from './components/student/workshops/WorkshopsList';
 import CoachDashboard from './components/admin/coach/CoachDashboard';
 
+import { useTranslation } from 'react-i18next';
+
+let currentLang = "en";
+
 function App() {
   const [token, setToken] = useState(true);
   const [studentToken, setStudentToken] = useState(true);
   const [studentData, setStudentData] = useState(null);
   const [updated, setUpdated] = useState(false);
+
+  const { i18n: {changeLanguage, language} } = useTranslation();
+  if (window.localStorage.getItem('react-nest-monorepo-lang')) {
+    if (language !== window.localStorage.getItem('react-nest-monorepo-lang'))
+      changeLanguage(window.localStorage.getItem('react-nest-monorepo-lang'));
+  }
 
   const ProtectedRoute =  ({ user, redirectPath="/admin/login", children }) =>{
     if (!user)
@@ -43,6 +53,12 @@ function App() {
           to={redirectPath} replace
           state={{"from": window.location.pathname}} />;
     return children ? children : <Outlet/>
+  }
+
+  function handleChangeLanguage(event){
+      window.localStorage.setItem('react-nest-monorepo-lang', event.target.value);
+      currentLang = event.target.value;
+      changeLanguage(window.localStorage.getItem('react-nest-monorepo-lang'));
   }
 
   useEffect(()=>{
@@ -71,20 +87,20 @@ function App() {
     <Router>
       <Routes>
         <Route exact path="/">
-          <Route path="login" element={<StudentLogin setData={setStudentData} setToken={setStudentToken}/>}/>
-          <Route path="reset" element={<ResetStudentPassword/>}/>
+          <Route path="login" element={<StudentLogin changeLang={handleChangeLanguage} setData={setStudentData} setToken={setStudentToken}/>}/>
+          <Route path="reset" element={<ResetStudentPassword changeLang={handleChangeLanguage}/>}/>
           <Route element={<ProtectedRoute user={studentToken} redirectPath='/login'/>}>
-            <Route element={<StudentBody setData={setStudentData} data={studentData}/>}>
+            <Route element={<StudentBody setData={setStudentData} changeLang={handleChangeLanguage} data={studentData}/>}>
               <Route exact path="" element={<StudentDashboard/>}/>
               <Route path="workshops" element={<SWorkshopsList/>}/>
             </Route>
           </Route>
         </Route>
         <Route path="/admin">
-          <Route path="login" element={<Login setToken={setToken}/>}/>
-          <Route path="reset" element={<ResetPassword/>}/>
+          <Route path="login" element={<Login changeLang={handleChangeLanguage} setToken={setToken}/>}/>
+          <Route path="reset" element={<ResetPassword changeLang={handleChangeLanguage}/>}/>
           <Route element={<ProtectedRoute user={token}/>}>
-            <Route element={<AdminBody/>}>
+            <Route element={<AdminBody changeLang={handleChangeLanguage}/>}>
               <Route exact path="" element={<Dashboard/>}/>
               <Route path="coach">
                 <Route exact path="" element={<CoachDashboard/>}/>
@@ -112,7 +128,7 @@ function App() {
             </Route>
           </Route>
         </Route>
-        <Route path="error" element={<ConnectionError />}/>
+        <Route path="error" element={<ConnectionError changeLang={handleChangeLanguage}/>}/>
       </Routes>
     </Router>
   );

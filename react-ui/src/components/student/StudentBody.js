@@ -16,7 +16,7 @@ export default function StudentBody(props) {
                 }}>
                     <StudentSidebar/>
                     <div className="router-screen">
-                        <StudentAuthPanel setData={props.setData} data={props.data}/>
+                        <StudentAuthPanel setData={props.setData} data={props.data} changeLang={props.changeLang}/>
                         <Outlet context={props.data}/>
                     </div>
                 </div>

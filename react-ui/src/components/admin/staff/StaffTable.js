@@ -1,10 +1,12 @@
 import StaffHeader from './StaffHeader';
 import StaffRow from './StaffRow';
 import { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 
 export default function StaffTable(props)
 {
-    const [data, setData] = useState((<tr colSpan={6}><td>Loading...</td></tr>));
+    const {t} = useTranslation();
+    const [data, setData] = useState((<tr colSpan={6}><td>{t("textLoading")}...</td></tr>));
 
     useEffect(()=>{
         if (props.data) {

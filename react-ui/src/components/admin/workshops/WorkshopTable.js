@@ -1,11 +1,13 @@
 import WorkshopHeader from './WorkshopHeader';
 import WorkshopRow from './WorkshopRow';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function WorkshopTable(props)
 {
+    const {t} = useTranslation();
     const [data, setData] = useState(
-        (<tr colSpan={8}><td>Loading...</td></tr>)
+        (<tr colSpan={8}><td>{t("textLoading")}...</td></tr>)
     );
 
     useEffect(()=>{

@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import ChatContent from "./ChatContent";
 import GroupChatService from "../../services/groupChatService";
 import { io } from "socket.io-client";
+import { useTranslation } from "react-i18next";
 
 let chatId = "";
 
 export default function ChatWindow(props) {
+    const {t} = useTranslation();
     const [data, setData] = useState([]);
     const [updated, setUpdated] = useState(false);
     const [selectBar, setSelectBar] = useState("");
     const [socket, setSocket] = useState(io('http://localhost:2023/chat'))
-    const [windowMessage, setWindowMessage] = useState("Chat with your coach.")
+    const [windowMessage, setWindowMessage] = useState(t("textChatWithCoachMessage"))
     let _chatInput, _window, _select = React.useRef();
 
     function refreshChat(oldChat, newChat, user) {
@@ -65,8 +67,8 @@ export default function ChatWindow(props) {
                         const options = res.data.map((v, i)=>{
                             return (<option key={i + 2} value={v._id}>{v.chat_name}</option>)
                         });
-                        options.unshift(<option key={1} value={"chatbot" + ':' + props.userId}>Chat with AI</option>)
-                        options.unshift(<option key={0} value={props.data.coach + ':' + props.userId}>DM with Coach</option>)
+                        options.unshift(<option key={1} value={"chatbot" + ':' + props.userId}>{t("textChatWithAi")}</option>)
+                        options.unshift(<option key={0} value={props.data.coach + ':' + props.userId}>{t("textChatWithCoach")}</option>)
                         setSelectBar(
                             <select
                             id="chat-select"
@@ -144,9 +146,9 @@ export default function ChatWindow(props) {
     function switchChat(event){
         refreshChat(chatId, event.target.value, props.userId);
         if (event.target.value.indexOf("chatbot") > -1) {
-            setWindowMessage("Chat With AI.")
+            setWindowMessage(t("textChatWithAiMessage"))
         } else {
-            setWindowMessage("Chat with your coach.")
+            setWindowMessage(t("textChatWithCoachMessage"))
         }
         chatId = event.target.value;
     }
@@ -187,7 +189,7 @@ export default function ChatWindow(props) {
                 {data}
                 {data.length == 0 ? (
                     props.isStaff ?
-                    <p style={{...defaultTextStyle}}>Chat with student {props.chatUsername}.</p> :
+                    <p style={{...defaultTextStyle}}>{t("textChatWithStudentMessage", {student: props.chatUsername})}</p> :
                     <p style={{...defaultTextStyle}}>{windowMessage}</p>
                 ) 
                 : 
@@ -210,7 +212,7 @@ export default function ChatWindow(props) {
                     height:'100%',
                     width:'20%',
                 }}
-                onClick={sendChatMessage}>Send</button>
+                onClick={sendChatMessage}>{t("textSend")}</button>
             </div>
         </div>
     );

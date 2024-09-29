@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react"
 import StudentService from "../../services/studentService";
 import { useOutletContext } from "react-router";
+import {useTranslation} from "react-i18next";
 
 export default function StudentDashboard() {
+    const {t} = useTranslation();
     const [updated, setUpdated] = useState(false);
-    const [workshops, setWorkshops] = useState(<span>Loading...</span>)
+    const [workshops, setWorkshops] = useState(<span>{t("textLoading")}...</span>)
     const studentData = useOutletContext();
     
     useEffect(()=>{
@@ -24,8 +26,8 @@ export default function StudentDashboard() {
     return (<div style={{
         margin: "0 30px",
     }}>
-        <h1>Welcome to student dashboard.</h1>
-        <h2>Registered Workshops</h2>
+        <h1>{t("textWelcomeToDashboard")}</h1>
+        <h2>{t("textRegisteregWorkshops")}</h2>
         {workshops}
     </div>)
 }

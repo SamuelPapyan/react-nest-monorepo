@@ -1,10 +1,12 @@
 import TableHeader from "./TableHeader";
 import StudentRow from './StudentRow';
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function StudentTable(props)
 {
-    const [data, setData] = useState((<tr colSpan={9}><td>Loading...</td></tr>));
+    const {t} = useTranslation();
+    const [data, setData] = useState((<tr colSpan={9}><td>{t("textLoading")}...</td></tr>));
 
     useEffect(()=>{
         if (props.data) {

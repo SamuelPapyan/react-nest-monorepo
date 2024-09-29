@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useLocation } from "react-router";
 import StudentService from "../../services/studentService";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function useQuery() {
     const {search} = useLocation();
@@ -13,31 +14,32 @@ export default function ResetStudentPassword() {
     const [box, setBox] = useState("");
     let _newPassword, _confirmPassword, _errorMessage, userId = "";
     const query = useQuery();
+    const {t} = useTranslation();
     
     const boxes = {
         loading: <>
-            <p className="text-dark text-center">Loading...</p>
+            <p className="text-dark text-center">{t("textLoading")}...</p>
         </>,
         invalid: <>
-            <h1 className="text-dark text-center">Invalid Reset Link</h1>
-            <p className="text-dark text-center">This link was expired or used or invalid.</p>
+            <h1 className="text-dark text-center">{t("textInvalidResetLink")}</h1>
+            <p className="text-dark text-center">{t("textInvalidResetLinkMessage")}</p>
         </>,
         reset: <>
-            <h1 className="text-center">Login</h1>
+            <h1 className="text-center">{t('textPasswordRecovery')}</h1>
             <br/>
             <form method="POST" onSubmit={resetPassword}>
                 <div className="form-group">
-                    <input placeholder="New Password" className="form-control" id="new-password-field" type="password" name="new_password" ref={(a) => _newPassword = a}/>
+                    <input placeholder={t('labelNewPassword')} className="form-control" id="new-password-field" type="password" name="new_password" ref={(a) => _newPassword = a}/>
                 </div>
                 <br/>
                 <div className="form-group">
-                    <input placeholder="Confirm Password" className="form-control" id="confirm-password-field" type="password" name="confirm_password" ref={(a) => _confirmPassword = a}/>
+                    <input placeholder={t('labelConfirmPassword')} className="form-control" id="confirm-password-field" type="password" name="confirm_password" ref={(a) => _confirmPassword = a}/>
                 </div>
                 <br/>
                 <p className="text-center text-dark" ref={a=> _errorMessage = a}></p>
                 <input
                     type="submit"
-                    value="Reset"
+                    value={t("textReset")}
                     className="btn btn-success"
                     style={{
                         display: "block",
@@ -46,10 +48,10 @@ export default function ResetStudentPassword() {
             </form>
         </>,
         finish: (<>
-            <h1 className="text-center text-dark">Password reset</h1>
-            <p className="text-center text-dark">Go back to login page</p>
+            <h1 className="text-center text-dark">{t("textPasswordReset")}</h1>
+            <p className="text-center text-dark">{t("textPasswordResetMessage")}</p>
             <div className="text-center">
-                <Link to="/login" className="btn btn-success">Back To Login</Link>
+                <Link to="/login" className="btn btn-success">{t("textBackToLogin")}</Link>
             </div>
         </>)
     }
@@ -57,7 +59,7 @@ export default function ResetStudentPassword() {
     function resetPassword(event) {
         event.preventDefault();
         if (_newPassword.value !== _confirmPassword.value) {
-            _errorMessage.textContent = "Two fields must be identical.";
+            _errorMessage.textContent = t("validationTwoFieldsIdentical");
             return ;
         }
         StudentService.resetPassword(userId, _newPassword.value).then(res=>{

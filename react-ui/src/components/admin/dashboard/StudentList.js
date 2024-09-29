@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next";
 
 export default function StudentList(props) {
+    const {t} = useTranslation();
     const [rows, setRows] = useState([])
 
     useEffect(()=>{
@@ -17,13 +19,13 @@ export default function StudentList(props) {
 
     return (
         <div>
-            <h2>Best Students</h2>
+            <h2>{t("textBestStudents")}</h2>
             <table className="table table-bordered border-primary w-75 m-auto">
                 <thead>
                     <tr>
-                        <th><b>Full Name</b></th>
-                        <th><b>Level</b></th>
-                        <th><b>Experience</b></th>
+                        <th><b>{t("textFullName")}</b></th>
+                        <th><b>{t("labelLevel")}</b></th>
+                        <th><b>{t("textExperience")}</b></th>
                     </tr>
                 </thead>
                 <tbody>

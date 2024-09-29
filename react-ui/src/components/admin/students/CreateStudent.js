@@ -4,9 +4,11 @@ import { useNavigate } from "react-router";
 import StudentService from "../../../services/studentService";
 import UserService from "../../../services/userService";
 import Form from 'react-bootstrap/Form';
+import {useTranslation} from "react-i18next";
 
 export default function CreateStudent()
 {
+    const {t} = useTranslation();
     const [errors, setErrors] = useState("");
     const [coaches, setCoaches] = useState([]);
     let _fullName, _age, _level, _experience, _maxExperience, _country, _username, _email, _password, _coach;
@@ -59,47 +61,47 @@ export default function CreateStudent()
             width: "90%",
             margin: "auto",
         }}>
-            <h1>Create Student</h1>
+            <h1>{t("textCreateStudent")}</h1>
             {errors}
             <form method="POST" onSubmit={submitForm}>
                 <div className="form-group">
-                    <label htmlFor="full-name-field">Full Name</label><br/>
+                    <label htmlFor="full-name-field">{t("textFullName")}</label><br/>
                     <input className="form-control" id="full-name-field" type="text" name="full-name" ref={(a) => _fullName = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="username-field">Username</label><br/>
+                    <label htmlFor="username-field">{t("labelUsername")}</label><br/>
                     <input className="form-control" id="username-field" type="text" name="username" ref={(a) => _username = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="email-field">Email</label><br/>
+                    <label htmlFor="email-field">{t("labelEmail")}</label><br/>
                     <input className="form-control" id="email-field" type="text" name="email" ref={(a) => _email = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password-field">Password</label><br/>
+                    <label htmlFor="password-field">{t("labelPassword")}</label><br/>
                     <input className="form-control" id="password-field" type="password" name="password" ref={(a) => _password = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="age-field">Age</label><br/>
+                    <label htmlFor="age-field">{t("labelAge")}</label><br/>
                     <input className="form-control" id="age-field" type="text" name="age" ref={(a) => _age = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="level-field">Level</label><br/>
+                    <label htmlFor="level-field">{t("labelLevel")}</label><br/>
                     <input className="form-control" id="level-field" type="text" name="level" ref={(a) => _level = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="experience-field">Experience</label><br/>
+                    <label htmlFor="experience-field">{t("labelExperience")}</label><br/>
                     <input className="form-control" id="experience-field" type="text" name="experience" ref={(a) => _experience = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="max-experience-field">Max Experience</label><br/>
+                    <label htmlFor="max-experience-field">{t("labelMaxExperience")}</label><br/>
                     <input className="form-control" id="max-experience-field" type="text" name="max-experience" ref={(a) => _maxExperience = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="country-field">Country</label><br/>
+                    <label htmlFor="country-field">{t("labelCountry")}</label><br/>
                     <input className="form-control" id="country-field" type="text" name="country" ref={(a) => _country = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="coach-field">Coach</label><br/>
+                    <label htmlFor="coach-field">{t("textCoach")}</label><br/>
                     <Form.Select defaultValue="Cakes" ref={a=> _coach = a}>
                         {coaches}
                     </Form.Select>
@@ -111,13 +113,13 @@ export default function CreateStudent()
                     }}>
                     <input
                         type="submit"
-                        value="Create"
+                        value={t("textCreate")}
                         className="btn btn-primary"
                         style={{
                             margin: "0 20px 0 0" 
                         }}
                         />
-                    <Link to="/admin/students" className="btn btn-primary">Cancel</Link>
+                    <Link to="/admin/students" className="btn btn-primary">{t("textCancel")}</Link>
                 </div>
             </form>
         </div>

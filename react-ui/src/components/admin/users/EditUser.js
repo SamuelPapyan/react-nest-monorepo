@@ -3,9 +3,11 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import UserService from "../../../services/userService"
 import Multiselect from "multiselect-react-dropdown";
+import {useTranslation} from "react-i18next";
 
 export default function EditUser()
 {
+    const {t} = useTranslation();
     const [errors, setErrors] = useState("");
     const [connectionErrorMessage, setConnectionErrorMessage] = useState("");
     const {id} = useParams();
@@ -14,10 +16,10 @@ export default function EditUser()
     const navigate = useNavigate();
 
     const rolesInput = [
-        { 'name': 'VIEWER', 'value': "viewer" },
-        { 'name': 'EDITOR', 'value': "editor" },
-        { 'name': 'ADMIN', 'value': "admin" },
-        { 'name': 'COACH', 'value': "coach"}
+        { 'name': t('textVIEWER'), 'value': "viewer" },
+        { 'name': t('textEDITOR'), 'value': "editor" },
+        { 'name': t('textADMIN'), 'value': "admin" },
+        { 'name': t('textCOACH'), 'value': "coach"}
     ]
 
     function submitForm(event) {
@@ -55,7 +57,7 @@ export default function EditUser()
     }
 
     useEffect(()=>{
-        document.title = "Edit Staff";
+        document.title = t("textEditStaff");
         UserService.getUserById(id).then(res=>{
             if (res.success){
                 if (_firstName) _firstName.value = res.data.first_name;
@@ -74,32 +76,32 @@ export default function EditUser()
             width: "90%",
             margin: "auto",
         }}>
-            <h1>Edit Staff</h1>
+            <h1>{t("textEditStaff")}</h1>
             {connectionErrorMessage}
             {errors}
             <form method="POST" onSubmit={submitForm}>
                 <div className="form-group">
-                    <label htmlFor="first-name-field">First Name</label><br/>
+                    <label htmlFor="first-name-field">{t("labelFirstName")}</label><br/>
                     <input className="form-control" id="first-name-field" type="text" name="first-name" ref={(a) => _firstName = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="last-name-field">Last Name</label><br/>
+                    <label htmlFor="last-name-field">{t("labelLastName")}</label><br/>
                     <input className="form-control" id="last-name-field" type="text" name="last-name" ref={(a) => _lastName = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="email-field">Email</label><br/>
+                    <label htmlFor="email-field">{t("labelEmail")}</label><br/>
                     <input className="form-control" id="email-field" type="text" name="email" ref={(a) => _email = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="username-field">Username</label><br/>
+                    <label htmlFor="username-field">{t("labelUsername")}</label><br/>
                     <input className="form-control" id="username-field" type="text" name="username" ref={(a) => _username = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="password-field">Password</label><br/>
+                    <label htmlFor="password-field">{t("labelPassword")}</label><br/>
                     <input className="form-control" id="password-field" type="password" name="password" ref={(a) => _password = a}/>
                 </div>
                 <div className="form-group">
-                    <label>Roles</label>
+                    <label>{t("textRoles")}</label>
                     <Multiselect
                         options={rolesInput}
                         selectedValues={roles}
@@ -114,13 +116,13 @@ export default function EditUser()
                     }}>
                     <input
                         type="submit"
-                        value="Save"
+                        value={t("textSave")}
                         className="btn btn-primary"
                         style={{
                             margin: "0 20px 0 0" 
                         }}
                         />
-                    <Link to="/admin/users" className="btn btn-primary">Cancel</Link>
+                    <Link to="/admin/users" className="btn btn-primary">{t("textCancel")}</Link>
                 </div>
             </form>
         </div>

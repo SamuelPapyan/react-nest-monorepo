@@ -2,9 +2,12 @@ import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom"
 import { useNavigate } from "react-router";
 import StudentService from "../../../services/studentService";
+import { useTranslation } from "react-i18next";
 
 export default function StudentRow(props)
 {
+    const {t} = useTranslation();
+
     const [studentId, setStudentId] = useState("");
     const [fullName, setFullName] = useState("");
     const [age, setAge] = useState(0);
@@ -55,13 +58,13 @@ export default function StudentRow(props)
             <td>{coach}</td>
             {(props.userType === "ADMIN" || props.userType === "EDITOR") ? 
             <td>
-                <Link to={`/admin/students/edit/${studentId}`} className="btn btn-primary">Edit</Link>
+                <Link to={`/admin/students/edit/${studentId}`} className="btn btn-primary">{t("textEdit")}</Link>
             </td>
             : ""}
             {props.userType === "ADMIN" ? 
             <td>
             <button className="btn btn-danger" onClick={removeStudent}>
-                Delete
+                {t("textDelete")}
             </button>
             </td>
             : ""}

@@ -4,9 +4,11 @@ import { useState, useEffect} from "react";
 import UserService from "../../../services/userService";
 import SearchBar from "../SearchBar";
 import AuthService from "../../../services/authService";
+import { useTranslation } from "react-i18next";
 
 export default function UserList()
 {
+    const {t} = useTranslation();
     const [updated, setUpdated] = useState(false);
     const [data, setData] = useState(null);
     const [connected, setConnected] = useState(true);
@@ -14,7 +16,7 @@ export default function UserList()
 
     useEffect(()=>{
         if (!updated) {
-            document.title = "Staff List";
+            document.title = t("textStaffList");
             UserService.getAllUsers().then(res=>{
                 if (res.success){
                     setData(res.data);
@@ -47,10 +49,10 @@ export default function UserList()
         <div id="staff-list-body" style={{
             margin:"0 30px"
         }}>
-            <h1>Staff List</h1>
+            <h1>{t("textStaffList")}</h1>
             <SearchBar searchFunc="users" cb={searchCallback}/>
             <UserTable data={data} connected={connected} userType={userType}/>
-            {userType === "ADMIN" ? <Link to="/admin/staff/create" className="btn btn-primary">Create</Link> : ""}
+            {userType === "ADMIN" ? <Link to="/admin/staff/create" className="btn btn-primary">{t("textCreate")}</Link> : ""}
         </div>
     )
 }

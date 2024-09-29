@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import WorkshopsServices from "../../../services/workshopsService";
 import AuthService from "../../../services/authService";
 import SearchBar from "../SearchBar";
+import { useTranslation } from "react-i18next";
 
 export default function WorkshopsList() {
+    const {t} = useTranslation();
     const [data, setData] = useState(null);
     const [connected, setConnected] = useState(true);
     const [updated, setUpdated] = useState(false);
@@ -46,10 +48,10 @@ export default function WorkshopsList() {
         <div id="workshops-list-body" style={{
             margin:"0 30px"
         }}>
-            <h1>Workshops List</h1>
+            <h1>{t("textWorkshopsList")}</h1>
             <SearchBar searchFunc="workshops" cb={searchCallback}/>
             <WorkshopsTable data={data} connected={connected} userType={userType}/>
-            {( userType === "ADMIN") ? <Link to="/admin/workshops/create" className="btn btn-primary">Create Workshop</Link> : ""}
+            {( userType === "ADMIN") ? <Link to="/admin/workshops/create" className="btn btn-primary">{t("textCreateWorkshop")}</Link> : ""}
         </div>
     )
 }

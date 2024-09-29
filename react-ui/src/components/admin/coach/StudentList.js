@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react"
 import StudentRow from "./StudentRow";
+import { useTranslation } from "react-i18next";
 
 export default function StudentList(props) {
+    const {t} = useTranslation();
     const [list, setList] = useState([]);
     const [updated, setUpdated] = useState(false);
     useEffect(()=>{
@@ -14,7 +16,7 @@ export default function StudentList(props) {
     }, [updated, props.data])
     return (
         <div>
-            <h1>My Students</h1>
+            <h1>{t("textMyStudents")}</h1>
             {list}
         </div>
     )

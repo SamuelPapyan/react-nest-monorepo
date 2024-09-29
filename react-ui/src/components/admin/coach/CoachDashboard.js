@@ -5,8 +5,10 @@ import StudentList from "./StudentList";
 import { socket } from "../../../socket";
 import { useOutletContext } from "react-router";
 import GroupChatView from "./GroupChatView";
+import { useTranslation } from "react-i18next";
 
 export default function CoachDashboard(props) {
+    const {t} = useTranslation();
     const [data, setData] = useState(null);
     const [updated, setUpdated] = useState(false);
     const userData = useOutletContext();
@@ -35,7 +37,7 @@ export default function CoachDashboard(props) {
     })
 
     useEffect(()=>{
-        document.title = "Coach Dashboard"
+        document.title = t("textCoachDashboard")
         if (!updated) {
             if (window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)) {
                 AuthService.getProfile().then(res=>{

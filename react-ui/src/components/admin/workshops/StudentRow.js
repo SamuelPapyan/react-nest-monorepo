@@ -1,6 +1,8 @@
 import { useState } from "react"
+import { useTranslation } from "react-i18next";
 
 export default function StudentRow(props) {
+    const {t} = useTranslation();
     const [hidden, setHidden] = useState(false);
 
     return (
@@ -11,7 +13,7 @@ export default function StudentRow(props) {
                 e.preventDefault();
                 setHidden(true);
                 props.remove(props.value)
-            }}>Unregister</button>
+            }}>{t("textUnregister")}</button>
         </div>) : ""}
         </>
     )

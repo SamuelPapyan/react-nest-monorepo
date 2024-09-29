@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import WorkshopsService from '../../../services/workshopsService';
 import Multiselect from "multiselect-react-dropdown";
+import {useTranslation} from "react-i18next";
 
 export default function CreateWorkshop() {
+    const {t} = useTranslation();
     const [errors, setErrors] = useState("");
     const [days, setDays] = useState([]);
     let _title, _description, _startTime, _endTime, _dateInput;
@@ -62,7 +64,7 @@ export default function CreateWorkshop() {
     }
 
     useEffect(()=>{
-        document.title = "Create Workshop";
+        document.title = t("textCreateWorkshop");
     })
 
     return (
@@ -70,29 +72,29 @@ export default function CreateWorkshop() {
             width: "90%",
             margin: "auto",
         }}>
-            <h1>Create Workshop</h1>
+            <h1>{t("textCreateWorkshop")}</h1>
             {errors}
             <form method='POST' onSubmit={submitForm}>
                 <div className="form-group">
-                    <label htmlFor="title-field">Title</label><br/>
+                    <label htmlFor="title-field">{t("labelWorkshopTitle")}</label><br/>
                     <input className="form-control" id="title-field" type="text" name="title" ref={(a) => _title = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="description-field">Description</label><br/>
+                    <label htmlFor="description-field">{t("labelDescription")}</label><br/>
                     <input className="form-control" id="description-field" type="text" name="description" ref={(a) => _description = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="start-time-field">Start Time</label><br/>
+                    <label htmlFor="start-time-field">{t("labelWorkshopStartTime")}</label><br/>
                     <input className="form-control" id="start-time-field" type="time" name="start-time" ref={(a) => _startTime = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="end-time-field">End Time</label><br/>
+                    <label htmlFor="end-time-field">{t("labelWorkshopEndTime")}</label><br/>
                     <input className="form-control" id="end-time-field" type="time" name="end-time" ref={(a) => _endTime = a}/>
                 </div>
                 <div className="form-group">
-                    <label>Days</label>
+                    <label>{t("labelDays")}</label>
                     <input className='form-control' id="days-field" type="date" ref={a=> _dateInput = a}/>
-                    <button className='btn btn-primary' onClick={appendDay}>Add</button>
+                    <button className='btn btn-primary' onClick={appendDay}>{t("textAdd")}</button>
                     <Multiselect
                         options={[]}
                         selectedValues={days}
@@ -107,13 +109,13 @@ export default function CreateWorkshop() {
                     }}>
                     <input
                         type="submit"
-                        value="Create"
+                        value={t("textCreate")}
                         className="btn btn-primary"
                         style={{
                             margin: "0 20px 0 0" 
                         }}
                         />
-                    <Link to="/admin/workshops" className="btn btn-primary">Cancel</Link>
+                    <Link to="/admin/workshops" className="btn btn-primary">{t("textCancel")}</Link>
                 </div>
             </form>
         </div>

@@ -2,8 +2,10 @@ import React, {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import WorkshopsService from "../../../services/workshopsService";
+import {useTranslation} from "react-i18next";
 
 export default function WorkshopRow(props) {
+    const {t} = useTranslation();
     const [workshopId, setWorkshopId] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -44,13 +46,13 @@ export default function WorkshopRow(props) {
             <td>{students}</td>
             {(props.userType === "ADMIN" || props.userType === "EDITOR") ? 
             <td>
-                <Link to={`/admin/workshops/edit/${workshopId}`} className="btn btn-primary">Edit</Link>
+                <Link to={`/admin/workshops/edit/${workshopId}`} className="btn btn-primary">{t("textEdit")}</Link>
             </td>
             : ""}
             {props.userType === "ADMIN" ? 
             <td>
             <button className="btn btn-danger" onClick={removeWorkshop}>
-                Delete
+                {t("textDelete")}
             </button>
             </td>
             : ""}

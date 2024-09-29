@@ -8,8 +8,10 @@ import {
 } from 'mdb-react-ui-kit';
 import '../../style/SideBar.css';
 import AuthService from '../../services/authService';
+import { useTranslation } from 'react-i18next';
 
 export default function SideBar() {
+  const {t} = useTranslation();
   const [isCoach, setIsCoach] = useState(false);
   useEffect(()=>{
     AuthService.getProfile().then(res=>{
@@ -39,28 +41,28 @@ export default function SideBar() {
             <MDBRipple rippleTag='span' className='bg-dark'>
               <MDBListGroupItem tag='a' href='/admin' className='elem border-0 rounded rounded' active={(window.location.pathname === '/admin') ? true : false}>
                 <MDBIcon fas icon="tachometer-alt me-3" />
-                Dashboard
+                {t("textDashboard")}
               </MDBListGroupItem>
             </MDBRipple>
 
             <MDBRipple rippleTag='span' className='bg-dark'>
               <MDBListGroupItem tag='a' href='/admin/students' className='elem border-0 rounded' active={(window.location.pathname.indexOf('/admin/students') > -1) ? true : false}>
                 <MDBIcon fas icon="chart-area me-3" />
-                Students
+                {t("textStudents")}
               </MDBListGroupItem>
             </MDBRipple>
 
             <MDBRipple rippleTag='span' className='bg-dark'>
               <MDBListGroupItem tag='a' href='/admin/staff' className='elem border-0 rounded' active={(window.location.pathname.indexOf('/admin/staff') > -1) ? true : false}>
                 <MDBIcon fas icon="lock me-3" />
-                Staff
+                {t("textStaff")}
               </MDBListGroupItem>
             </MDBRipple>
 
             <MDBRipple rippleTag='span' className='bg-dark'>
               <MDBListGroupItem tag='a' href='/admin/workshops' className='elem border-0 rounded' active={(window.location.pathname.indexOf('/admin/workshops') > -1) ? true : false}>
                 <MDBIcon fas icon="lock me-3" />
-                Workshops
+                {t("textWorkshops")}
               </MDBListGroupItem>
             </MDBRipple>
             {
@@ -68,7 +70,7 @@ export default function SideBar() {
                 <MDBRipple rippleTag='span' className='bg-dark'>
                   <MDBListGroupItem tag='a' href='/admin/coach' className='elem border-0 rounded' active={(window.location.pathname.indexOf('/admin/coach') > -1) ? true : false}>
                     <MDBIcon fas icon="lock me-3" />
-                    Coach Dashboard
+                    {t("textCoachDashboard")}
                   </MDBListGroupItem>
                 </MDBRipple>
               ) : ""

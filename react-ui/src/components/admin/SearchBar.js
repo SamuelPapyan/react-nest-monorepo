@@ -2,8 +2,10 @@ import StudentService from "../../services/studentService";
 import StaffService from "../../services/staffService";
 import WorkshopsService from "../../services/workshopsService";
 import UserService from "../../services/userService";
+import {useTranslation} from "react-i18next"
 
 export default function SearchBar(props) {
+    const {t} = useTranslation();
 
     const searchFunctions = {
         "staff": StaffService.searchStaff,
@@ -30,7 +32,7 @@ export default function SearchBar(props) {
         <div className="search-bar">
             <input type="text" ref={a => _search=a}/>
             <button onClick={searchResult} className="btn btn-primary">
-                <i>Search</i>
+                <i>{t("textSearch")}</i>
             </button>
         </div>
     )
