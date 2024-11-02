@@ -53,7 +53,7 @@ export default function GroupChatView(props) {
         <>
             <h2>{t("textGroupChats")}</h2>
             <GroupChatList data={chats} userData={props.userData} updateFunction={setUpdated} students={data}/>
-            <Button variant="primary" onClick={handleShow}>
+            <Button variant="primary" onClick={handleShow} className="hover-size">
                 {t("textCreateGroupChat")}
             </Button>
 

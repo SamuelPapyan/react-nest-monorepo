@@ -1,7 +1,9 @@
 import React, {useEffect} from "react";
+import {useTranslation} from 'react-i18next'
 
 export default function ChatContent(props) {
     let body;
+    const {t} = useTranslation();
 
     useEffect(()=>{
         if (props.data) {
@@ -14,7 +16,7 @@ export default function ChatContent(props) {
         const date = new Date(props.data.timeSent);
         const dateString = date.toLocaleString();
         if (props.data.user === props.user) {
-            sender = "me";
+            sender = t("textMe");
         } else {
             sender = (props.data.user === props.user && props.isStaff) ? ("Coach " + props.data.user) : props.data.user;
         }
@@ -36,10 +38,12 @@ export default function ChatContent(props) {
     const styleMap = {}
     if (props.data.user === props.user) {
         styleMap.float = 'left';
+        styleMap.textAlign = 'left';
         styleMap.backgroundColor = props.styles.primaryColor;
         styleMap.color = 'white';
     } else {
         styleMap.float = 'right';
+        styleMap.textAlign = 'right';
         styleMap.backgroundColor = "#acacac";
         styleMap.color = 'black';
     }

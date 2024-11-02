@@ -82,16 +82,11 @@ export default function GroupChatRow(props) {
                         {t("textDelete")}
                     </button>
                     <div>
-                        <img className="d-block"
+                        <img className="d-block chat-image"
                         alt="Chat Icon"
                         src={"/images/chat_icon.svg"} 
                         onClick={()=>setVisible(!visible)}
-                        style={{
-                            width:40,
-                            height:40,
-                            marginLeft: 10,
-                            cursor: "pointer",
-                        }}/>
+                        />
                         <ChatWindow
                         setVisible={setVisible}
                         type="group_chat"

@@ -98,27 +98,43 @@ export class ChatService {
     return this.rooms
   }
 
-  predict(input: string): string {
-    const tokens = splitTokens(input)
-    return predict(chatbotModel, tokens)
+  predict(input: string, lang: string): string {
+    const tokens = splitTokens(input);
+    return predict(chatbotModel[lang], tokens);
   }
 
-  async chatbotResponse(label: string, username: string): Promise<any> {
-    let res = [chatbotResponse(label)];
-    res = [...res, ...(await this.chatbotExtraResponse(label, username))];
+  async chatbotResponse(
+    label: string,
+    username: string,
+    locale: string,
+  ): Promise<any> {
+    let res = [chatbotResponse(label, locale)];
+    res = [
+      ...res,
+      ...(await this.chatbotExtraResponse(label, username, locale)),
+    ];
     return res;
   }
 
   async chatbotExtraResponse(
     label: string | null,
     username: string,
+    locale: string
   ): Promise<any> {
     if (label) {
+      const translations = {
+        en: {
+          list_of_workshops: 'List of workshops:',
+        },
+        hy: {
+          list_of_workshops: 'Աշխատարանների ցուցակը՝ ',
+        }
+      }
       if (label === 'workshops') {
         const workshops = (await this.workshopModel.find().lean().exec()).map(
           (item) => item.title,
         );
-        return ['List of workshops: ', workshops];
+        return [translations[locale]['list_of_workshops'], workshops];
       }
       if (label === 'my_workshops') {
         const workshops = (

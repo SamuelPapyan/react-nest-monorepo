@@ -46,7 +46,7 @@ export default function CreateStudent()
     }
 
     useEffect(()=>{
-        document.title = "Create Student";
+        document.title = t("textCreateStudent");
         UserService.getCoaches().then(res=>{
             if (res.success) {
                 setCoaches(res.data.map((val, key)=>{

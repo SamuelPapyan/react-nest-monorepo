@@ -90,7 +90,12 @@
             "textEditGroupChat": "Edit Group Chat",
             "labelDays": "Days",
             "textAdd": "Add",
-            "textUnregister": "Unregister"
+            "textMe": "me",
+            "textStudentDashboard": "Student Dashboard",
+            "textUnregister": "Unregister",
+            "dimenChatInputWidth": "75%",
+            "dimenChatSendWidth": "20%",
+            "textExperience": "Experience"
         }
     },
     "hy": {
@@ -184,7 +189,12 @@
             "textMyStudents":"Իմ ուսանողները",
             "labelDays": "Օրեր",
             "textAdd": "Ավելացնել",
-            "textUnregister": "Չեղարկել գրանցումը"
+            "textMe": "ես",
+            "textStudentDashboard": "Ուսանողի շավիղ",
+            "textUnregister": "Չեղարկել գրանցումը",
+            "dimenChatInputWidth": "70%",
+            "dimenChatSendWidth": "28%",
+            "textExperience": "Փորձի միավորներ"
         }
     }
 }

@@ -20,7 +20,7 @@ export default function AuthPanel(props) {
               if (res.success) {
                   setSwitchComponent(
                     <div>
-                      <select value={window.localStorage.getItem('react-nest-monorepo-lang')} onChange={props.changeLang}>
+                      <select id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
                           <option value="en">English</option>
                           <option value="hy">Հայերեն</option>
                       </select>

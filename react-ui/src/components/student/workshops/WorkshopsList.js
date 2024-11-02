@@ -3,14 +3,19 @@ import { useOutletContext } from "react-router-dom";
 import StudentService from "../../../services/studentService";
 import WorkshopItem from "./WorkshopItem";
 import { useTranslation } from "react-i18next";
+import {OrbitProgress} from 'react-loading-indicators'
 
 export default function WorkshopsList() {
     const {t} = useTranslation();
     const [updated, setUpdated] = useState(false);
-    const [data, setData] = useState(<span>{t("textLoading")}...</span>);
+    const [data, setData] = useState(<>
+        <OrbitProgress variant="disc" dense color="#198754" size="medium" text="" textColor="" />
+        <p>{t("textLoading")}...</p>
+    </>);
     const studentData = useOutletContext();
 
     useEffect(()=>{
+        document.title = t("textWorkshops");
         if (!updated) {
             StudentService.getWorkshops().then((res)=>{
                 if (res.success) {

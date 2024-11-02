@@ -97,19 +97,7 @@ export default function ChatWindow(props) {
 
     const styles = {
         modalWindow: {
-            position: "fixed",
-            bottom: "70px",
-            right: "20px",
-            width: "370px",
-            height: "65vh",
-            maxWidth: "calc(100% - 48px)",
-            maxHeight: "calc(100% - 48px)",
-            backgroundColor: "white",
-            borderRadius: "12px",
-            border: "2px solid " + props.styles.primaryColor,
-            overflow: "hidden",
-            boxShadow: "0px 0px 16px 6px rgba(0, 0, 0, 0.33)",
-            paddingTop: "20px"
+            borderColor: props.styles.primaryColor,
         },
     }
 
@@ -133,6 +121,7 @@ export default function ChatWindow(props) {
                 timeSent: Date.now(),
                 message: _chatInput.value,
                 roomName: chatName,
+                lang: window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"
             })
             _chatInput.value = "";
         }
@@ -154,7 +143,7 @@ export default function ChatWindow(props) {
     }
 
     return (
-        <div
+        <div className="chat-window"
             style={{
                 ...styles.modalWindow,
                 visibility: props.visible ? 'visible' : 'collapse',
@@ -202,7 +191,7 @@ export default function ChatWindow(props) {
             }}>
                 <textarea style={{
                     height:'100%',
-                    width:'75%',
+                    width:t("dimenChatInputWidth"),
                 }} type="text"
                 className="d-block"
                 ref={a=>_chatInput = a}></textarea>
@@ -210,7 +199,7 @@ export default function ChatWindow(props) {
                     backgroundColor: props.styles.primaryColor,
                     color: 'white',
                     height:'100%',
-                    width:'20%',
+                    width: t("dimenChatSendWidth"),
                 }}
                 onClick={sendChatMessage}>{t("textSend")}</button>
             </div>

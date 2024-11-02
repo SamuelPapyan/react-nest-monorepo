@@ -2,11 +2,16 @@ import UserHeader from './UserHeader';
 import UserRow from './UserRow';
 import {useState, useEffect} from "react";
 import { useTranslation } from 'react-i18next';
+import {OrbitProgress} from 'react-loading-indicators'
 
 export default function UserTable(props)
 {
     const {t} = useTranslation();
-    const [data, setData] = useState(<tr colSpan={7}><td>{t("textLoading")}...</td></tr>);
+    const [data, setData] = useState((<tr colSpan={9}><td><>
+        <OrbitProgress variant="disc" dense color="#005CA9" size="medium" text="" textColor="" />
+        <p>{t("textLoading")}...</p>
+        </>
+    </td></tr>));
 
     useEffect(()=>{
         if (props.data) {

@@ -15,7 +15,7 @@ export default function WorkshopsList() {
 
     useEffect(()=>{
         if (!updated) {
-            document.title = "Workshops List";
+            document.title = t("textWorkshopsList");
             WorkshopsServices.getAllWorkshops().then(res=>{
                 if (res.success) {
                     setData(res.data);

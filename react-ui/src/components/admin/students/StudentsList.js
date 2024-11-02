@@ -16,7 +16,7 @@ export default function StudentsList()
     
     useEffect(()=>{
         if (!updated) {
-            document.title = "Students List";
+            document.title = t("textStudentsList");
             StudentService.getAllStudents().then(res=>{
                 if (res.success){
                     setData(res.data);

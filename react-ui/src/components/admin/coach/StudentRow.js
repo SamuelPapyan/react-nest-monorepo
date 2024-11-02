@@ -17,16 +17,11 @@ export default function StudentRow(props) {
                 }}/>
                 : ""}
                 <div>
-                    <img className="d-block"
+                    <img className="d-block chat-image"
                     alt="Chat Icon"
                     src={"/images/chat_icon.svg"} 
                     onClick={()=>setVisible(!visible)}
-                    style={{
-                        width:40,
-                        height:40,
-                        marginLeft: 10,
-                        cursor: "pointer",
-                    }}/>
+                    />
                     <ChatWindow
                       type="dm"
                       setVisible={setVisible}

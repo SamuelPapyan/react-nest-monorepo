@@ -30,7 +30,11 @@ export default function SearchBar(props) {
 
     return (
         <div className="search-bar">
-            <input type="text" ref={a => _search=a}/>
+            <input type="text" ref={a => _search=a} style={{
+                borderRadius: 25,
+                border: "1px solid #005CA9",
+                paddingLeft:10,
+            }}/>
             <button onClick={searchResult} className="btn btn-primary">
                 <i>{t("textSearch")}</i>
             </button>

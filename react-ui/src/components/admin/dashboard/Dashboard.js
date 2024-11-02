@@ -28,6 +28,7 @@ export default function Dashboard() {
     </div>
 
     useEffect(()=>{
+        document.title = t("textDashboard");
         if (!updated) {
             DashboardService.getDashboardData().then(res=>{
                 setStudentCount(res.studentsCount);
