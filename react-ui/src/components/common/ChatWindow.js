@@ -136,8 +136,10 @@ export default function ChatWindow(props) {
         refreshChat(chatId, event.target.value, props.userId);
         if (event.target.value.indexOf("chatbot") > -1) {
             setWindowMessage(t("textChatWithAiMessage"))
-        } else {
+        } else if (event.target.value.indexOf(props.data.coach) > -1) {
             setWindowMessage(t("textChatWithCoachMessage"))
+        } else {
+            setWindowMessage(t("textGroupChat"));
         }
         chatId = event.target.value;
     }

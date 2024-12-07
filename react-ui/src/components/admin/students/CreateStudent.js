@@ -11,13 +11,14 @@ export default function CreateStudent()
     const {t} = useTranslation();
     const [errors, setErrors] = useState("");
     const [coaches, setCoaches] = useState([]);
-    let _fullName, _age, _level, _experience, _maxExperience, _country, _username, _email, _password, _coach;
+    let _fullName, _fullNameHy, _age, _level, _experience, _maxExperience, _country, _username, _email, _password, _coach;
     const navigate = useNavigate();
     
     function submitForm(event){
         event.preventDefault();
         const requestData = {
-            full_name: _fullName.value,
+            full_name_en: _fullName.value,
+            full_name_hy: _fullNameHy.value,
             age: _age.value,
             level: _level.value,
             experience: _experience.value,
@@ -65,8 +66,12 @@ export default function CreateStudent()
             {errors}
             <form method="POST" onSubmit={submitForm}>
                 <div className="form-group">
-                    <label htmlFor="full-name-field">{t("textFullName")}</label><br/>
-                    <input className="form-control" id="full-name-field" type="text" name="full-name" ref={(a) => _fullName = a}/>
+                    <label htmlFor="full-name-en-field">{t("textFullNameEn")}</label><br/>
+                    <input className="form-control" id="full-name-en-field" type="text" name="full-name-en" ref={(a) => _fullName = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="full-name-hy-field">{t("textFullNameHy")}</label><br/>
+                    <input className="form-control" id="full-name-hy-field" type="text" name="full-name-hy" ref={(a) => _fullNameHy = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="username-field">{t("labelUsername")}</label><br/>

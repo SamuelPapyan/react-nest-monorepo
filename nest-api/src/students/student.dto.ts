@@ -9,7 +9,11 @@ import {
 export class StudentDTO {
   @IsString()
   @IsNotEmpty()
-  full_name: string;
+  full_name_en: string;
+
+  @IsString()
+  @IsNotEmpty()
+  full_name_hy: string;
 
   @IsNumberString()
   @IsNotEmpty()

@@ -31,8 +31,8 @@ export default function UserRow(props)
 
     useEffect(()=>{
         setUserId(props.data._id);
-        setFirstName(props.data.first_name);
-        setLastName(props.data.last_name);
+        setFirstName(window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.first_name_hy : props.data.first_name_en);
+        setLastName(window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.last_name_hy : props.data.last_name_en);
         setEmail(props.data.email);
         setUsername(props.data.username);
         setRoles(props.data.roles.map(value=>t("text" + value.toUpperCase())).join(" | "));

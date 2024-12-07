@@ -6,8 +6,11 @@ export type StudentDocument = HydratedDocument<Student>;
 @Schema()
 export class Student {
   @Prop({ required: true })
-  full_name: string;
+  full_name_en: string;
 
+  @Prop({ required: true})
+  full_name_hy: string;
+  
   @Prop({ required: true })
   age: number;
 

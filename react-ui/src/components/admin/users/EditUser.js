@@ -12,7 +12,7 @@ export default function EditUser()
     const [connectionErrorMessage, setConnectionErrorMessage] = useState("");
     const {id} = useParams();
     const [roles, setRoles] = useState([]);
-    let _firstName, _lastName, _email, _username, _password, _roles = React.createRef();
+    let _firstName, _firstNameHy, _lastName, _lastNameHy, _email, _username, _password, _roles = React.createRef();
     const navigate = useNavigate();
 
     const rolesInput = [
@@ -25,8 +25,10 @@ export default function EditUser()
     function submitForm(event) {
         event.preventDefault();
         const requestData = {
-            first_name: _firstName.value,
-            last_name: _lastName.value,
+            first_name_en: _firstName.value,
+            first_name_hy: _firstNameHy.value,
+            last_name_en: _lastName.value,
+            last_name_hy: _lastNameHy.value,
             email: _email.value,
             username: _username.value,
             password: _password.value,
@@ -60,8 +62,10 @@ export default function EditUser()
         document.title = t("textEditStaff");
         UserService.getUserById(id).then(res=>{
             if (res.success){
-                if (_firstName) _firstName.value = res.data.first_name;
-                if (_lastName) _lastName.value = res.data.last_name;
+                if (_firstName) _firstName.value = res.data.first_name_en;
+                if (_firstNameHy) _firstNameHy.value = res.data.first_name_hy ?? "";
+                if (_lastName) _lastName.value = res.data.last_name_en;
+                if (_lastNameHy) _lastNameHy.value = res.data.last_name_hy ?? "";
                 if (_email) _email.value = res.data.email;
                 if (_username) _username.value = res.data.username;
                 setRoles(res.data.roles.map((value)=>{return {'name':value.toUpperCase(), 'value':value}}));
@@ -81,12 +85,20 @@ export default function EditUser()
             {errors}
             <form method="POST" onSubmit={submitForm}>
                 <div className="form-group">
-                    <label htmlFor="first-name-field">{t("labelFirstName")}</label><br/>
-                    <input className="form-control" id="first-name-field" type="text" name="first-name" ref={(a) => _firstName = a}/>
+                    <label htmlFor="first-name-en-field">{t("labelFirstNameEn")}</label><br/>
+                    <input className="form-control" id="first-name-en-field" type="text" name="first-name-en" ref={(a) => _firstName = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="last-name-field">{t("labelLastName")}</label><br/>
-                    <input className="form-control" id="last-name-field" type="text" name="last-name" ref={(a) => _lastName = a}/>
+                    <label htmlFor="first-name-hy-field">{t("labelFirstNameHy")}</label><br/>
+                    <input className="form-control" id="first-name-hy-field" type="text" name="first-name-hy" ref={(a) => _firstNameHy = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="last-name-en-field">{t("labelLastNameEn")}</label><br/>
+                    <input className="form-control" id="last-name-en-field" type="text" name="last-name-en" ref={(a) => _lastName = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="last-name-hy-field">{t("labelLastNameHy")}</label><br/>
+                    <input className="form-control" id="last-name-hy-field" type="text" name="last-name-hy" ref={(a) => _lastNameHy = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="email-field">{t("labelEmail")}</label><br/>

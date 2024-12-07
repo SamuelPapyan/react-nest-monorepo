@@ -24,8 +24,12 @@ export class WorkshopService {
         const options = {}
         if (query || student) {
             options['$or'] = [];
-            if (query)
-                options['$or'].push({title: {$regex: new RegExp(query), $options:"i"}});
+            if (query) {
+                options['$or'].push({title_en: {$regex: new RegExp(query), $options:"i"}});
+                options['$or'].push({title_hy: {$regex: new RegExp(query), $options:"i"}});
+                options['$or'].push({description_en: {$regex: new RegExp(query), $options:"i"}});
+                options['$or'].push({description_hy: {$regex: new RegExp(query), $options:"i"}});
+            }
             if (student)
                 options['$or'].push({students: student});
         }

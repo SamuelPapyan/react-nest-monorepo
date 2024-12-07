@@ -132,14 +132,14 @@ export class ChatService {
       }
       if (label === 'workshops') {
         const workshops = (await this.workshopModel.find().lean().exec()).map(
-          (item) => item.title,
+          (item) => (locale == 'hy' ? item.title_hy : item.title_en),
         );
         return [translations[locale]['list_of_workshops'], workshops];
       }
       if (label === 'my_workshops') {
         const workshops = (
           await this.workshopModel.find({ students: username }).lean().exec()
-        ).map((item) => item.title);
+        ).map((item) => (locale == 'hy' ? item.title_hy : item.title_en));
         return [workshops];
       }
       if (label.indexOf('coach') > -1) {
@@ -149,8 +149,13 @@ export class ChatService {
         const coach: User = await this.userModel.findOne({
           username: student.coach,
         });
+        const coachFullName =
+          locale == 'hy'
+            ? `${coach.first_name_hy} ${coach.last_name_hy}`
+            : `${coach.first_name_en} ${coach.last_name_en}`;
+
         const coachMetadata = {
-          name: `${coach.first_name} ${coach.last_name}`,
+          name: coachFullName,
           username: coach.username,
           email: coach.email,
         }

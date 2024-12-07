@@ -28,8 +28,8 @@ export default function WorkshopRow(props) {
 
     useEffect(()=>{
         setWorkshopId(props.data._id);
-        setTitle(props.data.title);
-        setDescription(props.data.description);
+        setTitle(window.localStorage.getItem("react-nest-monorepo-lang") == "hy" ? props.data.title_hy : props.data.title_en);
+        setDescription(window.localStorage.getItem("react-nest-monorepo-lang") == "hy" ? props.data.description_hy : props.data.description_en);
         setStartTime(props.data.start_time);
         setEndTime(props.data.end_time);
         setCount(props.data.days.length);
