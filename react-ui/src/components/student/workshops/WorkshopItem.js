@@ -16,7 +16,10 @@ export default function WorkshopItem(props) {
                             onClick={() => setModalShow(true)}
                             style={{
                                 textDecoration: "none",
-                            }}>{props.data.title}</a>
+                            }}>{
+                                window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ?
+                                props.data.title_hy :
+                                props.data.title_en}</a>
                     </h2>
                     {
                         props.data.students.some(x => x === props.data.studentName) ?
