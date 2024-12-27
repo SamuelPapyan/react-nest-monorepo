@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
 import StudentService from '../../services/studentService'
 import { Button } from 'react-bootstrap';
-import { useNavigate } from "react-router";
 import { socket } from "../../socket";
+import { useTranslation } from "react-i18next";
 
 export default function StudentAuthPanel(props) {
+    const { t } = useTranslation();
     const [switchComponent, setSwitchComponent] = useState("")
     const [coach, setCoach] = useState("");
     const [updated, setUpdated] = useState(false);
     const [coachCall, setCoachCall] = useState(false);
-    const [callCoachText, setCallCoachText] = useState("Call Coach");
+    const [callCoachText, setCallCoachText] = useState(t("textCallCoach"));
     const [callCoachColor, setCallCoachColor] = useState("success");
 
-    // const navigate = useNavigate();
     
     const logout = () => {
         window.localStorage.removeItem(process.env.REACT_APP_STUDENT_TOKEN);
@@ -27,10 +27,10 @@ export default function StudentAuthPanel(props) {
         });
         setCoachCall(!coachCall);
         if (coachCall) {
-            setCallCoachText("Call Coach");
+            setCallCoachText(t('textCallCoach'));
             setCallCoachColor("success");
         } else {
-            setCallCoachText("Uncall Coach");
+            setCallCoachText(t('textUncallCoach'));
             setCallCoachColor("secondary");
         }
     }
@@ -56,10 +56,10 @@ export default function StudentAuthPanel(props) {
                     setCoach(res.data.coach);
                     setCoachCall(res.data.handUp);
                     if (!res.data.handUp) {
-                        setCallCoachText("Call Coach");
+                        setCallCoachText(t('textCallCoach'));
                         setCallCoachColor("success");
                     } else {
-                        setCallCoachText("Uncall Coach");
+                        setCallCoachText(t('textUncallCoach'));
                         setCallCoachColor("secondary");
                     }
                     setUpdated(true);
@@ -77,13 +77,17 @@ export default function StudentAuthPanel(props) {
             <div className="d-flex justify-content-end algin-items-center">
                 <div className="d-flex flex-column align-items-end" style={{marginRight:10}}>
                     <h5 className="text-dark">{switchComponent}</h5>
-                    <h6 className="text-dark">Coach: {coach}</h6>
+                    <h6 className="text-dark">{t("textCoach")}: {coach}</h6>
                 </div>
+            <select id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
+                    <option value="en">English</option>
+                    <option value="hy">Հայերեն</option>
+                </select>
                 <Button variant={callCoachColor} onClick={callCoach}>
                     {callCoachText}
                 </Button>
                 <Button variant="danger" onClick={logout}>
-                    Log Out
+                    {t('textLogout')}
                 </Button>
             </div>
         </div>

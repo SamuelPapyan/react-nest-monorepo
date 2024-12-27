@@ -6,10 +6,16 @@ export type WorkshopDocument = HydratedDocument<Workshop>;
 @Schema()
 export class Workshop {
     @Prop({ required: true})
-    title: string;
+    title_en: string;
+    
+    @Prop({ required: true})
+    title_hy: string;
 
     @Prop({ required: true})
-    description: string;
+    description_en: string;
+    
+    @Prop({ required: true})
+    description_hy: string;
 
     @Prop({ required: true})
     start_time: string;

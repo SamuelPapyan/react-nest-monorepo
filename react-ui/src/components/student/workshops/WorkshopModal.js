@@ -44,7 +44,9 @@ export default function WorkshopModal(props) {
                 centered>
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        {props.data.title}
+                        {window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ?
+                                props.data.title_hy :
+                                props.data.title_en}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>

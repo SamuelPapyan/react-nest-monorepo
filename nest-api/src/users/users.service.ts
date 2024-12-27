@@ -41,10 +41,12 @@ export class UsersService {
   async getUsers(query: string): Promise<User[]> {
     const options = {};
     if (query) {
-        options['$or'] = [];
-        options['$or'].push({first_name: {$regex: new RegExp(query), $options:"i"}});
-        options['$or'].push({last_name: {$regex: new RegExp(query), $options:"i"}});
-        options['$or'].push({username: {$regex: new RegExp(query), $options:"i"}});
+      options['$or'] = [];
+      options['$or'].push({first_name_en: {$regex: new RegExp(query), $options:"i"}});
+      options['$or'].push({last_name_en: {$regex: new RegExp(query), $options:"i"}});
+      options['$or'].push({first_name_hy: {$regex: new RegExp(query), $options:"i"}});
+      options['$or'].push({last_name_hy: {$regex: new RegExp(query), $options:"i"}});
+      options['$or'].push({username: {$regex: new RegExp(query), $options:"i"}});
     }
     return this.userModel.find(options).exec();
   }

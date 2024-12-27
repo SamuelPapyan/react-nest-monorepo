@@ -72,46 +72,91 @@ class Neuron {
   }
 }
 
-export const chatbotModel = [
-  new Neuron(
-    'workshop',
-    'workshops',
-    [
-      new Neuron('my', 'my_workshops', null, 0, 0.4),
-      new Neuron('ongoing', 'my_workshops', null, 0, 0.4),
-    ],
-    0,
-    0.5,
-  ),
-  new Neuron(
-    'coach',
-    'coach',
-    [
-      new Neuron('info', 'coach_data', null, 0, 0.4),
-      new Neuron('data', 'coach_data', null, 0, 0.4),
-      new Neuron('phone', 'coach_phone', null, 0, 0.4),
-      new Neuron('mail', 'coach_email', null, 0, 0.4),
-      new Neuron('email', 'coach_email', null, 0, 0.4),
-      new Neuron('name', 'coach_name', null, 0, 0.4),
-    ],
-    0,
-    0.5,
-  ),
-  new Neuron('hello', 'greeting', null, 0, 0.4),
-  new Neuron('hi', 'greeting', null, 0, 0.4),
-  new Neuron(
-    'good',
-    'good',
-    [
-      new Neuron('morning', 'greeting', null, 0.1, 0.4),
-      new Neuron('afternoon', 'greeting', null, 0.1, 0.4),
-      new Neuron('evening', 'greeting', null, 0.1, 0.4),
-      new Neuron('bye', 'goodbye', null, 0.1, 0.4),
-    ],
-    0,
-    0.4,
-  ),
-  new Neuron('thank', 'thank', null, 0, 0.4),
-  new Neuron('goodbye', 'goodbye', null, 0, 0.4),
-  new Neuron('bye', 'goodbye', null, 0, 0.4),
-]
+export const chatbotModel = {
+  en: [
+    new Neuron(
+      'workshop',
+      'workshops',
+      [
+        new Neuron('my', 'my_workshops', null, 0, 0.4),
+        new Neuron('ongoing', 'my_workshops', null, 0, 0.4),
+      ],
+      0,
+      0.5,
+    ),
+    new Neuron(
+      'coach',
+      'coach',
+
+      [
+        new Neuron('info', 'coach_data', null, 0, 0.4),
+        new Neuron('data', 'coach_data', null, 0, 0.4),
+        new Neuron('phone', 'coach_phone', null, 0, 0.4),
+        new Neuron('mail', 'coach_email', null, 0, 0.4),
+        new Neuron('email', 'coach_email', null, 0, 0.4),
+        new Neuron('name', 'coach_name', null, 0, 0.4),
+      ],
+      0,
+      0.5,
+    ),
+    new Neuron('hello', 'greeting', null, 0, 0.4),
+    new Neuron('hi', 'greeting', null, 0, 0.4),
+    new Neuron(
+      'good',
+      'good',
+      [
+        new Neuron('morning', 'greeting', null, 0.1, 0.4),
+        new Neuron('afternoon', 'greeting', null, 0.1, 0.4),
+        new Neuron('evening', 'greeting', null, 0.1, 0.4),
+        new Neuron('bye', 'goodbye', null, 0.1, 0.4),
+      ],
+      0,
+      0.4,
+    ),
+    new Neuron('thank', 'thank', null, 0, 0.4),
+    new Neuron('goodbye', 'goodbye', null, 0, 0.4),
+    new Neuron('bye', 'goodbye', null, 0, 0.4),
+  ],
+  hy: [
+    new Neuron(
+      'աշխատարան',
+      'workshops',
+      [
+        new Neuron('իմ', 'my_workshops', null, 0, 0.4),
+      ],
+      0,
+      0.5,
+    ),
+    new Neuron(
+      'մարզիչ',
+      'coach',
+      [
+        new Neuron('տեղեկություն', 'coach_data', null, 0, 0.4),
+        new Neuron('տվյալներ', 'coach_data', null, 0, 0.4),
+        new Neuron('հեռախոս', 'coach_phone', null, 0, 0.4),
+        new Neuron('փոստ', 'coach_email', null, 0, 0.4),
+        new Neuron('email', 'coach_email', null, 0, 0.4),
+        new Neuron('անուն', 'coach_name', null, 0, 0.4),
+      ],
+      0,
+      0.5,
+    ),
+    new Neuron('բարև', 'greeting', null, 0, 0.4),
+    new Neuron(
+      'բարի',
+      'good',
+      [
+        new Neuron('առավոտ', 'greeting', null, 0.1, 0.4),
+        new Neuron('լույս', 'greeting', null, 0.1, 0.4),
+        new Neuron('երեկո', 'greeting', null, 0.1, 0.4),
+      ],
+      0,
+      0.4,
+    ),
+    new Neuron('շնորհակալություն', 'thank', null, 0, 0.4),
+    new Neuron('շնորհակալ', 'thank', null, 0, 0.4),
+    new Neuron('հաջողություն', 'goodbye', null, 0, 0.4),
+    new Neuron('ցտեյսություն', 'goodbye', null, 0, 0.4),
+    new Neuron('կհանդիպենք', 'goodbye', null, 0, 0.4),
+  ]
+}

@@ -1,14 +1,15 @@
 import React from 'react';
 import {
-  MDBIcon,
   MDBCollapse,
   MDBRipple,
   MDBListGroup,
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
 import '../../style/StudentSidebar.css';
+import { useTranslation } from 'react-i18next';
 
 export default function StudentSidebar() {
+  const {t} = useTranslation();
   return (
     <div className="main-div bg-light" style={
       {
@@ -24,15 +25,13 @@ export default function StudentSidebar() {
           <MDBListGroup className="mx-3 mt-4">
             <MDBRipple rippleTag='span' className='bg-light'>
               <MDBListGroupItem tag='a' href='/' className='elem border-0 rounded rounded text-dark' active={(window.location.pathname === '/') ? true : false}>
-                <MDBIcon fas icon="tachometer-alt me-3" />
-                Dashboard
+                {t('textDashboard')}
               </MDBListGroupItem>
             </MDBRipple>
 
             <MDBRipple rippleTag='span' className='bg-light'>
               <MDBListGroupItem tag='a' href='/workshops' className='elem border-0 rounded text-dark' active={(window.location.pathname.indexOf('/workshop') > -1) ? true : false}>
-                <MDBIcon fas icon="chart-area me-3" />
-                Workshops
+                {t('textWorkshops')}
               </MDBListGroupItem>
             </MDBRipple>
           </MDBListGroup>

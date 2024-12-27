@@ -5,8 +5,10 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Multiselect from "multiselect-react-dropdown";
 import StudentService from "../../../services/studentService";
+import { useTranslation } from "react-i18next";
 
 export default function GroupChatRow(props) {
+    const {t} = useTranslation();
     const [updated, setUpdated] = useState(false);
     const [visible, setVisible] = useState(false);
     const [show, setShow] = useState(false);
@@ -74,22 +76,17 @@ export default function GroupChatRow(props) {
                 <p className="d-block text-light"><b>{props.data.chat_name}</b></p>
                 <div className="d-flex">
                     <button className="btn btn-success" onClick={handleShow}>
-                        Edit
+                        {t("textEdit")}
                     </button>
                     <button className="btn btn-danger" onClick={deleteChat}>
-                        Delete
+                        {t("textDelete")}
                     </button>
                     <div>
-                        <img className="d-block"
+                        <img className="d-block chat-image"
                         alt="Chat Icon"
                         src={"/images/chat_icon.svg"} 
                         onClick={()=>setVisible(!visible)}
-                        style={{
-                            width:40,
-                            height:40,
-                            marginLeft: 10,
-                            cursor: "pointer",
-                        }}/>
+                        />
                         <ChatWindow
                         setVisible={setVisible}
                         type="group_chat"
@@ -112,15 +109,15 @@ export default function GroupChatRow(props) {
             </div>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Edit Group Chat</Modal.Title>
+                    <Modal.Title>{t("textEditGroupChat")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="form-group">
-                        <label htmlFor="group-chat-name-field">Group Chat Name</label><br/>
+                        <label htmlFor="group-chat-name-field">{t("labelGroupChatName")}</label><br/>
                         <input className="form-control" id={"group-chat-name-field-" + props.data._id} type="text" name="group-chat-name"/>
                     </div>
                     <div className="form-group">
-                        <label>Members</label>
+                        <label>{t("labelMembers")}</label>
                         <Multiselect
                             options={props.students}
                             selectedValues={memberList}
@@ -132,10 +129,10 @@ export default function GroupChatRow(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Cancel
+                        {t("textCancel")}
                     </Button>
                     <Button variant="primary" onClick={editGroupChat}>
-                        Save
+                        {t("textSave")}
                     </Button>
                 </Modal.Footer>
             </Modal>

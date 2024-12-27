@@ -2,9 +2,12 @@ import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom"
 import { useNavigate } from "react-router";
 import StudentService from "../../../services/studentService";
+import { useTranslation } from "react-i18next";
 
 export default function StudentRow(props)
 {
+    const {t} = useTranslation();
+
     const [studentId, setStudentId] = useState("");
     const [fullName, setFullName] = useState("");
     const [age, setAge] = useState(0);
@@ -31,7 +34,7 @@ export default function StudentRow(props)
 
     useEffect(()=>{
         setStudentId(props.data._id);
-        setFullName(props.data.full_name);
+        setFullName(window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.full_name_hy : props.data.full_name_en);
         setAge(props.data.age);
         setLevel(props.data.level);
         setExperience(props.data.experience);
@@ -40,7 +43,7 @@ export default function StudentRow(props)
         setUsername(props.data.username);
         setEmail(props.data.email);
         setCoach(props.data.coach);
-    }, [props.data._id, props.data.full_name, props.data.age, props.data.level, props.data.experience, props.data.max_experience, props.data.country, props.data.username, props.data.email]);
+    }, [props.data._id, props.data.full_name_en, props.data.full_name_hy, props.data.age, props.data.level, props.data.experience, props.data.max_experience, props.data.country, props.data.username, props.data.email]);
 
     return (
         <tr>
@@ -55,13 +58,13 @@ export default function StudentRow(props)
             <td>{coach}</td>
             {(props.userType === "ADMIN" || props.userType === "EDITOR") ? 
             <td>
-                <Link to={`/admin/students/edit/${studentId}`} className="btn btn-primary">Edit</Link>
+                <Link to={`/admin/students/edit/${studentId}`} className="btn btn-primary">{t("textEdit")}</Link>
             </td>
             : ""}
             {props.userType === "ADMIN" ? 
             <td>
             <button className="btn btn-danger" onClick={removeStudent}>
-                Delete
+                {t("textDelete")}
             </button>
             </td>
             : ""}

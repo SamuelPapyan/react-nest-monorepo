@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import ChatContent from "./ChatContent";
 import GroupChatService from "../../services/groupChatService";
 import { io } from "socket.io-client";
+import { useTranslation } from "react-i18next";
 
 let chatId = "";
 
 export default function ChatWindow(props) {
+    const {t} = useTranslation();
     const [data, setData] = useState([]);
     const [updated, setUpdated] = useState(false);
     const [selectBar, setSelectBar] = useState("");
     const [socket, setSocket] = useState(io('http://localhost:2023/chat'))
-    const [windowMessage, setWindowMessage] = useState("Chat with your coach.")
+    const [windowMessage, setWindowMessage] = useState(t("textChatWithCoachMessage"))
     let _chatInput, _window, _select = React.useRef();
 
     function refreshChat(oldChat, newChat, user) {
@@ -65,8 +67,8 @@ export default function ChatWindow(props) {
                         const options = res.data.map((v, i)=>{
                             return (<option key={i + 2} value={v._id}>{v.chat_name}</option>)
                         });
-                        options.unshift(<option key={1} value={"chatbot" + ':' + props.userId}>Chat with AI</option>)
-                        options.unshift(<option key={0} value={props.data.coach + ':' + props.userId}>DM with Coach</option>)
+                        options.unshift(<option key={1} value={"chatbot" + ':' + props.userId}>{t("textChatWithAi")}</option>)
+                        options.unshift(<option key={0} value={props.data.coach + ':' + props.userId}>{t("textChatWithCoach")}</option>)
                         setSelectBar(
                             <select
                             id="chat-select"
@@ -95,19 +97,7 @@ export default function ChatWindow(props) {
 
     const styles = {
         modalWindow: {
-            position: "fixed",
-            bottom: "70px",
-            right: "20px",
-            width: "370px",
-            height: "65vh",
-            maxWidth: "calc(100% - 48px)",
-            maxHeight: "calc(100% - 48px)",
-            backgroundColor: "white",
-            borderRadius: "12px",
-            border: "2px solid " + props.styles.primaryColor,
-            overflow: "hidden",
-            boxShadow: "0px 0px 16px 6px rgba(0, 0, 0, 0.33)",
-            paddingTop: "20px"
+            borderColor: props.styles.primaryColor,
         },
     }
 
@@ -131,6 +121,7 @@ export default function ChatWindow(props) {
                 timeSent: Date.now(),
                 message: _chatInput.value,
                 roomName: chatName,
+                lang: window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"
             })
             _chatInput.value = "";
         }
@@ -144,15 +135,17 @@ export default function ChatWindow(props) {
     function switchChat(event){
         refreshChat(chatId, event.target.value, props.userId);
         if (event.target.value.indexOf("chatbot") > -1) {
-            setWindowMessage("Chat With AI.")
+            setWindowMessage(t("textChatWithAiMessage"))
+        } else if (event.target.value.indexOf(props.data.coach) > -1) {
+            setWindowMessage(t("textChatWithCoachMessage"))
         } else {
-            setWindowMessage("Chat with your coach.")
+            setWindowMessage(t("textGroupChat"));
         }
         chatId = event.target.value;
     }
 
     return (
-        <div
+        <div className="chat-window"
             style={{
                 ...styles.modalWindow,
                 visibility: props.visible ? 'visible' : 'collapse',
@@ -187,7 +180,7 @@ export default function ChatWindow(props) {
                 {data}
                 {data.length == 0 ? (
                     props.isStaff ?
-                    <p style={{...defaultTextStyle}}>Chat with student {props.chatUsername}.</p> :
+                    <p style={{...defaultTextStyle}}>{t("textChatWithStudentMessage", {student: props.chatUsername})}</p> :
                     <p style={{...defaultTextStyle}}>{windowMessage}</p>
                 ) 
                 : 
@@ -200,7 +193,7 @@ export default function ChatWindow(props) {
             }}>
                 <textarea style={{
                     height:'100%',
-                    width:'75%',
+                    width:t("dimenChatInputWidth"),
                 }} type="text"
                 className="d-block"
                 ref={a=>_chatInput = a}></textarea>
@@ -208,9 +201,9 @@ export default function ChatWindow(props) {
                     backgroundColor: props.styles.primaryColor,
                     color: 'white',
                     height:'100%',
-                    width:'20%',
+                    width: t("dimenChatSendWidth"),
                 }}
-                onClick={sendChatMessage}>Send</button>
+                onClick={sendChatMessage}>{t("textSend")}</button>
             </div>
         </div>
     );

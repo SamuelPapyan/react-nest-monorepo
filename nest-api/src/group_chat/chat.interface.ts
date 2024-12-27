@@ -17,6 +17,7 @@ export interface Message {
   timeSent: number;
   message: string;
   roomName: string;
+  lang: string;
 }
 
 export interface ServerToClientEvents {

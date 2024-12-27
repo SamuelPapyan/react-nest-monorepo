@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import GroupChatRow from "./GroupChatRow"
+import { OrbitProgress } from "react-loading-indicators";
+import { t } from "i18next";
 
 export default function GroupChatList(props) {
-    const [list, setList] = useState([]);
+    const [list, setList] = useState(<>
+        <OrbitProgress variant="disc" dense color="#005CA9" size="medium" text="" textColor="" />
+        <p>{t("textLoading")}...</p>
+    </>);
     const [updated, setUpdated] = useState(false);
     useEffect(()=>{
         if (props.data) {

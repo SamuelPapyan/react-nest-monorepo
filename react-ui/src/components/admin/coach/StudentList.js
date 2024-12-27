@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react"
 import StudentRow from "./StudentRow";
+import { useTranslation } from "react-i18next";
+import {OrbitProgress} from 'react-loading-indicators'
 
 export default function StudentList(props) {
-    const [list, setList] = useState([]);
+    const {t} = useTranslation();
+    const [list, setList] = useState(<>
+        <OrbitProgress variant="disc" dense color="#005CA9" size="medium" text="" textColor="" />
+        <p>{t("textLoading")}...</p>
+    </>);
     const [updated, setUpdated] = useState(false);
     useEffect(()=>{
         if (props.data) {
@@ -14,7 +20,7 @@ export default function StudentList(props) {
     }, [updated, props.data])
     return (
         <div>
-            <h1>My Students</h1>
+            <h1>{t("textMyStudents")}</h1>
             {list}
         </div>
     )

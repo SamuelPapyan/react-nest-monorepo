@@ -45,9 +45,9 @@ export function predict(node_array, token_array) {
   return null
 }
 
-export function chatbotResponse(label: string | null): string {
+export function chatbotResponse(label: string | null, locale: string): string {
   let arr;
-  if (label) arr = CHATBOT_RESPONSE[label];
-  else arr = CHATBOT_RESPONSE['404'];
+  if (label) arr = CHATBOT_RESPONSE[locale][label];
+  else arr = CHATBOT_RESPONSE[locale]['404'];
   return arr[Math.floor(Math.random() * arr.length)];
 }

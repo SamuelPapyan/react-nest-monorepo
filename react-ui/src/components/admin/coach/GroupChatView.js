@@ -4,8 +4,10 @@ import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import GroupChatService from "../../../services/groupChatService";
 import GroupChatList from "./GroupChatList";
+import { useTranslation } from "react-i18next";
 
 export default function GroupChatView(props) {
+    const {t} = useTranslation();
     const [data, setData] = useState([])
     const [show, setShow] = useState(false);
     const [updated, setUpdated] = useState(false);
@@ -49,23 +51,23 @@ export default function GroupChatView(props) {
 
     return (
         <>
-            <h2>Group Chats</h2>
+            <h2>{t("textGroupChats")}</h2>
             <GroupChatList data={chats} userData={props.userData} updateFunction={setUpdated} students={data}/>
-            <Button variant="primary" onClick={handleShow}>
-                Create Group Chat
+            <Button variant="primary" onClick={handleShow} className="hover-size">
+                {t("textCreateGroupChat")}
             </Button>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Create Group Chat</Modal.Title>
+                    <Modal.Title>{t("textCreateGroupChat")}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="form-group">
-                        <label htmlFor="group-chat-name-field">Group Chat Name</label><br/>
+                        <label htmlFor="group-chat-name-field">{t("labelGroupChatName")}</label><br/>
                         <input className="form-control" id="group-chat-name-field" type="text" name="group-chat-name" ref={(a) => _groupChatName = a}/>
                     </div>
                     <div className="form-group">
-                        <label>Members</label>
+                        <label>{t("labelMembers")}</label>
                         <Multiselect
                             options={data}
                             displayValue="name"
@@ -76,10 +78,10 @@ export default function GroupChatView(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
-                        Cancel
+                        {t("textCancel")}
                     </Button>
                     <Button variant="primary" onClick={createGroupChat}>
-                        Create
+                        {t("textCreate")}
                     </Button>
                 </Modal.Footer>
             </Modal>

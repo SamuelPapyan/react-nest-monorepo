@@ -5,7 +5,7 @@ import '../../style/App.css';
 import AuthService from "../../services/authService";
 import { useEffect, useState } from "react";
 
-export default function AdminBody() {
+export default function AdminBody(props) {
     const [updated, setUpdated] = useState(false);
     const [userData, setUserData] = useState(null);
 
@@ -29,7 +29,7 @@ export default function AdminBody() {
                 }}>
                     <SideBar/>
                     <div className="router-screen">
-                        <AuthPanel/>
+                        <AuthPanel changeLang={props.changeLang}/>
                         <Outlet context={userData}/>
                     </div>
                 </div>

@@ -98,32 +98,48 @@ export class ChatService {
     return this.rooms
   }
 
-  predict(input: string): string {
-    const tokens = splitTokens(input)
-    return predict(chatbotModel, tokens)
+  predict(input: string, lang: string): string {
+    const tokens = splitTokens(input);
+    return predict(chatbotModel[lang], tokens);
   }
 
-  async chatbotResponse(label: string, username: string): Promise<any> {
-    let res = [chatbotResponse(label)];
-    res = [...res, ...(await this.chatbotExtraResponse(label, username))];
+  async chatbotResponse(
+    label: string,
+    username: string,
+    locale: string,
+  ): Promise<any> {
+    let res = [chatbotResponse(label, locale)];
+    res = [
+      ...res,
+      ...(await this.chatbotExtraResponse(label, username, locale)),
+    ];
     return res;
   }
 
   async chatbotExtraResponse(
     label: string | null,
     username: string,
+    locale: string
   ): Promise<any> {
     if (label) {
+      const translations = {
+        en: {
+          list_of_workshops: 'List of workshops:',
+        },
+        hy: {
+          list_of_workshops: 'Աշխատարանների ցուցակը՝ ',
+        }
+      }
       if (label === 'workshops') {
         const workshops = (await this.workshopModel.find().lean().exec()).map(
-          (item) => item.title,
+          (item) => (locale == 'hy' ? item.title_hy : item.title_en),
         );
-        return ['List of workshops: ', workshops];
+        return [translations[locale]['list_of_workshops'], workshops];
       }
       if (label === 'my_workshops') {
         const workshops = (
           await this.workshopModel.find({ students: username }).lean().exec()
-        ).map((item) => item.title);
+        ).map((item) => (locale == 'hy' ? item.title_hy : item.title_en));
         return [workshops];
       }
       if (label.indexOf('coach') > -1) {
@@ -133,8 +149,13 @@ export class ChatService {
         const coach: User = await this.userModel.findOne({
           username: student.coach,
         });
+        const coachFullName =
+          locale == 'hy'
+            ? `${coach.first_name_hy} ${coach.last_name_hy}`
+            : `${coach.first_name_en} ${coach.last_name_en}`;
+
         const coachMetadata = {
-          name: `${coach.first_name} ${coach.last_name}`,
+          name: coachFullName,
           username: coach.username,
           email: coach.email,
         }

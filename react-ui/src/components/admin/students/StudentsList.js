@@ -4,9 +4,11 @@ import { useState, useEffect } from "react";
 import StudentService from "../../../services/studentService";
 import AuthService from "../../../services/authService";
 import SearchBar from "../SearchBar";
+import { useTranslation } from "react-i18next";
 
 export default function StudentsList()
 {
+    const {t} = useTranslation();
     const [data, setData] = useState(null);
     const [connected, setConnected] = useState(true);
     const [updated, setUpdated] = useState(false);
@@ -14,7 +16,7 @@ export default function StudentsList()
     
     useEffect(()=>{
         if (!updated) {
-            document.title = "Students List";
+            document.title = t("textStudentsList");
             StudentService.getAllStudents().then(res=>{
                 if (res.success){
                     setData(res.data);
@@ -47,10 +49,10 @@ export default function StudentsList()
         <div id="students-list-body" style={{
             margin:"0 30px"
         }}>
-            <h1>Students List</h1>
+            <h1>{t("textStudentsList")}</h1>
             <SearchBar searchFunc="students" cb={searchCallback}/>
             <StudentTable data={data} connected={connected} userType={userType}/>
-            {( userType === "ADMIN") ? <Link to="/admin/students/create" className="btn btn-primary">Create Student</Link> : ""}
+            {( userType === "ADMIN") ? <Link to="/admin/students/create" className="btn btn-primary">{t("textCreateStudent")}</Link> : ""}
         </div>
     );
 }

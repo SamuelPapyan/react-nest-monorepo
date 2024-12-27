@@ -3,10 +3,17 @@ import { IsNotEmpty, IsString } from "class-validator";
 export class WorkshopDTO {
     @IsString()
     @IsNotEmpty()
-    title: string;
+    title_en: string;
+    
+    @IsString()
+    @IsNotEmpty()
+    title_hy: string;
 
     @IsString()
-    description: string;
+    description_en: string;
+    
+    @IsString()
+    description_hy: string;
 
     @IsNotEmpty()
     start_time: string; // "16:00"

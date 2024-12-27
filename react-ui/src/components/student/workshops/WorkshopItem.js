@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import WorkshopModal from "./WorkshopModal";
+import { useTranslation } from "react-i18next";
 
 export default function WorkshopItem(props) {
     const [modalShow, setModalShow] = useState(false);
+    const {t} = useTranslation();
 
     return (
         <>
@@ -14,11 +16,14 @@ export default function WorkshopItem(props) {
                             onClick={() => setModalShow(true)}
                             style={{
                                 textDecoration: "none",
-                            }}>{props.data.title}</a>
+                            }}>{
+                                window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ?
+                                props.data.title_hy :
+                                props.data.title_en}</a>
                     </h2>
                     {
                         props.data.students.some(x => x === props.data.studentName) ?
-                        <h4 className="text-success">REGISTERED</h4> : ""
+                        <h4 className="text-success">{t("textRegistered")}</h4> : ""
                     }
                 </div>
                 <p className="text-start">{props.data.start_time} - {props.data.end_time}</p>

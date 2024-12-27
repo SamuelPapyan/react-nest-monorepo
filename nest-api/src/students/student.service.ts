@@ -44,7 +44,10 @@ export class StudentService {
     if (queryOb.query) {
       options['$or'] = [];
       options['$or'].push({
-        full_name: { $regex: new RegExp(queryOb.query), $options: 'i' },
+        full_name_en: { $regex: new RegExp(queryOb.query), $options: 'i' },
+      });
+      options['$or'].push({
+        full_name_hy: { $regex: new RegExp(queryOb.query), $options: 'i' },
       });
       options['$or'].push({
         country: { $regex: new RegExp(queryOb.query), $options: 'i' },

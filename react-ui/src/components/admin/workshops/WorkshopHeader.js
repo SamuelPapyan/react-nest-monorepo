@@ -1,17 +1,19 @@
 import React from "react";
+import {useTranslation} from "react-i18next"
 
 export default function WorkshopHeader(props) {
+    const {t} = useTranslation();
     return (
         <thead>
             <tr>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Count of Days</th>
-                <th>Registered Students</th>
+                <th>{t("labelWorkshopTitle")}</th>
+                <th>{t("labelDescription")}</th>
+                <th>{t("labelWorkshopStartTime")}</th>
+                <th>{t("labelWorkshopEndTime")}</th>
+                <th>{t("textCountOfDays")}</th>
+                <th>{t("textRegisteredStudents")}</th>
                 { (props.userType === "ADMIN" || props.userType === "EDITOR") ?
-                <th colSpan={2}>Action</th>
+                <th colSpan={2}>{t("textAction")}</th>
                 : ""}
             </tr>
         </thead>

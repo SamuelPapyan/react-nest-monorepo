@@ -57,10 +57,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     await this.cacheManager.set('chat:' + chatId, chat);
     this.server.to(payload.roomName).emit('chat', { data: chat });
     if (chatId.indexOf('chatbot') > -1) {
-      const prediction = this.chatService.predict(payload.message)
+      const prediction = this.chatService.predict(
+        payload.message,
+        payload.lang,
+      );
       const response = await this.chatService.chatbotResponse(
         prediction,
         payload.user.userName,
+        payload.lang
       );
       chat.push({
         user: 'Chatbot AI',

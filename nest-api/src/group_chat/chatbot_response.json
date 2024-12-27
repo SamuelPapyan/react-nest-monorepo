@@ -1,64 +1,126 @@
 {
-    "coach": [
-        "The coach is the person who asist and help you complete attachments.",
-        "The coach help you solve the problem and provides your knowledges",
-        "The coach always correcting your mistakes and teaching you based on your mistakes."
-    ],
-    "workshops": [
-        "Workshops are the events which involves your knowledges and experience for making projects.",
-        "Workshops involve students to show their knowledges and make projects.",
-        "Workshops open the doors to the next experience in the sphere."
-    ],
-    "my_workshops": [
-        "Here are your workshops.",
-        "Your ongoin workshops.",
-        "Here are your ongoing workshops."
-    ],
-    "coach_data": [
-        "Here's your coache's data.",
-        "Your coach's data.",
-        "Here's coach's data"
-    ],
-    "coach_phone": [
-        "Coach's phone: ",
-        "Your coach's phone: ",
-        "Call your coach with this number: "
-    ],
-    "coach_email": [
-        "Here's email address of your coach: ",
-        "Coach's email: ",
-        "Coach's email is "
-    ],
-    "coach_name": [
-        "Your coach's name is ",
-        "Coach's name: ",
-        "Coach name is "
-    ],
-    "greeting": [
-        "Hello. What can I asist you?",
-        "Hello. What can I help you?",
-        "Hi. What can I asist you?",
-        "Hi. What can I help you?",
-        "Hello. Ask me something.",
-        "Hi. Ask me something."
-    ],
-    "goodbye": [
-        "See you soon.",
-        "Ask me if you have another question.",
-        "It's honor asisting you."
-    ],
-    "good": [
-        "OK",
-        "Well",
-        "Fine"
-    ],
-    "thank": [
-        "You're Welcome",
-        "Not at all"
-    ],
-    "404": [
-        "Sorry, I can't recognise your request.",
-        "Sorry. I'm not able to understand your question.",
-        "My knowledges are limited. I can't answer it. Sorry."
-    ]
+    "en": {
+        "coach": [
+            "The coach is the person who asist and help you complete attachments.",
+            "The coach help you solve the problem and provides your knowledges",
+            "The coach always correcting your mistakes and teaching you based on your mistakes."
+        ],
+        "workshops": [
+            "Workshops are the events which involves your knowledges and experience for making projects.",
+            "Workshops involve students to show their knowledges and make projects.",
+            "Workshops open the doors to the next experience in the sphere."
+        ],
+        "my_workshops": [
+            "Here are your workshops.",
+            "Your ongoin workshops.",
+            "Here are your ongoing workshops."
+        ],
+        "coach_data": [
+            "Here's your coache's data.",
+            "Your coach's data.",
+            "Here's coach's data"
+        ],
+        "coach_phone": [
+            "Coach's phone: ",
+            "Your coach's phone: ",
+            "Call your coach with this number: "
+        ],
+        "coach_email": [
+            "Here's email address of your coach: ",
+            "Coach's email: ",
+            "Coach's email is "
+        ],
+        "coach_name": [
+            "Your coach's name is ",
+            "Coach's name: ",
+            "Coach name is "
+        ],
+        "greeting": [
+            "Hello. What can I asist you?",
+            "Hello. What can I help you?",
+            "Hi. What can I asist you?",
+            "Hi. What can I help you?",
+            "Hello. Ask me something.",
+            "Hi. Ask me something."
+        ],
+        "goodbye": [
+            "See you soon.",
+            "Ask me if you have another question.",
+            "It's honor asisting you."
+        ],
+        "good": [
+            "OK",
+            "Well",
+            "Fine"
+        ],
+        "thank": [
+            "You're Welcome",
+            "Not at all"
+        ],
+        "404": [
+            "Sorry, I can't recognise your request.",
+            "Sorry. I'm not able to understand your question.",
+            "My knowledges are limited. I can't answer it. Sorry."
+        ]
+    },
+    "hy": {
+        "coach": [
+            "Մարզիչը այն անձն է, ով խոչրհրդում և օգնում է քեզ կատարել առաջադրանքները:",
+            "Մարզիչը օգնում է լուծել խնդիրը և բարելավում է Ձեր գիտելիքները։",
+            "Մարզիչը միշտ ուղղում է Ձեր սխալները և սովորեցնում՝ հիմնվելով Ձեր սխալների վրա։"
+        ],
+        "workshops": [
+            "Աշխատարանները այն միջոցառումներն են, որոնք ներառում են Ձեր գիտելիքներն ու փորձը նախագծեր կազմելու համար:",
+            "Աշխատարանները ներգրավում են ուսանողներին՝ ցուցադրելու իրենց գիտելիքները և նախագծեր պատրաստելու համար:",
+            "Աշխատարանները բացում են դռները ոլորտում հաջորդ փորձի համար։"
+        ],
+        "my_workshops": [
+            "Ահա և Ձեր աշխատարանները",
+            "Ձեր տվյալ պահի աշխատարանները",
+            "Ահա և Ձեր տվյալ պահի աշխատարանները"
+        ],
+        "coach_data": [
+            "Ահա և Ձեր մարզիչի տվյալները",
+            "Ձեր մարզիչի տվյալները",
+            "Ահա և մարզիչի տվյալները"
+        ],
+        "coach_phone": [
+            "Մարզիչի հեռախոսը՝ ",
+            "Ձեր մարզիչի հեռախոսը՝ ",
+            "Զանգեք Ձեր մարզիչին այս հեռախոսահամարով՝ "
+        ],
+        "coach_email": [
+            "Ահա և Ձեր մարզիչի էլեկտրոնային հասցեն՝ ",
+            "Մարզիչի էլեկտրոբնային հասցեն՝ ",
+            "Մարզիչի էլեկտրոնային փոստը "
+        ],
+        "coach_name": [
+            "Ձեր մարզիչի անունը՝ ",
+            "Մարզիչի անունը՝ "
+        ],
+        "greeting": [
+            "Բարև։ Ինչո՞վ ես կարող եմ խարհրդակցեմ Ձեզ։",
+            "Բարև։ Ինչո՞վ ես օգնած Ձեզ լինեմ։",
+            "Բարև։ Ինչո՞վ կարող եմ աջակցել։",
+            "Բարև։ Ինչո՞վ կարող եմ օգնել։",
+            "Բարև Ձեզ։ Հարցրեք ինձ ինչով կարամ օգնեմ։",
+            "Բարև։ Ինչո՞վ կարամ օգնեմ։"
+        ],
+        "goodbye": [
+            "Կհանդիպենք շուտով:",
+            "Հարցրեք ինձ, եթե ունեք այլ հարց:",
+            "Ձեզ օգնելը պատիվ է:"
+        ],
+        "good": [
+            "Լավ"
+        ],
+        "thank": [
+            "Խնդրեմ"
+        ],
+        "404": [
+            "Կներեք, ես չեմ կարող ճանաչել Ձեր հարցը:",
+            "Ներողություն։ Ես չեմ կարողանում հասկանալ Ձեր հարցը։",
+            "Իմ գիտելիքները սահմանափակ են։ Ես չեմ կարող պատասխանել Ձեր հարցին։ Ներողություն։"
+        ]
+    }
 }

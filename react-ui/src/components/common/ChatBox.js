@@ -5,13 +5,7 @@ export default function ChatBox(props) {
     const [visible, setVisible] = useState(false);
     const styles = {
         chatWidget: {
-            position: "fixed",
-            bottom: "20px",
-            right: "20px",
             backgroundColor: props.styles.primaryColor,
-            padding: "10px",
-            borderRadius: "25px",
-            cursor: "pointer",
         },
      
      }
@@ -30,15 +24,13 @@ export default function ChatBox(props) {
           chatUsername={props.username}
           userId={props.userId}
           chatTitle={props.username}/>
-          <div
+          <div id="chat-widget"
             style={{
               ...styles.chatWidget
             }}
           >
-            <div className="d-flex justify-content-center align-items-center">
-              <img alt="chat_icon" onClick={()=>setVisible(!visible)} src="/images/chat_icon.svg" style={{
-                width:"24px"
-              }}/>
+            <div id="student-chat-button" className="d-flex justify-content-center align-items-center">
+              <img alt="chat_icon" onClick={()=>setVisible(!visible)} src="/images/chat_icon.svg"/>
             </div>
           </div>
         </div>

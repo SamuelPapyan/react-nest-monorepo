@@ -4,15 +4,17 @@ import { Link } from 'react-router-dom';
 import WorkshopsService from '../../../services/workshopsService';
 import Multiselect from "multiselect-react-dropdown";
 import StudentRow from './StudentRow';
+import {useTranslation} from "react-i18next";
 
 export default function EditWorkshop() {
+    const {t} = useTranslation();
     const [errors, setErrors] = useState("");
     const [connectionErrorMessage, setConnectionErrorMessage] = useState("");
     const [days, setDays] = useState([]);
     const {id} = useParams();
     const [updated, setUpdated] = useState(false);
     const [students, setStudents] = useState([]);
-    let _title, _description, _startTime, _endTime, _dateInput;
+    let _title, _titleHy, _description, _descriptionHy, _startTime, _endTime, _dateInput;
     const navigate = useNavigate();
 
     function submitForm(event) {
@@ -22,8 +24,10 @@ export default function EditWorkshop() {
             return;
         }
         const requestData = {
-            title: _title.value,
-            description: _description.value,
+            title_en: _title.value,
+            title_hy: _titleHy.value,
+            description_en: _description.value,
+            description_hy: _descriptionHy.value,
             start_time: _startTime.value,
             end_time: _endTime.value,
             days: [],
@@ -75,12 +79,14 @@ export default function EditWorkshop() {
     }
 
     useEffect(()=>{
-        document.title = "Edit Workshop";
+        document.title = t("textEditWorkshop");
         if (!updated) {
         WorkshopsService.getWorkshopById(id).then(res=>{
             if (res.success) {
-                if (_title) _title.value = res.data.title;
-                if (_description) _description.value = res.data.description;
+                if (_title) _title.value = res.data.title_en;
+                if (_titleHy) _titleHy.value = res.data.title_hy ?? "";
+                if (_description) _description.value = res.data.description_en;
+                if (_descriptionHy) _descriptionHy.value = res.data.description_hy ?? "";
                 if (_startTime) _startTime.value = res.data.start_time;
                 if (_endTime) _endTime.value = res.data.end_time;
                 setDays(res.data.days.map(x=>{return {'name': x, 'value': x}}));
@@ -99,30 +105,38 @@ export default function EditWorkshop() {
             width: "90%",
             margin: "auto",
         }}>
-            <h1>Edit Workshop</h1>
+            <h1>{t("textEditWorkshop")}</h1>
             {connectionErrorMessage}
             {errors}
             <form method='POST' onSubmit={submitForm}>
                 <div className="form-group">
-                    <label htmlFor="title-field">Title</label><br/>
-                    <input className="form-control" id="title-field" type="text" name="title" ref={(a) => _title = a}/>
+                    <label htmlFor="title-en-field">{t("labelWorkshopTitleEn")}</label><br/>
+                    <input className="form-control" id="title-en-field" type="text" name="title-en" ref={(a) => _title = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="description-field">Description</label><br/>
-                    <input className="form-control" id="description-field" type="text" name="description" ref={(a) => _description = a}/>
+                    <label htmlFor="title-hy-field">{t("labelWorkshopTitleHy")}</label><br/>
+                    <input className="form-control" id="title-hy-field" type="text" name="title-hy" ref={(a) => _titleHy = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="start-time-field">Start Time</label><br/>
+                    <label htmlFor="description-en-field">{t("labelDescriptionEn")}</label><br/>
+                    <input className="form-control" id="description-en-field" type="text" name="description-en" ref={(a) => _description = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="description-hy-field">{t("labelDescriptionHy")}</label><br/>
+                    <input className="form-control" id="description-hy-field" type="text" name="description-hy" ref={(a) => _descriptionHy = a}/>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="start-time-field">{t("labelWorkshopStartTime")}</label><br/>
                     <input className="form-control" id="start-time-field" type="time" name="start-time" ref={(a) => _startTime = a}/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="end-time-field">End Time</label><br/>
+                    <label htmlFor="end-time-field">{t("labelWorkshopEndTime")}</label><br/>
                     <input className="form-control" id="end-time-field" type="time" name="end-time" ref={(a) => _endTime = a}/>
                 </div>
                 <div className="form-group">
-                    <label>Days</label>
+                    <label>{t("labelDays")}</label>
                     <input className='form-control' id="days-field" type="date" ref={a=> _dateInput = a}/>
-                    <button className='btn btn-primary' onClick={appendDay}>Add</button>
+                    <button className='btn btn-primary' onClick={appendDay}>{t("textAdd")}</button>
                     <Multiselect
                         options={[]}
                         selectedValues={days}
@@ -131,7 +145,7 @@ export default function EditWorkshop() {
                     />
                 </div>
                 <div>
-                    <h2>Registered Students</h2>
+                    <h2>{t("textRegisteredStudents")}</h2>
                     { students.map((value, index)=>
                         <StudentRow key={index} remove={removeStudent} value={value}/>
                     ) }
@@ -143,13 +157,13 @@ export default function EditWorkshop() {
                     }}>
                     <input
                         type="submit"
-                        value="Save"
+                        value={t("textSave")}
                         className="btn btn-primary"
                         style={{
                             margin: "0 20px 0 0" 
                         }}
                         />
-                    <Link to="/admin/workshops" className="btn btn-primary">Cancel</Link>
+                    <Link to="/admin/workshops" className="btn btn-primary">{t("textCancel")}</Link>
                 </div>
             </form>
         </div>

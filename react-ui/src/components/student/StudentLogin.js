@@ -2,9 +2,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import StudentService from "../../services/studentService"
+import { useTranslation } from "react-i18next";
 
 export default function StudentLogin(props) {
     let _username, _password, _loginMessage, _emailMessage, _email;
+
+    const { t } = useTranslation();
     const [updated, setUpdated] = useState(false);
     const [box, setBox] = useState("");
     const location = useLocation()
@@ -12,23 +15,23 @@ export default function StudentLogin(props) {
 
     const boxes = {
         login: (<>
-            <h1 className="text-center">Login</h1>
+            <h1 className="text-center">{t('textLogin')}</h1>
             <br/>
             <form method="POST" onSubmit={login}>
                 <div className="form-group">
-                    <input placeholder="Username" className="form-control" id="username-field" type="text" name="username" ref={(a) => _username = a}/>
+                    <input placeholder={t("labelUsername")} className="form-control" id="username-field" type="text" name="username" ref={(a) => _username = a}/>
                 </div>
                 <br/>
                 <div className="form-group">
-                    <input placeholder="Password" className="form-control" id="password-field" type="password" name="password" ref={(a) => _password = a}/>
+                    <input placeholder={t("labelPassword")} className="form-control" id="password-field" type="password" name="password" ref={(a) => _password = a}/>
                 </div>
                 <p className="text-center text-dark" ref={a=> _loginMessage = a}></p>
                 <div className="text-end">
-                    <a href="/" onClick={switchToReset}>Forget Password?</a>
+                    <a href="/" onClick={switchToReset}>{t("textForgetPassword")}</a>
                 </div>
                 <input
                     type="submit"
-                    value="Log In"
+                    value={t("textLogin")}
                     className="btn btn-success"
                     style={{
                         display: "block",
@@ -37,20 +40,20 @@ export default function StudentLogin(props) {
             </form>
         </>),
         reset: (<>
-            <h1 className="text-center">Login</h1>
+            <h1 className="text-center">{t('textLogin')}</h1>
             <br/>
             <form method="POST" onSubmit={sendPasswordRecoveryMail}>
                 <div className="form-group">
-                    <input placeholder="Email" className="form-control" id="email-field" type="text" name="email" ref={(a) => _email = a}/>
+                    <input placeholder={t("labelEmail")} className="form-control" id="email-field" type="text" name="email" ref={(a) => _email = a}/>
                 </div>
                 <br/>
                 <p className="text-center text-dark" ref={a=> _emailMessage = a}></p>
                 <div className="text-end">
-                    <a href="/" onClick={backToLogin}>Back To Login</a>
+                    <a href="/" onClick={backToLogin}>{t("textBackToLogin")}</a>
                 </div>
                 <input
                     type="submit"
-                    value="Send Email"
+                    value={t("textSendMail")}
                     className="btn btn-success"
                     style={{
                         display: "block",
@@ -59,8 +62,8 @@ export default function StudentLogin(props) {
             </form>
         </>),
         sendMail: (<>
-            <h1 className="text-center text-light">Mail has been sent</h1>
-            <p className="text-center text-light">Check your email to get password reset link.</p>
+            <h1 className="text-center text-light">{t('textMailSent')}</h1>
+            <p className="text-center text-light">{t('textMailSentMessage')}</p>
         </>)
     }
 
@@ -75,7 +78,7 @@ export default function StudentLogin(props) {
                 else
                     navigate('/');
             } else {
-                _loginMessage.textContent = "Invalid username or password";
+                _loginMessage.textContent = t('validationLogin');
             }
         }).catch(err=>{
             _loginMessage.textContent = "Connection fault. Try again later.";
@@ -107,7 +110,7 @@ export default function StudentLogin(props) {
     
     useEffect(()=>{
         if (!updated) {
-            document.title = "Student Login";
+            document.title = t('textStudentLogin');
             setBox(boxes.login);
             setUpdated(true);
         }

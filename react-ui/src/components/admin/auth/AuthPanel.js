@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import AuthService from '../../../services/authService';
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 
-export default function AuthPanel() {
+export default function AuthPanel(props) {
+    const {t} = useTranslation();
     const [switchComponent, setSwitchComponent] = useState(<span></span>);
     const [updated, setUpdated] = useState(false);
     const navigate = useNavigate();
@@ -18,9 +20,13 @@ export default function AuthPanel() {
               if (res.success) {
                   setSwitchComponent(
                     <div>
+                      <select id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
+                          <option value="en">English</option>
+                          <option value="hy">Հայերեն</option>
+                      </select>
                       <b className="text-light" style={{marginRight:10}}>{res.data.username}</b>
                       <Button variant="danger" onClick={logout}>
-                          Log Out
+                          {t("textLogout")}
                       </Button>
                     </div>
                   );

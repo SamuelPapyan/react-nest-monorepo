@@ -1,10 +1,12 @@
 import DataCard from "./DataCard"
 import DashboardService from "../../../services/dashboardService"
 import StudentList from "./StudentList"
+import { useTranslation } from "react-i18next";
 
 import { useEffect, useState } from "react"
 
 export default function Dashboard() {
+    const {t} = useTranslation();
     const [studentCount, setStudentCount] = useState("")
     const [staffCount, setStaffCount] = useState("")
     const [workshopsCount, setWorkshopsCount] = useState("");
@@ -22,10 +24,11 @@ export default function Dashboard() {
         <img src="images/images.png" style={{
             width:"25%"
         }}/>
-        <h1 className="text-primary">Welcome to my dashboard!</h1>
+        <h1 className="text-primary">{t("textWelcomeToStaffDashboard")}</h1>
     </div>
 
     useEffect(()=>{
+        document.title = t("textDashboard");
         if (!updated) {
             DashboardService.getDashboardData().then(res=>{
                 setStudentCount(res.studentsCount);
@@ -43,9 +46,9 @@ export default function Dashboard() {
         }}>
             {oldBody}
             <div className="d-flex justify-content-center p-3">
-                <DataCard data={{title: "Students", count: studentCount}}/>
-                <DataCard data={{title: "Staff", count: staffCount}}/>
-                <DataCard data={{title: "Workshops", count: workshopsCount}}/>
+                <DataCard data={{title: t("textStudents"), count: studentCount}}/>
+                <DataCard data={{title: t("textStaff"), count: staffCount}}/>
+                <DataCard data={{title: t("textWorkshops"), count: workshopsCount}}/>
             </div>
             <StudentList data={bestStudents}/>
         </div>
