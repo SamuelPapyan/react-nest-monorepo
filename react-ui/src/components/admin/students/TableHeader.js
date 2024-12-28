@@ -8,13 +8,13 @@ export default function TableHeader(props){
             <tr>
                 <th>{t("textFullName")}</th>
                 <th>{t("labelUsername")}</th>
-                <th>{t("labelEmail")}</th>
-                <th>{t("labelAge")}</th>
-                <th>{t("labelLevel")}</th>
-                <th>{t("labelExperience")}</th>
-                <th>{t("labelMaxExperience")}</th>
-                <th>{t("labelCountry")}</th>
-                <th>{t("textCoach")}</th>
+                <th className="d-none d-md-table-cell">{t("labelEmail")}</th>
+                <th className="d-none d-xl-table-cell">{t("labelAge")}</th>
+                <th className="d-none d-xl-table-cell">{t("labelLevel")}</th>
+                <th className="d-none d-xl-table-cell">{t("labelExperience")}</th>
+                <th className="d-none d-xl-table-cell">{t("labelMaxExperience")}</th>
+                <th className="d-none d-xl-table-cell">{t("labelCountry")}</th>
+                <th className="d-none d-md-table-cell">{t("textCoach")}</th>
                 { (props.userType === "ADMIN" || props.userType === "EDITOR") ?
                 <th colSpan={2}>{t("textAction")}</th>
                 : ""}

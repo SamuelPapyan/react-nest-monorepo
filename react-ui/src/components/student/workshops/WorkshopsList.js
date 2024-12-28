@@ -34,8 +34,8 @@ export default function WorkshopsList() {
     return (
         <div style={{
             margin: "0 30px"
-        }}>
-            <h1 className="text-center">{t("textWorkshops")}</h1>
+        }} className="row">
+            <h1 className="col-12 text-center">{t("textWorkshops")}</h1>
             {data}
         </div>
     )

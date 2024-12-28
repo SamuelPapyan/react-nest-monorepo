@@ -45,7 +45,7 @@ export default function Dashboard() {
             marginBottom: "100px"
         }}>
             {oldBody}
-            <div className="d-flex justify-content-center p-3">
+            <div className="d-flex row justify-content-center p-3">
                 <DataCard data={{title: t("textStudents"), count: studentCount}}/>
                 <DataCard data={{title: t("textStaff"), count: staffCount}}/>
                 <DataCard data={{title: t("textWorkshops"), count: workshopsCount}}/>

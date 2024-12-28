@@ -24,6 +24,7 @@ export class StaffService {
     }
 
     async getStaffs(query: string): Promise<Staff[]> {
+
         const options = {}
         if (query) {
             options['$or'] = [];

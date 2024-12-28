@@ -35,7 +35,7 @@ export default function SideBar() {
         height:"715px"
       }
     }>
-      <MDBCollapse tag="nav" className="d-lg-block bg-dark sidebar">
+      <MDBCollapse tag="nav" className="d-block bg-dark sidebar">
         <div className="position-sticky bg-dark">
           <MDBListGroup className="mx-3 mt-4">
             <MDBRipple rippleTag='span' className='bg-dark'>

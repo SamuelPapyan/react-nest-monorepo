@@ -8,10 +8,10 @@ export default function WorkshopHeader(props) {
             <tr>
                 <th>{t("labelWorkshopTitle")}</th>
                 <th>{t("labelDescription")}</th>
-                <th>{t("labelWorkshopStartTime")}</th>
-                <th>{t("labelWorkshopEndTime")}</th>
-                <th>{t("textCountOfDays")}</th>
-                <th>{t("textRegisteredStudents")}</th>
+                <th className="d-none d-lg-table-cell">{t("labelWorkshopStartTime")}</th>
+                <th className="d-none d-lg-table-cell">{t("labelWorkshopEndTime")}</th>
+                <th className="d-none d-lg-table-cell">{t("textCountOfDays")}</th>
+                <th className="d-none d-lg-table-cell">{t("textRegisteredStudents")}</th>
                 { (props.userType === "ADMIN" || props.userType === "EDITOR") ?
                 <th colSpan={2}>{t("textAction")}</th>
                 : ""}

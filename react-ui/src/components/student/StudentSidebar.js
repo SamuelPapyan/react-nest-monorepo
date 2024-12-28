@@ -20,7 +20,7 @@ export default function StudentSidebar() {
         height:"715px"
       }
     }>
-      <MDBCollapse tag="nav" className="d-lg-block bg-light sidebar">
+      <MDBCollapse tag="nav" className="d-block bg-light sidebar">
         <div className="position-sticky bg-light">
           <MDBListGroup className="mx-3 mt-4">
             <MDBRipple rippleTag='span' className='bg-light'>

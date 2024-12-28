@@ -76,10 +76,12 @@ export default function GroupChatRow(props) {
                 <p className="d-block text-light"><b>{props.data.chat_name}</b></p>
                 <div className="d-flex">
                     <button className="btn btn-success" onClick={handleShow}>
-                        {t("textEdit")}
+                        <span className='d-none d-lg-inline'>{t("textEdit")}</span>
+                        <img width="24px" height="24px" src="/images/edit_icon.svg" alt="delete_icon" className='d-inline d-lg-none'/>
                     </button>
                     <button className="btn btn-danger" onClick={deleteChat}>
-                        {t("textDelete")}
+                        <span className='d-none d-lg-inline'>{t("textDelete")}</span>
+                        <img width="24px" height="24px" src="/images/delete_icon.svg" alt="delete_icon" className='d-inline d-lg-none'/>
                     </button>
                     <div>
                         <img className="d-block chat-image"
