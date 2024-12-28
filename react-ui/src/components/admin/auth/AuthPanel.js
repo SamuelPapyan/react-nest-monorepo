@@ -62,7 +62,7 @@ export default function AuthPanel(props) {
       }}>
         <Dropdown className="d-block d-lg-none bg-dark p-1">
             <Dropdown.Toggle variant="primary" id="dropdown-basic">
-                Menu
+            <img src="/images/menu_icon.svg" alt="menu_icon" width="24px" height="24px" />
             </Dropdown.Toggle>
             <Dropdown.Menu className="p-1 bg-dark" >
               {dropdownComponent}

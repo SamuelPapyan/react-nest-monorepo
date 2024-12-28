@@ -111,7 +111,8 @@
             "textCongratulations": "Congratulations",
             "textRegisteredSuccess": "You have registrated successfully",
             "textUnregisteredSuccess": "You have unregistrated successfully",
-            "textThanks": "Thank You"
+            "textThanks": "Thank You",
+            "textClose": "Close"
         }
     },
     "hy": {
@@ -226,7 +227,8 @@
             "textCongratulations": "Շնորհավորում ենք",
             "textRegisteredSuccess": "Դուք հաջողությամբ գրանցվեցիք",
             "textUnregisteredSuccess": "Դուք հաջողությամբ չեղարկեցիք գրանցումը",
-            "textThanks": "Շնորհակալություն"
+            "textThanks": "Շնորհակալություն",
+            "textClose": "Փակել"
         }
     }
 }

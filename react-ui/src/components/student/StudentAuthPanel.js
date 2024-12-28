@@ -96,7 +96,7 @@ export default function StudentAuthPanel(props) {
                 </div>
                 <Dropdown className="d-block d-lg-none">
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        Menu
+                        <img src="/images/menu_icon.svg" alt="menu_icon" width="24px" height="24px" />
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="p-1">
                         <div className="d-flex flex-column align-items-end" style={{marginRight:10}}>

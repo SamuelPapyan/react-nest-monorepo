@@ -39,7 +39,7 @@ export default function UserModal(props) {
                 </table>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={()=>props.onHide()}>Close</Button>
+                <Button onClick={()=>props.onHide()}>{t("textClose")}</Button>
             </Modal.Footer>
         </Modal>
     )
