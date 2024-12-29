@@ -8,9 +8,14 @@ export default function WorkshopItem(props) {
 
     return (
         <>
-            <WorkshopModal setUpdated={props.setUpdated} show={modalShow} data={props.data} onHide={() => setModalShow(false)}/>
-            <div>
-                <div className="d-flex justify-content-between align-items-center">
+            <WorkshopModal
+                setUpdated={props.setUpdated}
+                show={modalShow}
+                data={props.data}
+                onHide={() => setModalShow(false)}
+            />
+            <div className="col-xl-12 col-md-6 col-12">
+                <div className="d-flex flex-xl-row flex-column flex-sm-column flex-xs-column justify-content-xl-between align-items-xl-center">
                     <h2>
                         <a href="#"
                             onClick={() => setModalShow(true)}

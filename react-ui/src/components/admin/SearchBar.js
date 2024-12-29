@@ -24,7 +24,7 @@ export default function SearchBar(props) {
                 props.cb(res.data);
 
         }).catch(err=>{
-
+            console.log(err.message);
         })
     }
 
@@ -36,7 +36,8 @@ export default function SearchBar(props) {
                 paddingLeft:10,
             }}/>
             <button onClick={searchResult} className="btn btn-primary">
-                <i>{t("textSearch")}</i>
+                <i className="d-none d-lg-inline">{t("textSearch")}</i>
+                <img className="d-inline d-lg-none" src="/images/search_icon.svg" width="24px" height="24px" alt="search_icon"/>
             </button>
         </div>
     )

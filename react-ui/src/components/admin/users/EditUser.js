@@ -68,7 +68,7 @@ export default function EditUser()
                 if (_lastNameHy) _lastNameHy.value = res.data.last_name_hy ?? "";
                 if (_email) _email.value = res.data.email;
                 if (_username) _username.value = res.data.username;
-                setRoles(res.data.roles.map((value)=>{return {'name':value.toUpperCase(), 'value':value}}));
+                setRoles(res.data.roles.map((value)=>{return {'name':t('text' + value.toUpperCase()), 'value':value}}));
             }
         }).catch((err)=>{
             setConnectionErrorMessage(<p>Connection fault: Try again later.</p>)

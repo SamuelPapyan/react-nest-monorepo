@@ -3,10 +3,12 @@ import AuthService from '../../../services/authService';
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function AuthPanel(props) {
     const {t} = useTranslation();
     const [switchComponent, setSwitchComponent] = useState(<span></span>);
+    const [dropdownComponent, setDropdownComponent] = useState(<></>)
     const [updated, setUpdated] = useState(false);
     const navigate = useNavigate();
     const logout = () => {
@@ -19,7 +21,7 @@ export default function AuthPanel(props) {
           AuthService.getProfile().then(res=>{
               if (res.success) {
                   setSwitchComponent(
-                    <div>
+                    <div className='d-none d-lg-flex justify-content-end align-items-center'>
                       <select id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
                           <option value="en">English</option>
                           <option value="hy">Հայերեն</option>
@@ -30,6 +32,18 @@ export default function AuthPanel(props) {
                       </Button>
                     </div>
                   );
+                  setDropdownComponent(
+                    <div class="d-flex p-1 flex-column">
+                      <select className="" id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
+                          <option value="en">English</option>
+                          <option value="hy">Հայերեն</option>
+                      </select>
+                      <p className="text-light text-center" style={{marginRight:10}}>{res.data.username}</p>
+                      <Button variant="danger" onClick={logout}>
+                          {t("textLogout")}
+                      </Button>
+                    </div>
+                  )
               } else {
                   window.localStorage.removeItem(process.env.REACT_APP_ADMIN_TOKEN);
               }
@@ -39,13 +53,24 @@ export default function AuthPanel(props) {
       }
     })
   return (
-    <div className="bg-dark d-flex justify-content-end p-2" style={{
-      position: "sticky",
-      top:"0",
-      margin: "0 0 10px 0",
-      zIndex: "3"
-    }}>
-      { switchComponent }
-    </div>
+    <>
+      <div className="bg-dark p-2 " style={{
+        position: "sticky",
+        top:"0",
+        margin: "0 0 10px 0",
+        zIndex: "3"
+      }}>
+        
+        <Dropdown className="d-block d-lg-none bg-dark p-1">
+            <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            <img src="/images/user-icon.svg" alt="menu_icon" width="24px" height="24px" />
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="p-1 bg-dark" >
+              {dropdownComponent}
+            </Dropdown.Menu>
+        </Dropdown>
+        { switchComponent }
+      </div>
+    </>
   );
 }

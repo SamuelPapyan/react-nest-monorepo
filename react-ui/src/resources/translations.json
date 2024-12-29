@@ -103,10 +103,16 @@
             "textAdd": "Add",
             "textMe": "me",
             "textStudentDashboard": "Student Dashboard",
+            "textRegister": "Register",
             "textUnregister": "Unregister",
             "dimenChatInputWidth": "75%",
             "dimenChatSendWidth": "20%",
-            "textExperience": "Experience"
+            "textExperience": "Experience",
+            "textCongratulations": "Congratulations",
+            "textRegisteredSuccess": "You have registrated successfully",
+            "textUnregisteredSuccess": "You have unregistrated successfully",
+            "textThanks": "Thank You",
+            "textClose": "Close"
         }
     },
     "hy": {
@@ -174,7 +180,7 @@
             "textChatWithAiMessage": "Զրուցեք ԱԲ-ի հետ։",
             "textChatWithStudentMessage": "Զրուցեք ուսանող {{student}}-ի հետ",
             "textLoading": "Ներբեռնում",
-            "textStaffLogin": "Աշխատաղի Մուտք",
+            "textStaffLogin": "Աշխատողի Մուտք",
             "textResetPassEmail": "Տպեք ձեր էլ․ հասցեն, որպեսզի ստանալ գաղտնաբառի վերականգնման հղումը։",
             "textWelcomeToStaffDashboard": "Բարի գալուստ դեպի ձեր աշխատողի շավիղ",
             "textStudents": "Ուսանողներ",
@@ -213,10 +219,16 @@
             "textAdd": "Ավելացնել",
             "textMe": "ես",
             "textStudentDashboard": "Ուսանողի շավիղ",
+            "textRegister": "Գրանցել",
             "textUnregister": "Չեղարկել գրանցումը",
             "dimenChatInputWidth": "70%",
             "dimenChatSendWidth": "28%",
-            "textExperience": "Փորձի միավորներ"
+            "textExperience": "Փորձի միավորներ",
+            "textCongratulations": "Շնորհավորում ենք",
+            "textRegisteredSuccess": "Դուք հաջողությամբ գրանցվեցիք",
+            "textUnregisteredSuccess": "Դուք հաջողությամբ չեղարկեցիք գրանցումը",
+            "textThanks": "Շնորհակալություն",
+            "textClose": "Փակել"
         }
     }
 }

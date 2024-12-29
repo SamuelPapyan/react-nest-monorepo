@@ -96,7 +96,7 @@ export default class StudentService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + "/students?q=" + query, {
                 headers:{
-                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
                 resolve(res.json());

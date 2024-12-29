@@ -3,6 +3,7 @@ import StudentService from '../../services/studentService'
 import { Button } from 'react-bootstrap';
 import { socket } from "../../socket";
 import { useTranslation } from "react-i18next";
+import Dropdown from 'react-bootstrap/Dropdown';
 
 export default function StudentAuthPanel(props) {
     const { t } = useTranslation();
@@ -69,27 +70,54 @@ export default function StudentAuthPanel(props) {
     })
 
     return (
-        <div className="bg-light d-flex justify-content-end p-2" style={{
-            position: "sticky",
-            top: "0",
-            margin: "0 0 10px 0"
-        }}>
-            <div className="d-flex justify-content-end algin-items-center">
-                <div className="d-flex flex-column align-items-end" style={{marginRight:10}}>
-                    <h5 className="text-dark">{switchComponent}</h5>
-                    <h6 className="text-dark">{t("textCoach")}: {coach}</h6>
+        <>
+            <div className="bg-light p-2" style={{
+                position: "sticky",
+                top: "0",
+                margin: "0 0 10px 0",
+            }}>
+                <div className="d-lg-flex justify-content-end align-items-center d-none">
+                    <select id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
+                        <option value="en">English</option>
+                        <option value="hy">Հայերեն</option>
+                    </select>
+                    <div className="d-flex justify-content-end algin-items-center">
+                        <div className="d-flex flex-column align-items-end" style={{marginRight:10}}>
+                            <h5 className="text-dark">{switchComponent}</h5>
+                            <h6 className="text-dark">{t("textCoach")}: {coach}</h6>
+                        </div>
+                        <Button variant={callCoachColor} onClick={callCoach}>
+                            {callCoachText}
+                        </Button>
+                        <Button variant="danger" onClick={logout}>
+                            {t('textLogout')}
+                        </Button>
+                    </div>
                 </div>
-            <select id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
-                    <option value="en">English</option>
-                    <option value="hy">Հայերեն</option>
-                </select>
-                <Button variant={callCoachColor} onClick={callCoach}>
-                    {callCoachText}
-                </Button>
-                <Button variant="danger" onClick={logout}>
-                    {t('textLogout')}
-                </Button>
+                <Dropdown className="d-block d-lg-none">
+                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                        <img src="/images/user-icon.svg" alt="menu_icon" width="24px" height="24px" />
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu className="p-1">
+                        <div className="d-flex flex-column align-items-end" style={{marginRight:10}}>
+                            <h5 className="text-dark">{switchComponent}</h5>
+                            <h6 className="text-dark">{t("textCoach")}: {coach}</h6>
+                        </div>
+                        <select id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
+                            <option value="en">English</option>
+                            <option value="hy">Հայերեն</option>
+                        </select>
+                        <br/>
+                        <Button variant={callCoachColor} onClick={callCoach}>
+                            {callCoachText}
+                        </Button>
+                        <hr className="divide-line"/>
+                        <Button variant="danger" onClick={logout}>
+                            {t('textLogout')}
+                        </Button>
+                    </Dropdown.Menu>
+                </Dropdown>
             </div>
-        </div>
+        </>
     )
 }
