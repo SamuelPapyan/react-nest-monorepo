@@ -63,7 +63,7 @@ export default function WorkshopRow(props) {
                         setShowModal(true);
                     }}>{title}</a>
                 </td>
-                <td>{description}</td>
+                <td className="d-none d-md-table-cell">{description}</td>
                 <td className="d-none d-lg-table-cell">{startTime}</td>
                 <td className="d-none d-lg-table-cell">{endTime}</td>
                 <td className="d-none d-lg-table-cell">{count}</td>

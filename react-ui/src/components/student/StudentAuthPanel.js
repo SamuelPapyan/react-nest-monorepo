@@ -71,10 +71,10 @@ export default function StudentAuthPanel(props) {
 
     return (
         <>
-            <div className="bg-light  p-2" style={{
+            <div className="bg-light p-2" style={{
                 position: "sticky",
                 top: "0",
-                margin: "0 0 10px 0"
+                margin: "0 0 10px 0",
             }}>
                 <div className="d-lg-flex justify-content-end align-items-center d-none">
                     <select id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
@@ -96,7 +96,7 @@ export default function StudentAuthPanel(props) {
                 </div>
                 <Dropdown className="d-block d-lg-none">
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        <img src="/images/menu_icon.svg" alt="menu_icon" width="24px" height="24px" />
+                        <img src="/images/user-icon.svg" alt="menu_icon" width="24px" height="24px" />
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="p-1">
                         <div className="d-flex flex-column align-items-end" style={{marginRight:10}}>

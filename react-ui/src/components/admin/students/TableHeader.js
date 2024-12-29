@@ -6,7 +6,7 @@ export default function TableHeader(props){
     return (
         <thead>
             <tr>
-                <th>{t("textFullName")}</th>
+                <th className="d-none d-md-table-cell">{t("textFullName")}</th>
                 <th>{t("labelUsername")}</th>
                 <th className="d-none d-md-table-cell">{t("labelEmail")}</th>
                 <th className="d-none d-xl-table-cell">{t("labelAge")}</th>

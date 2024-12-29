@@ -13,17 +13,8 @@ export default function Dashboard() {
     const [bestStudents, setBestStudents] = useState([])
     const [updated, setUpdated] = useState(false);
 
-    const oldBody = <div className="dashboard" style={{
-        display: "flex",
-        justifyContent:"center",
-        alignItems: "center",
-        flexDirection: "column",
-        height: 500,
-        width: "100%",
-    }}>
-        <img src="images/images.png" style={{
-            width:"25%"
-        }}/>
+    const oldBody = <div className="dashboard">
+        <img src="images/images.png"/>
         <h1 className="text-primary">{t("textWelcomeToStaffDashboard")}</h1>
     </div>
 

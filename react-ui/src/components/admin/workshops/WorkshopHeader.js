@@ -7,7 +7,7 @@ export default function WorkshopHeader(props) {
         <thead>
             <tr>
                 <th>{t("labelWorkshopTitle")}</th>
-                <th>{t("labelDescription")}</th>
+                <th className="d-none d-md-table-cell">{t("labelDescription")}</th>
                 <th className="d-none d-lg-table-cell">{t("labelWorkshopStartTime")}</th>
                 <th className="d-none d-lg-table-cell">{t("labelWorkshopEndTime")}</th>
                 <th className="d-none d-lg-table-cell">{t("textCountOfDays")}</th>

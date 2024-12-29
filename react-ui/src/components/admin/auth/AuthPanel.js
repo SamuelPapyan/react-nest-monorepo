@@ -60,9 +60,10 @@ export default function AuthPanel(props) {
         margin: "0 0 10px 0",
         zIndex: "3"
       }}>
+        
         <Dropdown className="d-block d-lg-none bg-dark p-1">
             <Dropdown.Toggle variant="primary" id="dropdown-basic">
-            <img src="/images/menu_icon.svg" alt="menu_icon" width="24px" height="24px" />
+            <img src="/images/user-icon.svg" alt="menu_icon" width="24px" height="24px" />
             </Dropdown.Toggle>
             <Dropdown.Menu className="p-1 bg-dark" >
               {dropdownComponent}

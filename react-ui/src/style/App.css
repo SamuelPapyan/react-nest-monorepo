@@ -121,3 +121,44 @@
 .hover-size:hover {
   transform: scale(1.2);
 }
+
+.login-view-box {
+  width: "30%";
+  background-color: #033E8A;
+}
+
+.dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 500px;
+  width: "100%",
+}
+
+.dashboard img{
+  width: 25%;
+}
+
+@media (max-width: 500px) {
+  .login-view-box {
+    width: "60%";
+    background-color: #033E8A;
+  }
+
+  .dashboard {
+    height: 300px;
+  }
+
+  .dashboard img{
+    width: 50%;
+  }
+
+  .search-bar input{
+    width:75%;
+  }
+  
+  .search-bar button {
+    width: 22%;
+  }
+}

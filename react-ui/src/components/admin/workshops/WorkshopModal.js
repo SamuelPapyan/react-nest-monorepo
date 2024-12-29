@@ -7,7 +7,7 @@ export default function WorkshopModal(props) {
     return (
         <Modal
             {...props}
-            size="lg"
+            size="md"
             centered>
             <Modal.Header
                 closeButton

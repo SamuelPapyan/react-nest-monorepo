@@ -63,9 +63,9 @@ export default function StudentRow(props)
                     <a href="#" className="text-primary pe-auto text-decoration-none" onClick={(e)=>{
                         e.preventDefault();
                         setShowModal(true);
-                    }}>{fullName}</a>
+                    }}>{username}</a>
                 </td>
-                <td>{username}</td>
+                <td className="d-md-table-cell d-none">{username}</td>
                 <td className="d-none d-md-table-cell">{email}</td>
                 <td className="d-none d-xl-table-cell">{age}</td>
                 <td className="d-none d-xl-table-cell">{level}</td>
