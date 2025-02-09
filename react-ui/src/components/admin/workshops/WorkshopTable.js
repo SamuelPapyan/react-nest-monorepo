@@ -29,7 +29,7 @@ export default function WorkshopTable(props)
 
     return (
         <div id="workshop=table">
-            <table className='table'>
+            <table className='table table-sm'>
                 <WorkshopHeader userType={props.userType}/>
                 <tbody>
                     {data}

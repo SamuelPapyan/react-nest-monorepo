@@ -33,10 +33,15 @@ export default function Dashboard() {
 
     return (
         <div style={{
-            marginBottom: "100px"
+            margin: "auto",
+            marginBottom: "50px",
+            width: "90%",
         }}>
             {oldBody}
-            <div className="d-flex row justify-content-center p-3">
+            <div className="d-flex row justify-content-center p-3" style={{
+                margin: "auto",
+                width: "100%"
+            }}>
                 <DataCard data={{title: t("textStudents"), count: studentCount}}/>
                 <DataCard data={{title: t("textStaff"), count: staffCount}}/>
                 <DataCard data={{title: t("textWorkshops"), count: workshopsCount}}/>

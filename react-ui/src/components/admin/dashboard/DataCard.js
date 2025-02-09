@@ -21,7 +21,7 @@ export default function DataCard(props) {
                 borderRadius: "100%",
                 position: "relative",
                 top: "-30px",
-                left: "30px"
+                left: localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? "0" : "30px"
             }}/>
         </div>
     </div>

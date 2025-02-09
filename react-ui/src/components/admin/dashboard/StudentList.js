@@ -25,7 +25,7 @@ export default function StudentList(props) {
     return (
         <div>
             <h2>{t("textBestStudents")}</h2>
-            <table className="table table-bordered border-primary w-75 m-auto">
+            <table className="table-sm table-bordered border-primary w-75 m-auto">
                 <thead>
                     <tr>
                         <th><b>{t("textFullName")}</b></th>

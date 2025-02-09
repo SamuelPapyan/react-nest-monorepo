@@ -120,12 +120,9 @@ export default function StudentLogin(props) {
         <div
             style={{
             width:"100%",
-            height: "715px"
+            height: "100vh"
         }} className="d-flex justify-content-center align-items-center">
-            <div className="rounded p-2" style={{
-                width: "40%",
-                backgroundColor: "#a1a1a1AA",
-            }}>
+            <div className="rounded p-2 student-login">
                     {box}
             </div>
         </div>

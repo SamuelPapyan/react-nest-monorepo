@@ -140,10 +140,19 @@
   width: 25%;
 }
 
+.student-login{
+  width: 40%;
+  background-color: #a1a1a1AA;
+}
+
 @media (max-width: 500px) {
   .login-view-box {
-    width: "60%";
+    width: 60%;
     background-color: #033E8A;
+  }
+
+  .student-login{
+    width: 60%;
   }
 
   .dashboard {

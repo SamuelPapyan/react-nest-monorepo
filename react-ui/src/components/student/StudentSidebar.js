@@ -18,7 +18,7 @@ export default function StudentSidebar() {
         margin: "0",
         position: "sticky",
         top: "0",
-        height:"715px",
+        height:"100vh",
         zIndex: 10
       }
     }>
