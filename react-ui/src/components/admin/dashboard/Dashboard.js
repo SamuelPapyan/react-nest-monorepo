@@ -13,17 +13,8 @@ export default function Dashboard() {
     const [bestStudents, setBestStudents] = useState([])
     const [updated, setUpdated] = useState(false);
 
-    const oldBody = <div className="dashboard" style={{
-        display: "flex",
-        justifyContent:"center",
-        alignItems: "center",
-        flexDirection: "column",
-        height: 500,
-        width: "100%",
-    }}>
-        <img src="images/images.png" style={{
-            width:"25%"
-        }}/>
+    const oldBody = <div className="dashboard">
+        <img src="images/images.png"/>
         <h1 className="text-primary">{t("textWelcomeToStaffDashboard")}</h1>
     </div>
 
@@ -42,10 +33,15 @@ export default function Dashboard() {
 
     return (
         <div style={{
-            marginBottom: "100px"
+            margin: "auto",
+            marginBottom: "50px",
+            width: "90%",
         }}>
             {oldBody}
-            <div className="d-flex justify-content-center p-3">
+            <div className="d-flex row justify-content-center p-3" style={{
+                margin: "auto",
+                width: "100%"
+            }}>
                 <DataCard data={{title: t("textStudents"), count: studentCount}}/>
                 <DataCard data={{title: t("textStaff"), count: staffCount}}/>
                 <DataCard data={{title: t("textWorkshops"), count: workshopsCount}}/>

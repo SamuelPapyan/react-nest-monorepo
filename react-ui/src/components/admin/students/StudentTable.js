@@ -30,7 +30,7 @@ export default function StudentTable(props)
 
     return (
         <div id="student-table">
-            <table className="table">
+            <table className="table table-sm">
                 <TableHeader userType={props.userType}/>
                 <tbody>
                     {data}

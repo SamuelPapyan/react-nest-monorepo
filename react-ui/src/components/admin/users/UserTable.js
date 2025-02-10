@@ -29,7 +29,7 @@ export default function UserTable(props)
 
     return (
         <div id="user-table">
-            <table className="table">
+            <table className="table table-sm">
                 <UserHeader userType={props.userType}/>
                 <tbody>
                     {data}

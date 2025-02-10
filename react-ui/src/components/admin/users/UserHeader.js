@@ -6,11 +6,11 @@ export default function UserHeader(props) {
     return (
         <thead>
             <tr>
-                <th>{t("labelFirstName")}</th>
-                <th>{t("labelLastName")}</th>
-                <th>{t("labelEmail")}</th>
+                <th className="d-none d-lg-table-cell">{t("labelFirstName")}</th>
+                <th className="d-none d-lg-table-cell">{t("labelLastName")}</th>
+                <th className="d-none d-lg-table-cell">{t("labelEmail")}</th>
                 <th>{t("labelUsername")}</th>
-                <th>{t("textRoles")}</th>
+                <th className="d-none d-lg-table-cell">{t("textRoles")}</th>
                 {props.userType === "ADMIN" ? 
                 <th colSpan={2}>{t("textAction")}</th>
                 : ""}

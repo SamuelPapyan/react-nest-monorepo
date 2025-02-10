@@ -3,7 +3,7 @@ import {OrbitProgress} from 'react-loading-indicators'
 export default function DataCard(props) {
 
     return (
-    <div className="d-flex justify-content-between p-3 rounded-4" style={{
+    <div className="d-flex col-10 col-lg-3 p-1 justify-content-between p-3 rounded-4" style={{
         width:"250px",
         marginRight: "30px",
         backgroundColor: "#efefef",
@@ -21,7 +21,7 @@ export default function DataCard(props) {
                 borderRadius: "100%",
                 position: "relative",
                 top: "-30px",
-                left: "30px"
+                left: localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? "0" : "30px"
             }}/>
         </div>
     </div>

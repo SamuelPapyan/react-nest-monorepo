@@ -126,10 +126,7 @@ export default function Login(props) {
             height: "737px",
             backgroundColor: "#0196C7"
         }} className="d-flex justify-content-center align-items-center">
-            <div style={{
-                width: "30%",
-                backgroundColor: "#033E8A"
-            }} className="rounded p-2">
+            <div className="login-view-box rounded p-2">
                 {box}
             </div>
             

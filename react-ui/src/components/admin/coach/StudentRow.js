@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function StudentRow(props) {
     const [visible, setVisible] = useState(false);
     return (
-        <div className="d-flex justify-content-between mx-5 my-2 p-2 align-items-center rounded bg-primary" style={{
+        <div className="d-flex justify-content-between mx-3 my-2 p-2 align-items-center rounded bg-primary" style={{
             border: "1px solid azure"
         }}>
             <p className="d-block text-light"><b>{props.data.username}</b></p>

@@ -5,6 +5,7 @@ import { useState } from 'react'
 import WorkshopRegistrationModal from './WorkshopRegistrationModal';
 import WorkshopUnregistrationModal from './WorkshopUnregistrationModal';
 import StudentService from '../../../services/studentService';
+import { t } from 'i18next';
 
 export default function WorkshopModal(props) {
     const [registerModal, setRegisterModal] = useState(false);
@@ -63,8 +64,8 @@ export default function WorkshopModal(props) {
                 </Modal.Body>
                 <Modal.Footer>
                     {!props.data.students.some(x => x === props.data.studentName) ?
-                    <Button onClick={registerToWorkshop}>Register</Button> :
-                    <Button variant='secondary' onClick={unregisterFromWorkshop}>Unregister</Button>}
+                    <Button onClick={registerToWorkshop}>{t("textRegister")}</Button> :
+                    <Button variant='secondary' onClick={unregisterFromWorkshop}>{t("textUnregister")}</Button>}
                 </Modal.Footer>
             </Modal>
             <WorkshopRegistrationModal show={registerModal} onHide={() => setRegisterModal(false)}/>

@@ -1,7 +1,9 @@
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import { useTranslation } from 'react-i18next'
 
 export default function WorkshopRegistrationModal(props) {
+    const {t} = useTranslation();
     return (
         <Modal
             {...props}
@@ -15,14 +17,14 @@ export default function WorkshopRegistrationModal(props) {
                     alignItems: "center",
                 }}>
                 <Modal.Title>
-                    Congratulations
+                    {t("textCongratulations")}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>You have registrated successfully</p>
+                <p>{t("textRegisteredSuccess")}</p>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={()=>props.onHide()}>Thank You</Button>
+                <Button onClick={()=>props.onHide()}>{t("textThanks")}</Button>
             </Modal.Footer>
         </Modal>
     )
