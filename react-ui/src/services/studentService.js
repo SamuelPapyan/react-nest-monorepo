@@ -45,10 +45,8 @@ export default class StudentService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + "/students", {
                 method: 'POST',
-                body: JSON.stringify(formData),
+                body: formData,
                 headers:{
-                    'Accept': "application/json",
-                    'Content-Type': "application/json",
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{
@@ -63,10 +61,8 @@ export default class StudentService {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/students/${id}`, {
                 method: 'PUT',
-                body: JSON.stringify(formData),
+                body: formData,
                 headers:{
-                    'Accept': "application/json",
-                    'Content-Type': "application/json",
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
             }).then(res=>{

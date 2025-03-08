@@ -9,6 +9,8 @@ import {
   UseFilters,
   Query,
   Inject,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { StudentService } from 'src/students/student.service';
 import { StudentDTO } from 'src/students/student.dto';
@@ -30,6 +32,7 @@ import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { StudentDocument } from 'src/students/student.schema';
 import { GroupChatService } from 'src/group_chat/group_chat.service';
 import { GroupChat } from 'src/group_chat/group_chat.schema';
+import { FileInterceptor } from '@nestjs/platform-express'
 
 @Controller('students')
 @UseFilters(AllExceptionFilter)
@@ -163,11 +166,16 @@ export class StudentController {
 
   @Post()
   @Roles(Role.Admin)
+  @UseInterceptors(FileInterceptor('avatar'))
   async addStudent(
-    @Body() studentDto: StudentDTO,
+    @UploadedFile() avatar: Express.Multer.File,
+    @Body() studentDto,
   ): Promise<ResponseDTO<Student>> {
     try {
-      const student = await this.studentService.addStudent(studentDto);
+      const student = await this.studentService.addStudent(
+        studentDto,
+        avatar,
+      );
       return this.responseManager.getResponse(student, messages.STUDENT_ADDED);
     } catch (e) {
       this.exceptionManager.throwException(e);
@@ -198,8 +206,10 @@ export class StudentController {
   }
 
   @Put(':id')
+  @UseInterceptors(FileInterceptor('avatar'))
   @Roles(Role.Admin, Role.Editor)
   async updateStudent(
+    @UploadedFile() avatar: Express.Multer.File,
     @Body() studentDto: StudentDTO,
     @Param('id') id: string,
   ): Promise<ResponseDTO<Student>> {
@@ -208,6 +218,7 @@ export class StudentController {
       const student = await this.studentService.updateStudent(
         mongoId,
         studentDto,
+        avatar
       );
       if (!student) {
         throw new NotFoundException(messages.STUDENT_NOT_FOUND);

@@ -11,6 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { hashConfig } from '../app/config';
 import { JwtService } from '@nestjs/jwt';
 import { ResetPassword } from 'src/mail/reset_password.schema';
+import { v2 as cloudinary } from 'cloudinary'
 
 @Injectable()
 export class StudentService {
@@ -21,13 +22,48 @@ export class StudentService {
     private jwtService: JwtService,
   ) {}
 
-  async addStudent(studentDTO: StudentDTO): Promise<Student> {
+  async addStudent(
+    studentDTO: StudentDTO,
+    avatar: Express.Multer.File,
+  ): Promise<Student> {
     studentDTO.password = await bcrypt.hash(
       studentDTO.password,
       hashConfig.SALT_OR_ROUNDS,
     );
     const createdStudent = new this.studentModel(studentDTO);
+    if (avatar) {
+      const avatarUrl = await this.uploadAvatar(avatar, studentDTO['username'])
+      createdStudent.avatar = avatarUrl;
+    }
     return createdStudent.save();
+  }
+
+  private getPublicId(url: string): string {
+    const uri = new URL(url);
+    return uri.pathname.split('/').slice(5).join('/').split('.')[0];
+  }
+
+  private async uploadAvatar(
+    avatar: Express.Multer.File,
+    username: string,
+  ): Promise<string> {
+    const mimeType = avatar.mimetype;
+    const base64Data = avatar.buffer.toString('base64');
+    cloudinary.config({ 
+      cloud_name: 'drwi32qkb', 
+      api_key: '685351825318234', 
+      api_secret: 'B34F6ZA_5QKaqFx1L-mqR-8N6fQ'
+    });
+    await cloudinary.uploader.destroy(`user_data/avatar_${username}`);
+    const uploadResult = await cloudinary.uploader
+      .upload(`data:${mimeType};base64,${base64Data}`, {
+        public_id: `avatar_${username}`,
+        folder: 'user_data'
+      })
+      .catch((error) => {
+        console.log(error);
+    });
+    return uploadResult['url'];
   }
 
   async findOne(username: string): Promise<Student | any> {
@@ -72,17 +108,27 @@ export class StudentService {
   async updateStudent(
     id: mongoose.Types.ObjectId,
     studentDto: StudentDTO,
+    avatar: Express.Multer.File
   ): Promise<Student> {
     studentDto.password = await bcrypt.hash(
       studentDto.password,
       hashConfig.SALT_OR_ROUNDS,
     );
     const student = this.studentModel.findByIdAndUpdate(id, studentDto);
+    if (avatar) {
+      const avatarUrl = await this.uploadAvatar(avatar, studentDto['username'])
+      const student = await this.studentModel.findById(id);
+      student.avatar = avatarUrl;
+      return student.save();
+    }
     return student;
   }
 
   async deleteStudent(id: mongoose.Types.ObjectId): Promise<Student> {
+    const tmp = await this.studentModel.findById(id);
+    const avatar = this.getPublicId(tmp.avatar);
     const student = this.studentModel.findByIdAndDelete(id);
+    cloudinary.uploader.destroy(avatar).then(console.log);
     return student;
   }
 
@@ -100,6 +146,7 @@ export class StudentService {
       experience: user.experience,
       max_experience: user.max_experience,
       coach: user.coach,
+      avatar: user.avatar
     };
     return {
       access_token: await this.jwtService.signAsync(payload),

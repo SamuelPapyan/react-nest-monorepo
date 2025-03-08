@@ -20,6 +20,7 @@ export default function StudentRow(props)
     const [email, setEmail] = useState("");
     const [coach, setCoach] = useState("");
     const [showModal, setShowModal] = useState(false);
+    const [avatar, setAvatar] = useState("/images/user.png");
     const [data, setData] = useState(null);
 
     const navigate = useNavigate();
@@ -47,8 +48,8 @@ export default function StudentRow(props)
         setEmail(props.data.email);
         setCoach(props.data.coach);
         setData(props.data);
+        if (props.data.avatar) setAvatar(props.data.avatar);
     }, [props.data._id, props.data.full_name_en, props.data.full_name_hy, props.data.age, props.data.level, props.data.experience, props.data.max_experience, props.data.country, props.data.username, props.data.email]);
-
     return (
         <>
             <StudentModal 
@@ -58,6 +59,9 @@ export default function StudentRow(props)
                 onHide={() => setShowModal(false)}
             />
             <tr>
+                <td>
+                    <img width="50" src={avatar} alt="avatar_photo"/>
+                </td>
                 <td className="d-none d-lg-table-cell">{fullName}</td>
                 <td className="d-table-cell d-lg-none">
                     <a href="#" className="text-primary pe-auto text-decoration-none" onClick={(e)=>{
