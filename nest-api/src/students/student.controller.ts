@@ -29,7 +29,6 @@ import { MailService } from 'src/mail/mail.service';
 import { WorkshopService } from 'src/workshop/workshop.service';
 import { Workshop } from 'src/workshop/workshop.schema';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
-import { StudentDocument } from 'src/students/student.schema';
 import { GroupChatService } from 'src/group_chat/group_chat.service';
 import { GroupChat } from 'src/group_chat/group_chat.schema';
 import { FileInterceptor } from '@nestjs/platform-express'

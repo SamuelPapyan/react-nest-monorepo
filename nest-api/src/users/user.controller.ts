@@ -8,6 +8,8 @@ import {
   Param,
   UseFilters,
   Query,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDTO } from './user.dto';
@@ -21,6 +23,7 @@ import { AllExceptionFilter } from 'src/app/all-exception.filter';
 import { messages } from 'src/app/config';
 import { Roles } from 'src/roles/roles.decorator';
 import { Role } from 'src/roles/role.enum';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 @UseFilters(AllExceptionFilter)
@@ -65,9 +68,16 @@ export class UserController {
 
   @Post()
   @Roles(Role.Admin)
-  async addUser(@Body() userDto: UserDTO): Promise<ResponseDTO<User>> {
+  @UseInterceptors(FileInterceptor('avatar'))
+  async addUser(
+    @UploadedFile() avatar: Express.Multer.File,
+    @Body() userDto: UserDTO
+  ):Promise<ResponseDTO<User>> {
     try {
-      const user = await this.userService.addUser(userDto);
+      const user = await this.userService.addUser(
+        userDto,
+        avatar
+      );
       return this.responseManager.getResponse(user, 'USER_ADDED');
     } catch (e) {
       this.exceptionManager.throwException(e);
@@ -75,14 +85,20 @@ export class UserController {
   }
 
   @Put(':id')
+  @UseInterceptors(FileInterceptor('avatar'))
   @Roles(Role.Admin)
   async updateUser(
+    @UploadedFile() avatar: Express.Multer.File,
     @Body() userDto: UserDTO,
     @Param('id') id: string,
   ): Promise<ResponseDTO<User>> {
     try {
       const mongoId = new mongoose.Types.ObjectId(id);
-      const user = await this.userService.updateUser(mongoId, userDto);
+      const user = await this.userService.updateUser(
+        mongoId,
+        userDto,
+        avatar
+      );
       if (!user) {
         throw new NotFoundException('USER_NOT_FOUND');
       }

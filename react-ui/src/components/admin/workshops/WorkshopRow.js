@@ -15,6 +15,7 @@ export default function WorkshopRow(props) {
     const [count, setCount] = useState(0);
     const [students, setStudents] = useState(0);
     const [data, setData] = useState();
+    const [coverPhoto, setCoverPhoto] = useState("/images/no_image_landscape.jpeg");
     const [showModal, setShowModal] = useState(false);
 
     const navigate = useNavigate();
@@ -43,8 +44,10 @@ export default function WorkshopRow(props) {
             startTime,
             endTime,
             count,
-            students
+            students,
+            coverPhoto
         })
+        if (props.data.cover_photo) setCoverPhoto(props.data.cover_photo);
     }, [props.data._id, props.data.title, props.data.description, props.data.start_time, props.data.end_time, props.data.days.length, props.data.students])
 
     return (
@@ -56,6 +59,9 @@ export default function WorkshopRow(props) {
                 onHide={() => setShowModal(false)}
             />
             <tr>
+            <td>
+                    <img width="50" src={coverPhoto} alt="cover_photo"/>
+                </td>
                 <td className="d-none d-lg-table-cell">{title}</td>
                 <td className="d-table-cell d-lg-none">
                     <a href="#" className="text-primary pe-auto text-decoration-none" onClick={(e)=>{

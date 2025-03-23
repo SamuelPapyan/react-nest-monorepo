@@ -16,6 +16,7 @@ export default function UserRow(props)
     const [username, setUsername] = useState("");
     const [roles, setRoles] = useState("");
     const [data, setData] = useState(null);
+    const [avatar, setAvatar] = useState("/images/user.png");
     const [showModal, setShowModal] = useState(false);
 
     const navigate = useNavigate();
@@ -41,8 +42,9 @@ export default function UserRow(props)
         setUsername(props.data.username);
         setRoles(props.data.roles.map(value=>t("text" + value.toUpperCase())).join(" | "));
         setData({
-            firstName, lastName, email, username, roles
+            firstName, lastName, email, username, roles, avatar
         });
+        if (props.data.avatar) setAvatar(props.data.avatar);
     }, [props.data._id, props.data.first_name, props.data.last_name, props.data.email, props.data.username, props.data.roles]);
 
     return (
@@ -54,6 +56,9 @@ export default function UserRow(props)
                 onHide={() => setShowModal(false)}
             />
             <tr>
+                <td>
+                    <img width="50" src={avatar} alt="avatar_photo"/>
+                </td>
                 <td className="d-none d-lg-table-cell">{firstName}</td>
                 <td className="d-none d-lg-table-cell">{lastName}</td>
                 <td className="d-none d-lg-table-cell">{email}</td>

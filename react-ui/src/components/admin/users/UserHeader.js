@@ -6,6 +6,7 @@ export default function UserHeader(props) {
     return (
         <thead>
             <tr>
+                <th>{t("labelAvatarPhoto")}</th>
                 <th className="d-none d-lg-table-cell">{t("labelFirstName")}</th>
                 <th className="d-none d-lg-table-cell">{t("labelLastName")}</th>
                 <th className="d-none d-lg-table-cell">{t("labelEmail")}</th>

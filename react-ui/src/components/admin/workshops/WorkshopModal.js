@@ -23,28 +23,33 @@ export default function WorkshopModal(props) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <table className='table'>
-                    <tr>
-                        <th>{t("labelDescription")}</th>
-                        <td>{props.data?.description}</td>
-                    </tr>
-                    <tr>
-                        <th>{t("labelWorkshopStartTime")}</th>
-                        <td>{props.data?.startTime}</td>
-                    </tr>
-                    <tr>
-                        <th>{t("labelWorkshopEndTime")}</th>
-                        <td>{props.data?.endTime}</td>
-                    </tr>
-                    <tr>
-                        <th>{t("textCountOfDays")}</th>
-                        <td>{props.data?.count}</td>
-                    </tr>
-                    <tr>
-                        <th>{t("textRegisteredStudents")}</th>
-                        <td>{props.data?.students}</td>
-                    </tr>
-                </table>
+                <div className='row'>
+                    <img className="col" src={props.data?.coverPhoto ? props.data?.coverPhoto : "/images/no_image_landscape.jpeg"} style={{
+                        width: 180
+                    }} alt="avatar_photo"/>
+                    <table className='table row'>
+                        <tr>
+                            <th>{t("labelDescription")}</th>
+                            <td>{props.data?.description}</td>
+                        </tr>
+                        <tr>
+                            <th>{t("labelWorkshopStartTime")}</th>
+                            <td>{props.data?.startTime}</td>
+                        </tr>
+                        <tr>
+                            <th>{t("labelWorkshopEndTime")}</th>
+                            <td>{props.data?.endTime}</td>
+                        </tr>
+                        <tr>
+                            <th>{t("textCountOfDays")}</th>
+                            <td>{props.data?.count}</td>
+                        </tr>
+                        <tr>
+                            <th>{t("textRegisteredStudents")}</th>
+                            <td>{props.data?.students}</td>
+                        </tr>
+                    </table>
+                </div>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={()=>props.onHide()}>{t("textClose")}</Button>

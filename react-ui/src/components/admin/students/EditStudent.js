@@ -5,21 +5,16 @@ import StudentService from "../../../services/studentService";
 import UserService from "../../../services/userService";
 import Form from 'react-bootstrap/Form';
 import { useTranslation } from "react-i18next";
-import { Cloudinary } from '@cloudinary/url-gen'
-import { auto } from '@cloudinary/url-gen/actions/resize'
-import { autoGravity } from "@cloudinary/url-gen/qualifiers/gravity";
-import { AdvancedImage } from '@cloudinary/react'
 
 export default function EditStudent(props)
 {
-    const cld = new Cloudinary({ cloud: {cloudName: 'drwi32qkb'}});
     const {t} = useTranslation();
     const [errors, setErrors] = useState("");
     const [updated, setUpdated] = useState(false);
     const [connectionErrorMessage, setConnectionErrorMessage] = useState("")
     const [avatarUrl, setAvatarUrl] = useState(null);
     const {id} = useParams();
-    let _fullName, _fullNameHy, _age, _level, _experience, _maxExperience, _country, _username, _email, _coach, _avatar, _avatar_preview, _form;
+    let _fullName, _fullNameHy, _age, _level, _experience, _maxExperience, _country, _username, _email, _coach, _avatar_preview, _form;
     const [coaches, setCoaches] = useState([]);
     const navigate = useNavigate();
     

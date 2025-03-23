@@ -10,6 +10,7 @@ import {
   ResetPassword,
   ResetPasswordDocument,
 } from 'src/mail/reset_password.schema';
+import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class UsersService {
@@ -17,16 +18,37 @@ export class UsersService {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(ResetPassword.name)
     private resetPasswordModel: Model<ResetPasswordDocument>,
+    private uploadService: UploadService
   ) {}
 
-  async addUser(userDTO: UserDTO): Promise<User> {
+  async addUser(
+    userDTO: UserDTO,
+    avatar: Express.Multer.File
+  ): Promise<User> {
     userDTO.password = await bcrypt.hash(
       userDTO.password,
       hashConfig.SALT_OR_ROUNDS,
     );
     userDTO.roles = [Role.Viewer];
     const createdUser = new this.userModel(userDTO);
+    if (avatar) {
+      const avatarUrl = await this.uploadAvatar(avatar, userDTO['username'])
+      createdUser.avatar = avatarUrl;
+    }
     return createdUser.save();
+  }
+
+  private async uploadAvatar(
+    avatar: Express.Multer.File,
+    username: string,
+  ): Promise<string> {
+    await this.uploadService.removeFile(`user_data/avatar_${username}`)
+    const uploadResult = await this.uploadService.uploadFile(
+      avatar,
+      `avatar_${username}`,
+      'user_data'
+    );
+    return uploadResult['url'];
   }
 
   async findOne(username: string): Promise<User | any> {
@@ -59,17 +81,27 @@ export class UsersService {
   async updateUser(
     id: mongoose.Types.ObjectId,
     userDTO: UserDTO,
+    avatar: Express.Multer.File
   ): Promise<User> {
     userDTO.password = await bcrypt.hash(
       userDTO.password,
       hashConfig.SALT_OR_ROUNDS,
     );
     const user = this.userModel.findByIdAndUpdate(id, userDTO);
+    if (avatar) {
+      const avatarUrl = await this.uploadAvatar(avatar, userDTO['username']);
+      const user = await this.userModel.findById(id);
+      user.avatar = avatarUrl;
+      return user.save();
+    }
     return user;
   }
 
   async deleteUser(id: mongoose.Types.ObjectId): Promise<User> {
+    const tmp = await this.userModel.findById(id);
+    const avatar = this.uploadService.getPublicId(tmp.avatar);
     const user = this.userModel.findByIdAndDelete(id);
+    this.uploadService.removeFile(avatar).then(console.log);
     return user;
   }
 

@@ -11,7 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { hashConfig } from '../app/config';
 import { JwtService } from '@nestjs/jwt';
 import { ResetPassword } from 'src/mail/reset_password.schema';
-import { v2 as cloudinary } from 'cloudinary'
+import { UploadService } from 'src/upload/upload.service';
 
 @Injectable()
 export class StudentService {
@@ -20,6 +20,7 @@ export class StudentService {
     @InjectModel(ResetPassword.name)
     private resetPasswordModel: Model<ResetPassword>,
     private jwtService: JwtService,
+    private uploadService: UploadService
   ) {}
 
   async addStudent(
@@ -38,31 +39,16 @@ export class StudentService {
     return createdStudent.save();
   }
 
-  private getPublicId(url: string): string {
-    const uri = new URL(url);
-    return uri.pathname.split('/').slice(5).join('/').split('.')[0];
-  }
-
   private async uploadAvatar(
     avatar: Express.Multer.File,
     username: string,
   ): Promise<string> {
-    const mimeType = avatar.mimetype;
-    const base64Data = avatar.buffer.toString('base64');
-    cloudinary.config({ 
-      cloud_name: 'drwi32qkb', 
-      api_key: '685351825318234', 
-      api_secret: 'B34F6ZA_5QKaqFx1L-mqR-8N6fQ'
-    });
-    await cloudinary.uploader.destroy(`user_data/avatar_${username}`);
-    const uploadResult = await cloudinary.uploader
-      .upload(`data:${mimeType};base64,${base64Data}`, {
-        public_id: `avatar_${username}`,
-        folder: 'user_data'
-      })
-      .catch((error) => {
-        console.log(error);
-    });
+    await this.uploadService.removeFile(`user_data/avatar_${username}`)
+    const uploadResult = await this.uploadService.uploadFile(
+      avatar,
+      `avatar_${username}`,
+      'user_data'
+    );
     return uploadResult['url'];
   }
 
@@ -126,9 +112,9 @@ export class StudentService {
 
   async deleteStudent(id: mongoose.Types.ObjectId): Promise<Student> {
     const tmp = await this.studentModel.findById(id);
-    const avatar = this.getPublicId(tmp.avatar);
+    const avatar = this.uploadService.getPublicId(tmp.avatar);
     const student = this.studentModel.findByIdAndDelete(id);
-    cloudinary.uploader.destroy(avatar).then(console.log);
+    this.uploadService.removeFile(avatar).then(console.log);
     return student;
   }
 

@@ -11,6 +11,7 @@ import { WorkshopService } from "src/workshop/workshop.service";
 import { Workshop, WorkshopSchema } from "src/workshop/workshop.schema";
 import { User, UserSchema } from "src/users/user.schema";
 import { Student, StudentSchema } from "src/students/student.schema";
+import { UploadService } from "src/upload/upload.service";
 
 
 @Module({
@@ -29,6 +30,7 @@ import { Student, StudentSchema } from "src/students/student.schema";
     ResponseManager,
     ExceptionManager,
     WorkshopService,
+    UploadService
   ],
   controllers: [GroupChatController],
 })

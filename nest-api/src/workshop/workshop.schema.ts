@@ -28,6 +28,9 @@ export class Workshop {
 
     @Prop()
     students: string[];
+
+    @Prop({required: false})
+    cover_photo: string = null;
 }
 
 export const WorkshopSchema = SchemaFactory.createForClass(Workshop);

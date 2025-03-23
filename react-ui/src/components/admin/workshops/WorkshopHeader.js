@@ -6,6 +6,7 @@ export default function WorkshopHeader(props) {
     return (
         <thead>
             <tr>
+                <th>{t("labelAvatarPhoto")}</th>
                 <th>{t("labelWorkshopTitle")}</th>
                 <th className="d-none d-md-table-cell">{t("labelDescription")}</th>
                 <th className="d-none d-lg-table-cell">{t("labelWorkshopStartTime")}</th>

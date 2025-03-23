@@ -1,7 +1,7 @@
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import WorkshopRegistrationModal from './WorkshopRegistrationModal';
 import WorkshopUnregistrationModal from './WorkshopUnregistrationModal';
 import StudentService from '../../../services/studentService';
@@ -51,6 +51,9 @@ export default function WorkshopModal(props) {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <img src={props.data.cover_photo ? props.data.cover_photo : "/images/no_image_landscape.jpeg"} alt="workshop_cover_image" style={{
+                        width: "100%"
+                    }}/>
                     <p>{props.data.description}</p>
                     <ul>
                     {
