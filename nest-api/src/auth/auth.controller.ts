@@ -62,7 +62,7 @@ export class AuthController {
   @UseFilters(AllExceptionFilter)
   async signUp(@Body() signUpDto: UserDTO): Promise<ResponseDTO<UserDTO>> {
     try {
-      const user = await this.userService.addUser(signUpDto);
+      const user = await this.userService.addUser(signUpDto, null);
       return this.responseManager.getResponse(user, 'USER_ADDED');
     } catch (e) {
       this.exceptionManager.throwException(e);

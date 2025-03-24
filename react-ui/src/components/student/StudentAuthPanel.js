@@ -13,6 +13,7 @@ export default function StudentAuthPanel(props) {
     const [coachCall, setCoachCall] = useState(false);
     const [callCoachText, setCallCoachText] = useState(t("textCallCoach"));
     const [callCoachColor, setCallCoachColor] = useState("success");
+    const [avatar, setAvatar] = useState("images/user.png")
 
     
     const logout = () => {
@@ -63,6 +64,7 @@ export default function StudentAuthPanel(props) {
                         setCallCoachText(t('textUncallCoach'));
                         setCallCoachColor("secondary");
                     }
+                    if (props.data.avatar) setAvatar(props.data.avatar);
                     setUpdated(true);
                 }
             })
@@ -86,6 +88,10 @@ export default function StudentAuthPanel(props) {
                             <h5 className="text-dark">{switchComponent}</h5>
                             <h6 className="text-dark">{t("textCoach")}: {coach}</h6>
                         </div>
+                        <img src={avatar} style={{
+                            width: 50,
+                            height: 50
+                        }} alt="avatar_photo" className="me-2"/>
                         <Button variant={callCoachColor} onClick={callCoach}>
                             {callCoachText}
                         </Button>
@@ -96,7 +102,7 @@ export default function StudentAuthPanel(props) {
                 </div>
                 <Dropdown className="d-block d-lg-none">
                     <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        <img src="/images/user-icon.svg" alt="menu_icon" width="24px" height="24px" />
+                        <img src={avatar} alt="menu_icon" width="24px" height="24px" />
                     </Dropdown.Toggle>
                     <Dropdown.Menu className="p-1">
                         <div className="d-flex flex-column align-items-end" style={{marginRight:10}}>

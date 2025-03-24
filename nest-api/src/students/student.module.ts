@@ -16,6 +16,7 @@ import { WorkshopService } from 'src/workshop/workshop.service';
 import { Workshop, WorkshopSchema } from 'src/workshop/workshop.schema';
 import { GroupChatService } from 'src/group_chat/group_chat.service';
 import { GroupChat, GroupChatSchema } from 'src/group_chat/group_chat.schema';
+import { UploadService } from 'src/upload/upload.service';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { GroupChat, GroupChatSchema } from 'src/group_chat/group_chat.schema';
     ResponseManager,
     ExceptionManager,
     WorkshopService,
-    GroupChatService
+    GroupChatService,
+    UploadService
   ],
 })
 export class StudentsModule {}

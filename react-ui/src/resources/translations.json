@@ -112,7 +112,8 @@
             "textRegisteredSuccess": "You have registrated successfully",
             "textUnregisteredSuccess": "You have unregistrated successfully",
             "textThanks": "Thank You",
-            "textClose": "Close"
+            "textClose": "Close",
+            "labelAvatarPhoto": "Avatar Photo"
         }
     },
     "hy": {
@@ -228,7 +229,8 @@
             "textRegisteredSuccess": "Դուք հաջողությամբ գրանցվեցիք",
             "textUnregisteredSuccess": "Դուք հաջողությամբ չեղարկեցիք գրանցումը",
             "textThanks": "Շնորհակալություն",
-            "textClose": "Փակել"
+            "textClose": "Փակել",
+            "labelAvatarPhoto": "Ավատարի նկարը"
         }
     }
 }

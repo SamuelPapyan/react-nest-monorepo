@@ -5,7 +5,11 @@ import { OrbitProgress } from 'react-loading-indicators'
 export default function StudentList(props) {
     const {t} = useTranslation();
     const [rows, setRows] = useState(
-        <OrbitProgress variant="disc" dense color="#005CA9" size="medium" text="" textColor="" />
+        <tr>
+            <td colSpan={3}>
+                <OrbitProgress variant="disc" dense color="#005CA9" size="medium" text="" textColor="" />
+            </td>
+        </tr>
     )
 
     useEffect(()=>{

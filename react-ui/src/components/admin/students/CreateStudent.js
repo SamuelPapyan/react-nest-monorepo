@@ -9,28 +9,29 @@ import {useTranslation} from "react-i18next";
 export default function CreateStudent()
 {
     const {t} = useTranslation();
+    const [updated, setUpdated] = useState(false);
     const [errors, setErrors] = useState("");
     const [coaches, setCoaches] = useState([]);
-    let _fullName, _fullNameHy, _age, _level, _experience, _maxExperience, _country, _username, _email, _password, _coach;
+    let  _coach, _avatar_preview, _form;
     const navigate = useNavigate();
     
+    async function photoInputOnChange(e) {
+        if (e.target.files[0].type.indexOf("image") < 0) {
+            e.preventDefault();
+            alert("Only image files.");
+            e.target.value = "";
+            _avatar_preview.src = "/images/user.png";
+            return;
+        }
+        const blobUrl = URL.createObjectURL(e.target.files[0]);
+        _avatar_preview.src = blobUrl;
+    }
+
     function submitForm(event){
         event.preventDefault();
-        const requestData = {
-            full_name_en: _fullName.value,
-            full_name_hy: _fullNameHy.value,
-            age: _age.value,
-            level: _level.value,
-            experience: _experience.value,
-            max_experience: _maxExperience.value,
-            country: _country.value,
-            username: _username.value,
-            email: _email.value,
-            password: _password.value,
-            coach: _coach.value
-        }
-        
-        StudentService.addStudent(requestData).then(res=>{
+        const formData = new FormData(_form);
+        formData.append('coach', _coach.value);
+        StudentService.addStudent(formData).then(res=>{
             if (res.success)
             {
                 navigate("/admin/students");
@@ -48,13 +49,16 @@ export default function CreateStudent()
 
     useEffect(()=>{
         document.title = t("textCreateStudent");
-        UserService.getCoaches().then(res=>{
-            if (res.success) {
-                setCoaches(res.data.map((val, key)=>{
-                    return (<option key={key} value={val}>{val}</option>)
-                }));
-            }
-        })
+        if (!updated) {
+            UserService.getCoaches().then(res=>{
+                if (res.success) {
+                    setCoaches(res.data.map((val, key)=>{
+                        return (<option key={key} value={val}>{val}</option>)
+                    }));
+                    setUpdated(true);
+                }
+            })
+        }
     });
 
     return(
@@ -64,50 +68,57 @@ export default function CreateStudent()
         }}>
             <h1>{t("textCreateStudent")}</h1>
             {errors}
-            <form method="POST" onSubmit={submitForm}>
+            <form method="POST" onSubmit={submitForm} ref={a => _form = a}>
                 <div className="form-group">
                     <label htmlFor="full-name-en-field">{t("textFullNameEn")}</label><br/>
-                    <input className="form-control" id="full-name-en-field" type="text" name="full-name-en" ref={(a) => _fullName = a}/>
+                    <input className="form-control" id="full-name-en-field" type="text" name="full_name_en"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="full-name-hy-field">{t("textFullNameHy")}</label><br/>
-                    <input className="form-control" id="full-name-hy-field" type="text" name="full-name-hy" ref={(a) => _fullNameHy = a}/>
+                    <input className="form-control" id="full-name-hy-field" type="text" name="full_name_hy"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="username-field">{t("labelUsername")}</label><br/>
-                    <input className="form-control" id="username-field" type="text" name="username" ref={(a) => _username = a}/>
+                    <input className="form-control" id="username-field" type="text" name="username"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="email-field">{t("labelEmail")}</label><br/>
-                    <input className="form-control" id="email-field" type="text" name="email" ref={(a) => _email = a}/>
+                    <input className="form-control" id="email-field" type="text" name="email"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="password-field">{t("labelPassword")}</label><br/>
-                    <input className="form-control" id="password-field" type="password" name="password" ref={(a) => _password = a}/>
+                    <input className="form-control" id="password-field" type="password" name="password"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="age-field">{t("labelAge")}</label><br/>
-                    <input className="form-control" id="age-field" type="text" name="age" ref={(a) => _age = a}/>
+                    <input className="form-control" id="age-field" type="text" name="age"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="level-field">{t("labelLevel")}</label><br/>
-                    <input className="form-control" id="level-field" type="text" name="level" ref={(a) => _level = a}/>
+                    <input className="form-control" id="level-field" type="text" name="level"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="experience-field">{t("labelExperience")}</label><br/>
-                    <input className="form-control" id="experience-field" type="text" name="experience" ref={(a) => _experience = a}/>
+                    <input className="form-control" id="experience-field" type="text" name="experience"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="max-experience-field">{t("labelMaxExperience")}</label><br/>
-                    <input className="form-control" id="max-experience-field" type="text" name="max-experience" ref={(a) => _maxExperience = a}/>
+                    <input className="form-control" id="max-experience-field" type="text" name="max_experience"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="country-field">{t("labelCountry")}</label><br/>
-                    <input className="form-control" id="country-field" type="text" name="country" ref={(a) => _country = a}/>
+                    <input className="form-control" id="country-field" type="text" name="country"/>
+                </div>
+                <div className="mb-2">
+                    <label htmlFor="avatar-photo" className="form-label">{t("labelAvatarPhoto")}</label>
+                    <input className="form-control" type="file" id="avatar-photo" onInput={photoInputOnChange} name="avatar"/>
+                </div>
+                <div className="col-12">
+                    <img width="200" src="/images/user.png" alt="avatar-file-upload" ref={a => _avatar_preview = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="coach-field">{t("textCoach")}</label><br/>
-                    <Form.Select defaultValue="Cakes" ref={a=> _coach = a}>
+                    <Form.Select defaultValue="" ref={a=> _coach = a}>
                         {coaches}
                     </Form.Select>
                 </div>

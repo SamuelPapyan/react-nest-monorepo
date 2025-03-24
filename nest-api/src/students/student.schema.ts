@@ -37,6 +37,9 @@ export class Student {
 
   @Prop({ required: true})
   coach: string;
+
+  @Prop({ required: false})
+  avatar: string = null;
 }
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

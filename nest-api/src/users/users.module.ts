@@ -9,6 +9,7 @@ import {
   ResetPassword,
   ResetPasswordSchema,
 } from 'src/mail/reset_password.schema';
+import { UploadService } from 'src/upload/upload.service';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import {
       { name: ResetPassword.name, schema: ResetPasswordSchema },
     ]),
   ],
-  providers: [UsersService, ResponseManager, ExceptionManager],
+  providers: [UsersService, ResponseManager, ExceptionManager, UploadService],
   controllers: [UserController],
   exports: [UsersService],
 })

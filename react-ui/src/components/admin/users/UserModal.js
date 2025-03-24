@@ -23,20 +23,25 @@ export default function UserModal(props) {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <table className='table'>
-                    <tr>
-                        <th>{t("labelUsername")}</th>
-                        <td>{props.data?.username}</td>
-                    </tr>
-                    <tr>
-                        <th>{t("labelEmail")}</th>
-                        <td>{props.data?.email}</td>
-                    </tr>
-                    <tr>
-                        <th>{t("textRoles")}</th>
-                        <td>{props.data?.roles}</td>
-                    </tr>
-                </table>
+                <div className="row">
+                    <img className="col" src={props.data?.avatar ? props.data?.avatar : '/images/user.png'} style={{
+                        width: 180
+                    }} alt="avatar_photo"/>
+                    <table className='table col'>
+                        <tr>
+                            <th>{t("labelUsername")}</th>
+                            <td>{props.data?.username}</td>
+                        </tr>
+                        <tr>
+                            <th>{t("labelEmail")}</th>
+                            <td>{props.data?.email}</td>
+                        </tr>
+                        <tr>
+                            <th>{t("textRoles")}</th>
+                            <td>{props.data?.roles}</td>
+                        </tr>
+                    </table>
+                </div>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={()=>props.onHide()}>{t("textClose")}</Button>

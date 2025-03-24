@@ -9,8 +9,20 @@ export default function CreateWorkshop() {
     const {t} = useTranslation();
     const [errors, setErrors] = useState("");
     const [days, setDays] = useState([]);
-    let _title, _titleHy, _description, _descriptionHy, _startTime, _endTime, _dateInput;
+    let _dateInput, _coverPhotoPreview, _form, _startTime, _endTime;
     const navigate = useNavigate();
+
+    async function photoInputOnChange(e) {
+        if (e.target.files[0].type.indexOf("image") < 0) {
+            e.preventDefault();
+            alert("Only image files.");
+            e.target.value = "";
+            _coverPhotoPreview.src = "/images/no_image_landscape.jpeg";
+            return;
+        }
+        const blobUrl = URL.createObjectURL(e.target.files[0]);
+        _coverPhotoPreview.src = blobUrl;
+    }
 
     function submitForm(event) {
         event.preventDefault();
@@ -18,21 +30,12 @@ export default function CreateWorkshop() {
             alert("Start time must be earlier than end time.")
             return;
         }
-        const requestData = {
-            title_en: _title.value,
-            title_hy: _titleHy.value,
-            description_en: _description.value,
-            description_hy: _descriptionHy.value,
-            start_time: _startTime.value,
-            end_time: _endTime.value,
-            days: [],
-            students: []
-        }
+        const formData = new FormData(_form);
         for (let i = 0; i < days.length; i++) {
-            requestData.days.push(days[i].value);
+            formData.append('days', days[i].value);
         }
 
-        WorkshopsService.addWorkshop(requestData).then(res=>{
+        WorkshopsService.addWorkshop(formData).then(res=>{
             if (res.success)
             {
                 navigate("/admin/workshops");
@@ -76,30 +79,37 @@ export default function CreateWorkshop() {
         }}>
             <h1>{t("textCreateWorkshop")}</h1>
             {errors}
-            <form method='POST' onSubmit={submitForm}>
+            <form method='POST' onSubmit={submitForm} ref={a=>_form=a}>
                 <div className="form-group">
                     <label htmlFor="title-en-field">{t("labelWorkshopTitleEn")}</label><br/>
-                    <input className="form-control" id="title-en-field" type="text" name="title-en" ref={(a) => _title = a}/>
+                    <input className="form-control" id="title-en-field" type="text" name="title_en"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="title-hy-field">{t("labelWorkshopTitleHy")}</label><br/>
-                    <input className="form-control" id="title-hy-field" type="text" name="title-hy" ref={(a) => _titleHy = a}/>
+                    <input className="form-control" id="title-hy-field" type="text" name="title_hy"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="description-en-field">{t("labelDescriptionEn")}</label><br/>
-                    <input className="form-control" id="description-en-field" type="text" name="description-en" ref={(a) => _description = a}/>
+                    <input className="form-control" id="description-en-field" type="text" name="description_en"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="description-hy-field">{t("labelDescriptionHy")}</label><br/>
-                    <input className="form-control" id="description-hy-field" type="text" name="description-hy" ref={(a) => _descriptionHy = a}/>
+                    <input className="form-control" id="description-hy-field" type="text" name="description_hy"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="start-time-field">{t("labelWorkshopStartTime")}</label><br/>
-                    <input className="form-control" id="start-time-field" type="time" name="start-time" ref={(a) => _startTime = a}/>
+                    <input className="form-control" id="start-time-field" type="time" name="start_time" ref={a=>_startTime=a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="end-time-field">{t("labelWorkshopEndTime")}</label><br/>
-                    <input className="form-control" id="end-time-field" type="time" name="end-time" ref={(a) => _endTime = a}/>
+                    <input className="form-control" id="end-time-field" type="time" name="end_time" ref={a=>_endTime=a}/>
+                </div>
+                <div className="mb-2">
+                    <label htmlFor="avatar-photo" className="form-label">{t("labelAvatarPhoto")}</label>
+                    <input className="form-control" type="file" id="avatar-photo" onInput={photoInputOnChange} name="cover_photo"/>
+                </div>
+                <div className="col-12">
+                    <img width="200" src="/images/user.png" alt="avatar-file-upload" ref={a => _coverPhotoPreview = a}/>
                 </div>
                 <div className="form-group">
                     <label>{t("labelDays")}</label>
