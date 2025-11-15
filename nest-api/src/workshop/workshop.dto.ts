@@ -1,19 +1,13 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsObject, IsString } from "class-validator";
+import { MultilangDTO } from "src/interfaces/multilang-dto.interface";
 
 export class WorkshopDTO {
-    @IsString()
+    @IsObject()
     @IsNotEmpty()
-    title_en: string;
-    
-    @IsString()
-    @IsNotEmpty()
-    title_hy: string;
+    title: MultilangDTO;
 
-    @IsString()
-    description_en: string;
-    
-    @IsString()
-    description_hy: string;
+    @IsObject()
+    description: MultilangDTO;
 
     @IsNotEmpty()
     start_time: string; // "16:00"

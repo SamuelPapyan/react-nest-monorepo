@@ -4,16 +4,16 @@ import {
   IsNotEmpty,
   IsEmail,
   Length,
+  IsObject
 } from 'class-validator';
+import mongoose from 'mongoose';
+
+import { MultilangDTO } from 'src/interfaces/multilang-dto.interface';
 
 export class StudentDTO {
-  @IsString()
+  @IsObject()
   @IsNotEmpty()
-  full_name_en: string;
-
-  @IsString()
-  @IsNotEmpty()
-  full_name_hy: string;
+  full_name: MultilangDTO;
 
   @IsNumberString()
   @IsNotEmpty()
@@ -48,5 +48,5 @@ export class StudentDTO {
   country: string;
 
   @IsString()
-  coach: string;
+  coach: string | { username: string, _id: mongoose.Types.ObjectId };
 }

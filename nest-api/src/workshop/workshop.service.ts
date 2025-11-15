@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { Workshop, WorkshopDocument } from "./workshop.schema";
-import mongoose, { Model } from "mongoose";
+import mongoose, { Model, Types } from "mongoose";
 import { WorkshopDTO } from "./workshop.dto";
 import { InjectModel } from "@nestjs/mongoose";
 import { UploadService } from "src/upload/upload.service";
@@ -18,7 +18,7 @@ export class WorkshopService {
   ): Promise<Workshop> {
     const createdWorkshop = new this.workshopModel(workshopDto);
     if (coverPhoto) {
-      const imgUrl = await this.uploadImg(coverPhoto, workshopDto["title_en"]);
+      const imgUrl = await this.uploadImg(coverPhoto, workshopDto["title"]["en"]);
       createdWorkshop.cover_photo = imgUrl;
     }
     return createdWorkshop.save();
@@ -48,14 +48,14 @@ export class WorkshopService {
     if (query || student) {
       options['$or'] = [];
       if (query) {
-        options['$or'].push({title_en: {$regex: new RegExp(query), $options:"i"}});
-        options['$or'].push({title_hy: {$regex: new RegExp(query), $options:"i"}});
-        options['$or'].push({description_en: {$regex: new RegExp(query), $options:"i"}});
-        options['$or'].push({description_hy: {$regex: new RegExp(query), $options:"i"}});
+        options['$or'].push({'title.en': {$regex: new RegExp(query), $options:"i"}});
+        options['$or'].push({'title.am': {$regex: new RegExp(query), $options:"i"}});
+        options['$or'].push({'description.en': {$regex: new RegExp(query), $options:"i"}});
+        options['$or'].push({'description.hy': {$regex: new RegExp(query), $options:"i"}});
       }
       if (student) options['$or'].push({ students: student });
     }
-    return this.workshopModel.find(options).exec();
+    return this.workshopModel.find(options).populate('students').exec();
   }
 
   async updateWorkshop(
@@ -68,7 +68,7 @@ export class WorkshopService {
       const tmp = await this.workshopModel.findById(id);
       const publicId = this.uploadService.getPublicId(tmp.cover_photo);
       await this.uploadService.removeFile(publicId);
-      const imgUrl = await this.uploadImg(coverPhoto, tmp.title_en);
+      const imgUrl = await this.uploadImg(coverPhoto, tmp.title.en);
       tmp.cover_photo = imgUrl;
       return tmp.save();
     }
@@ -88,9 +88,9 @@ export class WorkshopService {
     student: string
   ): Promise<Workshop> {
     const workshop = await this.workshopModel.findById(workshopId);
-    if (workshop.students.some((x) => x === student))
+    if (workshop.students.some((x) => x.equals(student)))
       throw new BadRequestException('This user has already registered to the workshop.');
-    workshop.students.push(student);
+    workshop.students.push(new Types.ObjectId(student));
     return this.workshopModel.findByIdAndUpdate(workshopId, workshop);
   }
 
@@ -99,7 +99,7 @@ export class WorkshopService {
     student: string
   ): Promise<Workshop> {
     const workshop = await this.workshopModel.findById(workshopId);
-    const id = workshop.students.findIndex(x=>x === student)
+    const id = workshop.students.findIndex(x => x.equals(student))
     if (id < 0)
       throw new BadRequestException("This user haven't registered to this workshop.");
     workshop.students.splice(id, 1);

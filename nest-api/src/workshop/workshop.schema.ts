@@ -1,21 +1,17 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose'
-import { HydratedDocument } from 'mongoose'
+import { HydratedDocument, Types } from 'mongoose'
+import { MultilangDTO } from 'src/interfaces/multilang-dto.interface';
+import { Student } from 'src/students/student.schema';
 
 export type WorkshopDocument = HydratedDocument<Workshop>;
 
 @Schema()
 export class Workshop {
-    @Prop({ required: true})
-    title_en: string;
-    
-    @Prop({ required: true})
-    title_hy: string;
+    @Prop({ required: true })
+    title: MultilangDTO
 
     @Prop({ required: true})
-    description_en: string;
-    
-    @Prop({ required: true})
-    description_hy: string;
+    description: MultilangDTO;
 
     @Prop({ required: true})
     start_time: string;
@@ -26,8 +22,8 @@ export class Workshop {
     @Prop()
     days: string[];
 
-    @Prop()
-    students: string[];
+    @Prop({type: [Types.ObjectId], ref: Student.name})
+    students: Types.ObjectId[];
 
     @Prop({required: false})
     cover_photo: string = null;

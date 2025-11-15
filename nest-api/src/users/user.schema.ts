@@ -1,21 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
-
+import { MultilangDTO } from 'src/interfaces/multilang-dto.interface';
+import * as bcrypt from 'bcrypt';
+import { hashConfig } from 'src/app/config';
+import { Role } from 'src/roles/role.enum';
 export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @Prop({ required: true })
-  first_name_en: string;
+  @Prop({ require: true })
+  first_name: MultilangDTO
 
-  @Prop({ required: true })
-  first_name_hy: string;
-
-  @Prop({ requird: true })
-  last_name_en: string;
- 
-  @Prop({ requird: true })
-  last_name_hy: string;
+  @Prop({ require: true })
+  last_name: MultilangDTO
 
   @Prop({ required: true })
   email: string;
@@ -33,4 +30,17 @@ export class User {
   avatar: string = null;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
+export const UserSchema = SchemaFactory.createForClass(User)
+
+UserSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
+    this.password = await bcrypt.hash(
+          this.password,
+          hashConfig.SALT_OR_ROUNDS,
+        );
+  }
+  if (this.$isEmpty('roles')) {
+    this.roles = [Role.Viewer]
+  }
+  next();
+});

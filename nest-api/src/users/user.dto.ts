@@ -1,21 +1,14 @@
-import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsObject, IsString, Length } from 'class-validator';
+import { MultilangDTO } from 'src/interfaces/multilang-dto.interface';
 
 export class UserDTO {
-  @IsString()
+  @IsObject()
   @IsNotEmpty()
-  first_name_en: string;
+  first_name: MultilangDTO;
 
-  @IsString()
+  @IsObject()
   @IsNotEmpty()
-  first_name_hy: string;
-
-  @IsString()
-  @IsNotEmpty()
-  last_name_en: string;
-  
-  @IsString()
-  @IsNotEmpty()
-  last_name_hy: string;
+  last_name: MultilangDTO;
 
   @IsString()
   @IsNotEmpty()

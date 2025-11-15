@@ -25,11 +25,6 @@ export class UsersService {
     userDTO: UserDTO,
     avatar: Express.Multer.File
   ): Promise<User> {
-    userDTO.password = await bcrypt.hash(
-      userDTO.password,
-      hashConfig.SALT_OR_ROUNDS,
-    );
-    userDTO.roles = [Role.Viewer];
     const createdUser = new this.userModel(userDTO);
     if (avatar) {
       const avatarUrl = await this.uploadAvatar(avatar, userDTO['username'])
@@ -52,7 +47,7 @@ export class UsersService {
   }
 
   async findOne(username: string): Promise<User | any> {
-    return this.userModel.findOne({ username: username }).lean();
+    return this.userModel.findOne({ username: username }).lean<UserDTO[]>();
   }
 
   async getById(id: mongoose.Types.ObjectId): Promise<User> {
@@ -64,10 +59,10 @@ export class UsersService {
     const options = {};
     if (query) {
       options['$or'] = [];
-      options['$or'].push({first_name_en: {$regex: new RegExp(query), $options:"i"}});
-      options['$or'].push({last_name_en: {$regex: new RegExp(query), $options:"i"}});
-      options['$or'].push({first_name_hy: {$regex: new RegExp(query), $options:"i"}});
-      options['$or'].push({last_name_hy: {$regex: new RegExp(query), $options:"i"}});
+      options['$or'].push({'first_name.en': {$regex: new RegExp(query), $options:"i"}});
+      options['$or'].push({'last_name.en': {$regex: new RegExp(query), $options:"i"}});
+      options['$or'].push({'first_name.am': {$regex: new RegExp(query), $options:"i"}});
+      options['$or'].push({'last_name.am': {$regex: new RegExp(query), $options:"i"}});
       options['$or'].push({username: {$regex: new RegExp(query), $options:"i"}});
     }
     return this.userModel.find(options).exec();
@@ -83,10 +78,6 @@ export class UsersService {
     userDTO: UserDTO,
     avatar: Express.Multer.File
   ): Promise<User> {
-    userDTO.password = await bcrypt.hash(
-      userDTO.password,
-      hashConfig.SALT_OR_ROUNDS,
-    );
     const user = this.userModel.findByIdAndUpdate(id, userDTO);
     if (avatar) {
       const avatarUrl = await this.uploadAvatar(avatar, userDTO['username']);
@@ -118,7 +109,7 @@ export class UsersService {
     password: string,
   ): Promise<User> {
     const user = await this.userModel.findById(id).exec();
-    user.password = await bcrypt.hash(password, hashConfig.SALT_OR_ROUNDS);
+    user.password = password;
     await this.resetPasswordModel.findOneAndUpdate(
       { user_id: id, user_type: 'user' },
       { is_used: true },

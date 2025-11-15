@@ -1,4 +1,4 @@
-import mongoose, { Model } from 'mongoose';
+import mongoose, { HydratedDocument, Model } from 'mongoose';
 import {
   Injectable,
   NotFoundException,
@@ -12,6 +12,7 @@ import { hashConfig } from '../app/config';
 import { JwtService } from '@nestjs/jwt';
 import { ResetPassword } from 'src/mail/reset_password.schema';
 import { UploadService } from 'src/upload/upload.service';
+import { MultilangDTO } from 'src/interfaces/multilang-dto.interface';
 
 @Injectable()
 export class StudentService {
@@ -27,10 +28,6 @@ export class StudentService {
     studentDTO: StudentDTO,
     avatar: Express.Multer.File,
   ): Promise<Student> {
-    studentDTO.password = await bcrypt.hash(
-      studentDTO.password,
-      hashConfig.SALT_OR_ROUNDS,
-    );
     const createdStudent = new this.studentModel(studentDTO);
     if (avatar) {
       const avatarUrl = await this.uploadAvatar(avatar, studentDTO['username'])
@@ -53,11 +50,11 @@ export class StudentService {
   }
 
   async findOne(username: string): Promise<Student | any> {
-    return this.studentModel.findOne({ username: username }).lean();
+    return this.studentModel.findOne({ username: username }).populate('coach', 'full_name email username');
   }
 
   async getById(id: mongoose.Types.ObjectId): Promise<Student> {
-    const student = this.studentModel.findById(id);
+    const student = this.studentModel.findById(id).populate('coach', 'full_name email username');
     return student;
   }
 
@@ -66,10 +63,10 @@ export class StudentService {
     if (queryOb.query) {
       options['$or'] = [];
       options['$or'].push({
-        full_name_en: { $regex: new RegExp(queryOb.query), $options: 'i' },
+        'full_name.en': { $regex: new RegExp(queryOb.query), $options: 'i' },
       });
       options['$or'].push({
-        full_name_hy: { $regex: new RegExp(queryOb.query), $options: 'i' },
+        'full_name.am': { $regex: new RegExp(queryOb.query), $options: 'i' },
       });
       options['$or'].push({
         country: { $regex: new RegExp(queryOb.query), $options: 'i' },
@@ -86,6 +83,7 @@ export class StudentService {
         .find(options)
         .sort({ level: 'desc', experience: 'desc' })
         .limit(+queryOb.count)
+        .populate('coach', 'full_name email username')
         .exec();
     }
     return this.studentModel.find(options).exec();
@@ -151,7 +149,7 @@ export class StudentService {
     id: mongoose.Types.ObjectId,
     password: string,
   ): Promise<Student> {
-    const student = await this.studentModel.findById(id).exec();
+    const student = await (await this.studentModel.findById(id)).populate('coach');
     student.password = await bcrypt.hash(password, hashConfig.SALT_OR_ROUNDS);
     await this.resetPasswordModel.findOneAndUpdate(
       { user_id: id, user_type: 'student' },
@@ -161,7 +159,11 @@ export class StudentService {
   }
 
   async getStudentsByCoach(coach: string): Promise<any> {
-    const data = await this.studentModel.find({ coach: coach }).lean().exec();
+    type StudentLean = StudentDTO & { _id: string }
+    const data = await this.studentModel
+      .find({ coach: new mongoose.Types.ObjectId(coach) })
+      .lean<StudentLean[]>()
+      .exec();
     const result = data.map((value) => {
       return {
         id: value._id,

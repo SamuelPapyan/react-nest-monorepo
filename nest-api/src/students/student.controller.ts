@@ -331,7 +331,7 @@ export class StudentController {
   async resetPassword(
     @Param('id') id: string,
     @Body() body: Record<string, any>,
-  ): Promise<ResponseDTO<StudentDTO>> {
+  ): Promise<ResponseDTO<Student>> {
     try {
       const mongoId = new mongoose.Types.ObjectId(id);
       const user = await this.studentService.resetPassword(

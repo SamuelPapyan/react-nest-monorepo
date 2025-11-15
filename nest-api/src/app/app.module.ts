@@ -21,7 +21,7 @@ import type { RedisClientOptions } from 'redis';
     WorkshopModule,
     GroupChatModule,
     MongooseModule.forRoot(
-      'mongodb+srv://samvelpapyan1:tumo1234@cluster0.261k0xm.mongodb.net/?retryWrites=true&w=majority',
+      'mongodb+srv://test1234:admin@cluster0.vugwe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
     ),
     EventsModule,
     CacheModule.register<RedisClientOptions>({

@@ -6,13 +6,13 @@ export type GroupChatDocument = HydratedDocument<GroupChat>
 @Schema()
 export class GroupChat {
   @Prop({ required: true})
-  owner: mongoose.Types.ObjectId;
+  owner: { type: mongoose.Types.ObjectId, ref: 'User'};
 
   @Prop({ required: true})
   chat_name: string;
 
   @Prop({ required: true})
-  members: mongoose.Types.ObjectId[];
+  members: [{ type: mongoose.Types.ObjectId, ref: 'Student'}];
 }
 
 export const GroupChatSchema = SchemaFactory.createForClass(GroupChat);
