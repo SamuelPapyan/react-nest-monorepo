@@ -1,5 +1,5 @@
 import {Prop, Schema, SchemaFactory} from '@nestjs/mongoose'
-import { HydratedDocument, Types } from 'mongoose'
+import { HydratedDocument, Types, Schema as MongooseSchema } from 'mongoose'
 import { MultilangDTO } from 'src/interfaces/multilang-dto.interface';
 import { Student } from 'src/students/student.schema';
 
@@ -7,10 +7,10 @@ export type WorkshopDocument = HydratedDocument<Workshop>;
 
 @Schema()
 export class Workshop {
-    @Prop({ required: true })
+    @Prop({ required: true, type: MongooseSchema.Types.Subdocument })
     title: MultilangDTO
 
-    @Prop({ required: true})
+    @Prop({ type: MongooseSchema.Types.Subdocument})
     description: MultilangDTO;
 
     @Prop({ required: true})

@@ -9,7 +9,7 @@ export type StudentDocument = HydratedDocument<Student>;
 
 @Schema()
 export class Student {
-  @Prop({ require: true})
+  @Prop({ require: true, type: MongooseSchema.Types.Subdocument})
   full_name: MultilangDTO
   
   @Prop({ required: true })

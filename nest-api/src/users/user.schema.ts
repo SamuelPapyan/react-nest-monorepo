@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import { HydratedDocument, Schema as MongooseSchema } from 'mongoose';
 import { MultilangDTO } from 'src/interfaces/multilang-dto.interface';
 import * as bcrypt from 'bcrypt';
 import { hashConfig } from 'src/app/config';
@@ -8,10 +8,10 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @Prop({ require: true })
+  @Prop({ require: true, type: MongooseSchema.Types.Subdocument})
   first_name: MultilangDTO
 
-  @Prop({ require: true })
+  @Prop({ require: true, type: MongooseSchema.Types.Subdocument })
   last_name: MultilangDTO
 
   @Prop({ required: true })

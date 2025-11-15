@@ -34,6 +34,7 @@ import { UploadService } from 'src/upload/upload.service';
     MailModule,
   ],
   controllers: [StudentController],
+  //@ts-ignore
   providers: [
     StudentService,
     ResponseManager,
