@@ -1,0 +1,30 @@
+import { Staff } from 'src/staff/staff.schema';
+
+export interface ChatMember {
+  userId: string;
+  userName: string;
+  socketId: string;
+}
+
+export interface Room {
+  name: string;
+  host: ChatMember;
+  users: ChatMember[];
+}
+
+export class Message {
+  user: ChatMember;
+  timeSent: number;
+  message: string;
+  roomName: string;
+  lang: string;
+}
+
+export interface ServerToClientEvents {
+  chat: (e: Message) => void;
+}
+
+export interface ClientToServerEvents {
+  chat: (e: Message) => void;
+  join_room: (e: { user: Staff; prevRoom: string; nextRoom: string }) => void;
+}
