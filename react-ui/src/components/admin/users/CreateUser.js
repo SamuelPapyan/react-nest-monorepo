@@ -61,19 +61,19 @@ export default function CreateUser()
             <form method="POST" onSubmit={submitForm} ref={a => _form = a}>
                 <div className="form-group">
                     <label htmlFor="first-name-en-field">{t("labelFirstNameEn")}</label><br/>
-                    <input className="form-control" id="first-name-en-field" type="text" name="first_name_en"/>
+                    <input className="form-control" id="first-name-en-field" type="text" name="firstName[en]"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="first-name-hy-field">{t("labelFirstNameHy")}</label><br/>
-                    <input className="form-control" id="first-name-hy-field" type="text" name="first_name_hy"/>
+                    <input className="form-control" id="first-name-hy-field" type="text" name="firstName[am]"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="last-name-en-field">{t("labelLastNameEn")}</label><br/>
-                    <input className="form-control" id="last-name-en-field" type="text" name="last_name_en"/>
+                    <input className="form-control" id="last-name-en-field" type="text" name="lastName[en]"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="last-name-hy-field">{t("labelLastNameHy")}</label><br/>
-                    <input className="form-control" id="last-name-hy-field" type="text" name="last_name_hy"/>
+                    <input className="form-control" id="last-name-hy-field" type="text" name="lastName[am]"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="email-field">{t("labelEmail")}</label><br/>

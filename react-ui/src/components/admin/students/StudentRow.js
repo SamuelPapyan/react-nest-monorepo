@@ -38,8 +38,8 @@ export default function StudentRow(props)
 
     useEffect(()=>{
         setStudentId(props.data._id);
-        setFullName(window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.full_name_hy : props.data.full_name_en);
-        setAge(props.data.age);
+        setFullName(window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.fullName.am : props.data.fullName.en);
+        setAge(new Date().getFullYear() - new Date(props.data.birthDate).getFullYear());
         setLevel(props.data.level);
         setExperience(props.data.experience);
         setMaxExperience(props.data.max_experience);
@@ -67,7 +67,7 @@ export default function StudentRow(props)
                     <a href="#" className="text-primary pe-auto text-decoration-none" onClick={(e)=>{
                         e.preventDefault();
                         setShowModal(true);
-                    }}>{username}</a>
+                    }}>{username}-1234</a>
                 </td>
                 <td className="d-md-table-cell d-none">{username}</td>
                 <td className="d-none d-md-table-cell">{email}</td>
@@ -75,8 +75,8 @@ export default function StudentRow(props)
                 <td className="d-none d-xl-table-cell">{level}</td>
                 <td className="d-none d-xl-table-cell">{experience}</td>
                 <td className="d-none d-xl-table-cell">{maxExperience}</td>
-                <td className="d-none d-xl-table-cell">{country}</td>
-                <td className="d-none d-md-table-cell">{coach}</td>
+                <td className="d-none d-xl-table-cell">{country.name?.en}</td>
+                <td className="d-none d-md-table-cell">{coach.username}</td>
                 {(props.userType === "ADMIN" || props.userType === "EDITOR") ? 
                 <td>
                     <Link to={`/admin/students/edit/${studentId}`} className="btn btn-primary">

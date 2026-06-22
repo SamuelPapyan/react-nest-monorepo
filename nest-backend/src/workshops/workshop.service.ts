@@ -73,7 +73,8 @@ export class WorkshopService {
             },
             ...(Object.keys(options).length ? [{ $match: options }] : [])
         ])
-        return workshops;
+        // return workshops;
+        return await this.workshopModel.find(Object.keys(options).length ? options : {}).populate('coach', 'username fullName email').populate('students', 'username fullName email').exec();
     }
 
     async updateWorkshop(
@@ -107,7 +108,9 @@ export class WorkshopService {
         studentId: mongoose.Types.ObjectId
     ): Promise<Workshop | null> {
         const workshop = await this.workshopModel.findById(workshopId);
+        console.log(workshop?.students);
         if (!workshop) throw new NotFoundException();
+        if (!workshop.students) workshop.students = [];
         if (workshop.students.some(x => x.equals(studentId)))
             throw new BadRequestException("This user has already registered to the workshop.");
         workshop.students.push(new mongoose.Types.ObjectId(studentId));

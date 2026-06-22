@@ -17,7 +17,7 @@ export default function SideBar() {
   useEffect(()=>{
     AuthService.getProfile().then(res=>{
         if (res.success) {
-            if (res.data.roles.includes('coach')) {
+            if (res.data.role === 'coach') {
                 setIsCoach(true);
             }
         }

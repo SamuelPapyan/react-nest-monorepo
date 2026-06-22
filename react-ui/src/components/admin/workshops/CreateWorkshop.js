@@ -82,27 +82,27 @@ export default function CreateWorkshop() {
             <form method='POST' onSubmit={submitForm} ref={a=>_form=a}>
                 <div className="form-group">
                     <label htmlFor="title-en-field">{t("labelWorkshopTitleEn")}</label><br/>
-                    <input className="form-control" id="title-en-field" type="text" name="title_en"/>
+                    <input className="form-control" id="title-en-field" type="text" name="title[en]"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="title-hy-field">{t("labelWorkshopTitleHy")}</label><br/>
-                    <input className="form-control" id="title-hy-field" type="text" name="title_hy"/>
+                    <input className="form-control" id="title-hy-field" type="text" name="title[am]"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="description-en-field">{t("labelDescriptionEn")}</label><br/>
-                    <input className="form-control" id="description-en-field" type="text" name="description_en"/>
+                    <input className="form-control" id="description-en-field" type="text" name="description[en]"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="description-hy-field">{t("labelDescriptionHy")}</label><br/>
-                    <input className="form-control" id="description-hy-field" type="text" name="description_hy"/>
+                    <input className="form-control" id="description-hy-field" type="text" name="description[am]"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="start-time-field">{t("labelWorkshopStartTime")}</label><br/>
-                    <input className="form-control" id="start-time-field" type="time" name="start_time" ref={a=>_startTime=a}/>
+                    <input className="form-control" id="start-time-field" type="time" name="startTime" ref={a=>_startTime=a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="end-time-field">{t("labelWorkshopEndTime")}</label><br/>
-                    <input className="form-control" id="end-time-field" type="time" name="end_time" ref={a=>_endTime=a}/>
+                    <input className="form-control" id="end-time-field" type="time" name="endTime" ref={a=>_endTime=a}/>
                 </div>
                 <div className="mb-2">
                     <label htmlFor="avatar-photo" className="form-label">{t("labelAvatarPhoto")}</label>

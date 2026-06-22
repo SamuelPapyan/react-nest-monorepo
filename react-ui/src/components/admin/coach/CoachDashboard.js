@@ -42,7 +42,7 @@ export default function CoachDashboard(props) {
             if (window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)) {
                 AuthService.getProfile().then(res=>{
                     if (res.success) {
-                        StudentService.getStudentsByCoach(res.data.username).then(res=>{
+                        StudentService.getStudentsByCoach(res.data._id).then(res=>{
                             if (res.success) {
                                 setData(res.data);
                                 setUpdated(true);

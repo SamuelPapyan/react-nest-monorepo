@@ -1,7 +1,7 @@
 export default class UserService {
     static async getAllUsers() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/users",{
+            fetch(process.env.REACT_APP_API_URL + "/staff",{
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -15,7 +15,7 @@ export default class UserService {
 
     static async getCoaches() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/users/coaches",{
+            fetch(process.env.REACT_APP_API_URL + "/staff/coaches",{
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -29,7 +29,7 @@ export default class UserService {
 
     static async getUserById(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/users/${id}`,{
+            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`,{
                 headers: {
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -43,7 +43,7 @@ export default class UserService {
 
     static async addUser(formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/users", {
+            fetch(process.env.REACT_APP_API_URL + "/staff", {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -59,7 +59,7 @@ export default class UserService {
 
     static async updateUser(id, formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/users/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`, {
                 method: 'PUT',
                 body: formData,
                 headers: {
@@ -75,7 +75,7 @@ export default class UserService {
 
     static async deleteUser(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/users/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
@@ -90,7 +90,7 @@ export default class UserService {
 
     static async searchUsers(query) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/users?q=" + query, {
+            fetch(process.env.REACT_APP_API_URL + "/staff?q=" + query, {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }

@@ -33,7 +33,7 @@ import KeyvRedis from "@keyv/redis";
             new Keyv({
               store: new CacheableMemory({ ttl: 24 * 3600 * 1000, lruSize: 5000 })
             }),
-            new KeyvRedis('redis://locahost:6379')
+            new KeyvRedis('redis://localhost:6379')
           ]
         }
       }

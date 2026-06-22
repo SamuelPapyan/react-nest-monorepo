@@ -62,7 +62,7 @@ export class StudentsService {
             });
         }
         if (queryOb.coachId)
-            options['coach'] = new mongoose.Types.ObjectId(queryOb.coachId);
+            options['coach._id'] = new mongoose.Types.ObjectId(queryOb.coachId);
         const students = await this.studentModel.aggregate([
             {
                 $lookup: {
@@ -126,9 +126,9 @@ export class StudentsService {
         if (!student) throw new NotFoundException();
         if (!(await bcrypt.compare(password, student.password)))
             throw new UnauthorizedException();
-        const { _id, fullName, email, } = student;
+        const { _id, fullName, email, coach} = student;
         return {
-            access_token: await this.jwtService.signAsync({_id, fullName, email, username})
+            access_token: await this.jwtService.signAsync({_id, fullName, email, username, coach})
         }
     }
 

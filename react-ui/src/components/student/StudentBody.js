@@ -29,7 +29,7 @@ export default function StudentBody(props) {
             type="dm"
             isStaff={false}
             user={props.data.username}
-            userId={props.data.id}
+            userId={props.data._id}
             coach={props.data.coach}/>
             : ""}
         </>

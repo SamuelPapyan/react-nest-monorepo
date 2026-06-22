@@ -21,19 +21,21 @@ export default function StaffList()
                 }
                 AuthService.getProfile().then(res=>{
                     if (res.success) {
-                        if (res.data.roles.includes('editor')) {
+                        if (res.data.role === 'editor') {
                             setUserType("EDITOR");
                         }
-                        if (res.data.roles.includes('admin')) {
+                        if (res.data.role === 'admin') {
                             setUserType("ADMIN");
                         }
                     }
                 }).catch((err)=>{
+                    console.error(err);
                     setConnected(false);
                 }).finally(()=>{
                     setUpdated(true);
                 })
-            }).catch(()=>{
+            }).catch((err)=>{
+                console.error(err);
                 setConnected(false);
             });
         }

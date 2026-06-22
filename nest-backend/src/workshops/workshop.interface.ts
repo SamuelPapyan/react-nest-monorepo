@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { IMultilangDTO } from "src/interfaces/multilang-dto.interface";
 
 export class IWorkshop {
@@ -8,6 +9,6 @@ export class IWorkshop {
     endTime: string;
     days: Date[];
     coverPhoto: string;
-    students: string[];
-    coach: string;
+    students: Types.ObjectId[];
+    coach: Types.ObjectId;
 }

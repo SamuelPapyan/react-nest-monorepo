@@ -32,10 +32,10 @@ export default function WorkshopRow(props) {
 
     useEffect(()=>{
         setWorkshopId(props.data._id);
-        setTitle(window.localStorage.getItem("react-nest-monorepo-lang") == "hy" ? props.data.title_hy : props.data.title_en);
-        setDescription(window.localStorage.getItem("react-nest-monorepo-lang") == "hy" ? props.data.description_hy : props.data.description_en);
-        setStartTime(props.data.start_time);
-        setEndTime(props.data.end_time);
+        setTitle(window.localStorage.getItem("react-nest-monorepo-lang") == "hy" ? props.data.title.am : props.data.title.en);
+        setDescription(window.localStorage.getItem("react-nest-monorepo-lang") == "hy" ? props.data.description.am : props.data.description.en);
+        setStartTime(props.data.startTime);
+        setEndTime(props.data.endTime);
         setCount(props.data.days.length);
         setStudents(props.data.students ? props.data.students.length : 0);
         setData({
@@ -47,8 +47,8 @@ export default function WorkshopRow(props) {
             students,
             coverPhoto
         })
-        if (props.data.cover_photo) setCoverPhoto(props.data.cover_photo);
-    }, [props.data._id, props.data.title, props.data.description, props.data.start_time, props.data.end_time, props.data.days.length, props.data.students])
+        if (props.data.coverPhoto) setCoverPhoto(props.data.coverPhoto);
+    }, [props.data._id, props.data.title, props.data.description, props.data.startTime, props.data.endTime, props.data.days.length, props.data.students])
 
     return (
         <>

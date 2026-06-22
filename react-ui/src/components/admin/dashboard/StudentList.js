@@ -17,7 +17,7 @@ export default function StudentList(props) {
             setRows(props.data.map((elem, index)=>{
                 return (
                     <tr key={index}>
-                        <td>{window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? elem.full_name_hy : elem.full_name_en}</td>
+                        <td>{window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? elem.fullName.am : elem.fullName.en}</td>
                         <td>{elem.level}</td>
                         <td>{elem.experience}</td>
                     </tr>

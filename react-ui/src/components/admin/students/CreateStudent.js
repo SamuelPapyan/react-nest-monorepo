@@ -5,6 +5,7 @@ import StudentService from "../../../services/studentService";
 import UserService from "../../../services/userService";
 import Form from 'react-bootstrap/Form';
 import {useTranslation} from "react-i18next";
+import StaffService from "../../../services/staffService";
 
 export default function CreateStudent()
 {
@@ -12,7 +13,8 @@ export default function CreateStudent()
     const [updated, setUpdated] = useState(false);
     const [errors, setErrors] = useState("");
     const [coaches, setCoaches] = useState([]);
-    let  _coach, _avatar_preview, _form;
+    const [countries, setCountries] = useState([]);
+    let  _coach, _avatar_preview, _form, _country;
     const navigate = useNavigate();
     
     async function photoInputOnChange(e) {
@@ -31,6 +33,7 @@ export default function CreateStudent()
         event.preventDefault();
         const formData = new FormData(_form);
         formData.append('coach', _coach.value);
+        formData.append('country', _country.value);
         StudentService.addStudent(formData).then(res=>{
             if (res.success)
             {
@@ -47,13 +50,23 @@ export default function CreateStudent()
         })
     }
 
+    async function fetchCountries() {
+        const res = await StaffService.getCountries();
+        if (res.success) {
+            setCountries(res.data.map((val, key)=>{
+                return (<option key={key} value={val._id}>{window.localStorage.getItem('react-nest-monorepo-lang') === 'hy' ? val.name.am : val.name.en}</option>)
+            }));
+        }
+    }
+
     useEffect(()=>{
         document.title = t("textCreateStudent");
         if (!updated) {
+            fetchCountries();
             UserService.getCoaches().then(res=>{
                 if (res.success) {
                     setCoaches(res.data.map((val, key)=>{
-                        return (<option key={key} value={val}>{val}</option>)
+                        return (<option key={key} value={val._id}>{val.username}</option>)
                     }));
                     setUpdated(true);
                 }
@@ -71,11 +84,11 @@ export default function CreateStudent()
             <form method="POST" onSubmit={submitForm} ref={a => _form = a}>
                 <div className="form-group">
                     <label htmlFor="full-name-en-field">{t("textFullNameEn")}</label><br/>
-                    <input className="form-control" id="full-name-en-field" type="text" name="full_name_en"/>
+                    <input className="form-control" id="full-name-en-field" type="text" name="fullName[en]"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="full-name-hy-field">{t("textFullNameHy")}</label><br/>
-                    <input className="form-control" id="full-name-hy-field" type="text" name="full_name_hy"/>
+                    <input className="form-control" id="full-name-hy-field" type="text" name="fullName[am]"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="username-field">{t("labelUsername")}</label><br/>
@@ -90,24 +103,14 @@ export default function CreateStudent()
                     <input className="form-control" id="password-field" type="password" name="password"/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="age-field">{t("labelAge")}</label><br/>
-                    <input className="form-control" id="age-field" type="text" name="age"/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="level-field">{t("labelLevel")}</label><br/>
-                    <input className="form-control" id="level-field" type="text" name="level"/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="experience-field">{t("labelExperience")}</label><br/>
-                    <input className="form-control" id="experience-field" type="text" name="experience"/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="max-experience-field">{t("labelMaxExperience")}</label><br/>
-                    <input className="form-control" id="max-experience-field" type="text" name="max_experience"/>
+                    <label htmlFor="age-field">{t("labelBD")}</label><br/>
+                    <input className="form-control" id="age-field" type="date" name="birthDate"/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="country-field">{t("labelCountry")}</label><br/>
-                    <input className="form-control" id="country-field" type="text" name="country"/>
+                    <Form.Select defaultValue="" ref={a=> _country = a}>
+                        {countries}
+                    </Form.Select>
                 </div>
                 <div className="mb-2">
                     <label htmlFor="avatar-photo" className="form-label">{t("labelAvatarPhoto")}</label>

@@ -5,7 +5,7 @@ import { Student } from "src/students/student.schema";
 
 export type WorkshopDocument = HydratedDocument<Workshop>
 
-@Schema()
+@Schema({minimize: false, timestamps: true})
 export class Workshop {
     @Prop(raw({
         en: {type: String},
@@ -32,10 +32,10 @@ export class Workshop {
     coverPhoto: string;
 
     @Prop({type: [{type: MongooseSchema.Types.ObjectId, ref: Student.name}], default: []})
-    students: Types.ObjectId[];
+    students: Types.ObjectId[] = [];
     
-    @Prop({type: {type: MongooseSchema.Types.ObjectId, ref: Staff.name}, default: []})
-    coach: Types.ObjectId;
+    @Prop({type: MongooseSchema.Types.ObjectId, ref: Staff.name, required: true})
+    coach: Types.ObjectId = new Types.ObjectId("6948f55872a6d51f9208f670");
 }
 
 export const WorkshopSchema = SchemaFactory.createForClass(Workshop);

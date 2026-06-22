@@ -10,7 +10,7 @@ export default function AuthPanel(props) {
     const [switchComponent, setSwitchComponent] = useState(<span></span>);
     const [dropdownComponent, setDropdownComponent] = useState(<></>)
     const [updated, setUpdated] = useState(false);
-    const [avatar, setAvatar] = useState("images/user.png");
+    const [avatar, setAvatar] = useState("/images/user.png");
     const [username, setUsername] = useState("");
     const navigate = useNavigate();
     const logout = () => {

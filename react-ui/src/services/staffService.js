@@ -91,4 +91,18 @@ export default class StaffService {
             });
         });
     }
+
+    static async getCountries() {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/staff/countries", {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                reject(err);
+            });
+        });
+    }
 }

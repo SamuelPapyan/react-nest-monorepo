@@ -18,7 +18,7 @@ export default function StudentModal(props) {
                 }}>
                 <Modal.Title>
                     {props.data ? 
-                    (window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.full_name_hy : props.data.full_name_en) :
+                    (window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.fullName?.am : props.data.fullName?.en) :
                     "Full Name"}
                 </Modal.Title>
             </Modal.Header>
@@ -37,8 +37,8 @@ export default function StudentModal(props) {
                             <td>{props.data?.email}</td>
                         </tr>
                         <tr>
-                            <th>{t("labelAge")}</th>
-                            <td>{props.data?.age}</td>
+                            <th>{t("labelBD")}</th>
+                            <td>{new Date().getFullYear() - new Date(props.data?.birthDate).getFullYear()}</td>
                         </tr>
                         <tr>
                             <th>{t("labelLevel")}</th>
@@ -54,11 +54,11 @@ export default function StudentModal(props) {
                         </tr>
                         <tr>
                             <th>{t("labelCountry")}</th>
-                            <td>{props.data?.country}</td>
+                            <td>{props.data?.country?.name?.en}</td>
                         </tr>
                         <tr>
                             <th>{t("textCoach")}</th>
-                            <td>{props.data?.coach}</td>
+                            <td>{props.data?.coach?.username}</td>
                         </tr>
                     </table>
                 </div>

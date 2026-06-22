@@ -22,10 +22,10 @@ export default function WorkshopsList() {
                 }
                 AuthService.getProfile().then(res=>{
                     if (res.success) {
-                        if (res.data.roles.includes('editor')) {
+                        if (res.data.role === 'editor') {
                             setUserType("EDITOR");
                         }
-                        if (res.data.roles.includes('admin')) {
+                        if (res.data.role === 'admin') {
                             setUserType("ADMIN");
                         }
                     }

@@ -31,12 +31,12 @@ export default function StudentRow(props) {
                       }}
                       data={{
                         user: props.userData.username,
-                        coach: props.userData.username,
+                        coach: props.userData._id,
                       }}
                       visible={visible}
                       zIndex={props.zIndex}
                       chatUsername={props.data.username}
-                      userId={props.data.id}
+                      userId={props.data._id}
                     />
                 </div>
             </div>
