@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom"
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from 'react-redux'
+import { setStaffCredentials } from '../../../store/authSlice'
 
 export default function Login(props) {
+    const dispatch = useDispatch()
     const {t} = useTranslation();
     const [box, setBox] = useState("")
     const [updated, setUpdated] = useState(false)
@@ -20,8 +23,9 @@ export default function Login(props) {
         };
         AuthService.login(requestData).then(res=>{
             if (res.success){
-                window.localStorage.setItem(process.env.REACT_APP_ADMIN_TOKEN, res.data);
-                props.setToken(true);
+                console.log(process.env.REACT_APP_ADMIN_TOKEN)
+                // localStorage.setItem(process.env.REACT_APP_ADMIN_TOKEN, res.data);
+                dispatch(setStaffCredentials({user: null, token: res.data}))
                 if (location.state && location.state.from && !location.state.from !== '/login')
                     navigate(location.state.from)
                 else

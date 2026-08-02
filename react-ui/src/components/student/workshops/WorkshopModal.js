@@ -37,6 +37,9 @@ export default function WorkshopModal(props) {
 
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "Septermber", "October", "November", "December"];
 
+    useEffect(()=>{
+        console.log(props.data.students)
+    })
     return (
         <>
             <Modal
@@ -66,7 +69,7 @@ export default function WorkshopModal(props) {
                     </ul>
                 </Modal.Body>
                 <Modal.Footer>
-                    {!props.data.students?.some(x => x === props.data.studentName) ?
+                    {!props.data.students?.some(x => x._id === props.data.studentName) ?
                     <Button onClick={registerToWorkshop}>{t("textRegister")}</Button> :
                     <Button variant='secondary' onClick={unregisterFromWorkshop}>{t("textUnregister")}</Button>}
                 </Modal.Footer>

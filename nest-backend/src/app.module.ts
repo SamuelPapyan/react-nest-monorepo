@@ -16,8 +16,8 @@ import { EventsModule } from './events/events.module';
     AuthModule,
     StaffModule,
     WorkshopModule,
+    EventsModule,
     GroupChatModule,
-    EventsModule
   ],
   controllers: [AppController],
   providers: [AppService],

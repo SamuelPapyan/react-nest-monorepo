@@ -3,7 +3,7 @@ import UserTable from './UserTable';
 import { useState, useEffect} from "react";
 import UserService from "../../../services/userService";
 import SearchBar from "../SearchBar";
-import AuthService from "../../../services/authService";
+import { useOutletContext } from "react-router";
 import { useTranslation } from "react-i18next";
 
 export default function UserList()
@@ -13,6 +13,7 @@ export default function UserList()
     const [data, setData] = useState(null);
     const [connected, setConnected] = useState(true);
     const [userType, setUserType] = useState("VIEWER");
+    const userData = useOutletContext();
 
     useEffect(()=>{
         if (!updated) {
@@ -21,21 +22,11 @@ export default function UserList()
                 if (res.success){
                     setData(res.data);
                 }
-                AuthService.getProfile().then(res=>{
-                    if (res.success) {
-                        if (res.data.role === 'editor') {
-                            setUserType("EDITOR");
-                        }
-                        if (res.data.role === 'admin') {
-                            setUserType("ADMIN");
-                        }
-                    }
-                }).catch((err)=>{
-                    console.error(err);
-                    setConnected(false);
-                }).finally(()=>{
-                    setUpdated(true);
-                })
+                if (userData) {
+                    if (userData.role === 'editor') setUserType("EDITOR");
+                    if (userData.role === 'admin') setUserType("ADMIN");
+                }
+                setUpdated(true);
             }).catch((err)=>{
                 console.error(err);
                 setConnected(false);

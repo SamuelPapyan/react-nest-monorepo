@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import StudentTable from "./StudentTable";
 import { useState, useEffect } from "react";
 import StudentService from "../../../services/studentService";
-import AuthService from "../../../services/authService";
 import SearchBar from "../SearchBar";
 import { useTranslation } from "react-i18next";
+import { useOutletContext } from "react-router";
 
 export default function StudentsList()
 {
@@ -13,6 +13,7 @@ export default function StudentsList()
     const [connected, setConnected] = useState(true);
     const [updated, setUpdated] = useState(false);
     const [userType, setUserType] = useState("VIEWER");
+    const userData = useOutletContext();
     
     useEffect(()=>{
         if (!updated) {
@@ -21,21 +22,11 @@ export default function StudentsList()
                 if (res.success){
                     setData(res.data);
                 }
-                AuthService.getProfile().then(res=>{
-                    if (res.success) {
-                        if (res.data.role === 'editor') {
-                            setUserType("EDITOR");
-                        }
-                        if (res.data.role === 'admin') {
-                            setUserType("ADMIN");
-                        }
-                    }
-                }).catch((err)=>{
-                    console.error(err);
-                    setConnected(false);
-                }).finally(()=>{
+                if (userData) {
+                    if (res.data.role === 'editor')  setUserType("EDITOR");
+                    if (res.data.role === 'admin') setUserType("ADMIN");
                     setUpdated(true);
-                })
+                }
             }).catch((err)=>{
                 console.error(err);
                 setConnected(false);

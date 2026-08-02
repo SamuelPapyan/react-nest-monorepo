@@ -3,6 +3,7 @@ import ChatWindow from "../../common/ChatWindow";
 import { useState } from "react";
 
 export default function StudentRow(props) {
+    console.log(props)
     const [visible, setVisible] = useState(false);
     return (
         <div className="d-flex justify-content-between mx-3 my-2 p-2 align-items-center rounded bg-primary" style={{

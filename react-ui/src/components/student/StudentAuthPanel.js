@@ -1,11 +1,18 @@
 import { useState, useEffect } from "react";
 import StudentService from '../../services/studentService'
 import { Button } from 'react-bootstrap';
-import { socket } from "../../socket";
 import { useTranslation } from "react-i18next";
 import Dropdown from 'react-bootstrap/Dropdown';
+import { useDispatch } from 'react-redux';
+import { studentLogout } from '../../store/authSlice'
+import { io } from 'socket.io-client'
+
+const URL = 'http://localhost:2023';
+
+const socket = io(URL);
 
 export default function StudentAuthPanel(props) {
+    const dispatch = useDispatch();
     const { t } = useTranslation();
     const [switchComponent, setSwitchComponent] = useState("")
     const [coach, setCoach] = useState("");
@@ -14,14 +21,13 @@ export default function StudentAuthPanel(props) {
     const [callCoachText, setCallCoachText] = useState(t("textCallCoach"));
     const [callCoachColor, setCallCoachColor] = useState("success");
     const [avatar, setAvatar] = useState("images/user.png")
+    const userData = props.data;
 
     
     const logout = () => {
-        window.localStorage.removeItem(process.env.REACT_APP_STUDENT_TOKEN);
-        props.setData(null);
+        dispatch(studentLogout());
         window.location.reload();
     }
-
     function callCoach(){
         socket.emit('hand up', {
             student: props.data.username,
@@ -45,9 +51,9 @@ export default function StudentAuthPanel(props) {
     })
 
     useEffect(()=>{
-        return ()=>{
-            socket.off('hand up');
-        }
+        // return ()=>{
+        //     socket.off('hand up');
+        // }
     },[])
 
     useEffect(()=>{

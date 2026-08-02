@@ -71,8 +71,6 @@ export default function StudentLogin(props) {
         event.preventDefault();
         StudentService.login(_username.value, _password.value).then(res=>{
             if (res.success) {
-                window.localStorage.setItem(process.env.REACT_APP_STUDENT_TOKEN, res.data)
-                props.setToken(true);
                 if (location.state && location.state.from && !location.state.from !== '/login')
                     navigate(location.state.from)
                 else
@@ -81,6 +79,7 @@ export default function StudentLogin(props) {
                 _loginMessage.textContent = t('validationLogin');
             }
         }).catch(err=>{
+            console.log(err)
             _loginMessage.textContent = "Connection fault. Try again later.";
         })
     }

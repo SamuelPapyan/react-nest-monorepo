@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import WorkshopsTable from "./WorkshopTable";
 import { useEffect, useState } from "react";
 import WorkshopsServices from "../../../services/workshopsService";
-import AuthService from "../../../services/authService";
 import SearchBar from "../SearchBar";
 import { useTranslation } from "react-i18next";
+import { useOutletContext } from "react-router";
 
 export default function WorkshopsList() {
     const {t} = useTranslation();
@@ -12,6 +12,7 @@ export default function WorkshopsList() {
     const [connected, setConnected] = useState(true);
     const [updated, setUpdated] = useState(false);
     const [userType, setUserType] = useState("VIEWER");
+    const userData = useOutletContext();
 
     useEffect(()=>{
         if (!updated) {
@@ -20,20 +21,11 @@ export default function WorkshopsList() {
                 if (res.success) {
                     setData(res.data);
                 }
-                AuthService.getProfile().then(res=>{
-                    if (res.success) {
-                        if (res.data.role === 'editor') {
-                            setUserType("EDITOR");
-                        }
-                        if (res.data.role === 'admin') {
-                            setUserType("ADMIN");
-                        }
-                    }
-                }).catch((err)=>{
-                    setConnected(false);
-                }).finally(()=>{
-                    setUpdated(true);
-                })
+                if (userData) {
+                    if (userData.role === 'editor') setUserType("EDITOR");
+                    if (userData.role === 'admin') setUserType("ADMIN");
+                }
+                setUpdated(true);
             }).catch((err)=>{
                 setConnected(false);
             });

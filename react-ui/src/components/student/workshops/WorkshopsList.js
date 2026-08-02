@@ -20,7 +20,7 @@ export default function WorkshopsList() {
             StudentService.getWorkshops().then((res)=>{
                 if (res.success) {
                     const arr = res.data.map(elem=>{
-                        return <WorkshopItem key={elem._id} setUpdated={setUpdated} data={{...elem, studentName: studentData.username}}/>
+                        return <WorkshopItem key={elem._id} setUpdated={setUpdated} data={{...elem, studentName: studentData._id}}/>
                     })
                     setData(arr);
                     setUpdated(true);
