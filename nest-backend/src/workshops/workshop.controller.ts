@@ -21,7 +21,7 @@ export class WorkshopController {
     ) {}
 
     @Get()
-    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN)
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
     async getWorkshops(
         @Query('q') query,
         @Query('stundentName') student

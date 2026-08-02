@@ -1,7 +1,7 @@
 export default class AuthService {
     static async login(formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/auth/login", {
+            fetch(process.env.REACT_APP_API_URL + "/staff/login", {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers:{

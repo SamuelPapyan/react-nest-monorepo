@@ -5,6 +5,7 @@ import StudentService from "../../../services/studentService";
 import UserService from "../../../services/userService";
 import Form from 'react-bootstrap/Form';
 import { useTranslation } from "react-i18next";
+import StaffService from "../../../services/staffService";
 
 export default function EditStudent(props)
 {
@@ -16,12 +17,14 @@ export default function EditStudent(props)
     const {id} = useParams();
     let _fullName, _fullNameHy, _age, _level, _experience, _maxExperience, _country, _username, _email, _coach, _avatar_preview, _form;
     const [coaches, setCoaches] = useState([]);
+    const [countries, setCountries] = useState([]);
     const navigate = useNavigate();
     
     function submitForm(event){
         event.preventDefault();
         const formData = new FormData(_form);
         formData.append('coach', _coach.value);
+        formData.append('country', _country.value);
         StudentService.updateStudent(id, formData).then(res=>{
             if (res.success)
             {
@@ -49,14 +52,23 @@ export default function EditStudent(props)
         _avatar_preview.src = blobUrl;
     }
 
+    async function fetchCountries() {
+        const res = await StaffService.getCountries();
+        if (res.success) {
+            setCountries(res.data.map((val, key)=>{
+                return (<option key={key} value={val._id}>{window.localStorage.getItem('react-nest-monorepo-lang') === 'hy' ? val.name.am : val.name.en}</option>)
+            }));
+        }
+    }
+
     useEffect(()=>{
         document.title = t("textEditStudent");
         if (!updated) {
             StudentService.getStudentById(id).then(res=>{
                 if (res.success){
-                    if (_fullName) _fullName.value = res.data.full_name_en ;
-                    if (_fullNameHy) _fullNameHy.value = res.data.full_name_hy ?? "";
-                    if (_age) _age.value = res.data.age;
+                    if (_fullName) _fullName.value = res.data.fullName.en ;
+                    if (_fullNameHy) _fullNameHy.value = res.data.fullName.am;
+                    if (_age) _age.value = res.data.birthDate.split("T")[0];
                     if (_level) _level.value = res.data.level;
                     if (_experience) _experience.value = res.data.experience;
                     if (_maxExperience) _maxExperience.value = res.data.max_experience;
@@ -75,8 +87,9 @@ export default function EditStudent(props)
                                 [res1.data[0], res1.data[index]] = [res1.data[index], res1.data[0]]
                         });
                         setCoaches(res1.data.map((val, key)=>{
-                            return (<option key={key} value={val}>{val}</option>)
+                            return (<option key={key} value={val._id}>{val.username}</option>)
                         }));
+                        fetchCountries();
                         setUpdated(true);
                     }
                 })
@@ -98,11 +111,11 @@ export default function EditStudent(props)
             <form method="POST" onSubmit={submitForm} ref={a => _form = a}>
                 <div className="form-group">
                     <label htmlFor="full-name-en-field">{t("textFullNameEn")}</label><br/>
-                    <input className="form-control" id="full-name-en-field" type="text" name="full_name_en" ref={(a) => _fullName = a}/>
+                    <input className="form-control" id="full-name-en-field" type="text" name="fullName[en]" ref={(a) => _fullName = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="full-name-hy-field">{t("textFullNameHy")}</label><br/>
-                    <input className="form-control" id="full-name-hy-field" type="text" name="full_name_hy" ref={(a) => _fullNameHy = a}/>
+                    <input className="form-control" id="full-name-hy-field" type="text" name="fullName[am]" ref={(a) => _fullNameHy = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="username-field">{t("labelUsername")}</label><br/>
@@ -117,24 +130,14 @@ export default function EditStudent(props)
                     <input className="form-control" id="password-field" type="password" name="password"/>
                 </div>
                 <div className="form-group">
-                    <label htmlFor="age-field">{t("labelAge")}</label><br/>
-                    <input className="form-control" id="age-field" type="text" name="age" ref={(a) => _age = a}/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="level-field">{t("labelLevel")}</label><br/>
-                    <input className="form-control" id="level-field" type="text" name="level" ref={(a) => _level = a}/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="experience-field">{t("labelExperience")}</label><br/>
-                    <input className="form-control" id="experience-field" type="text" name="experience" ref={(a) => _experience = a}/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="max-experience-field">{t("labelMaxExperience")}</label><br/>
-                    <input className="form-control" id="max-experience-field" type="text" name="max_experience" ref={(a) => _maxExperience = a}/>
+                    <label htmlFor="age-field">{t("labelBD")}</label><br/>
+                    <input className="form-control" id="age-field" type="date" name="birthDate" ref={(a) => _age = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="country-field">{t("labelCountry")}</label><br/>
-                    <input className="form-control" id="country-field" type="text" name="country" ref={(a) => _country = a}/>
+                    <Form.Select defaultValue="" ref={a=> _country = a}>
+                        {countries}
+                    </Form.Select>
                 </div>
                 <div className="mb-2">
                     <label htmlFor="avatar-photo" className="form-label">{t("labelAvatarPhoto")}</label>

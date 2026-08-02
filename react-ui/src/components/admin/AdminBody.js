@@ -4,21 +4,24 @@ import { Outlet } from "react-router";
 import '../../style/App.css';
 import AuthService from "../../services/authService";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { setStaffCredentials } from '../../store/authSlice'
 
 export default function AdminBody(props) {
-    const [updated, setUpdated] = useState(false);
-    const [userData, setUserData] = useState(null);
+    const dispatch = useDispatch()
+    const user = useSelector((state)=>state.auth.staffUser);
+    const token = useSelector((state)=>state.auth.staffToken);
 
     useEffect(()=>{
-        if (!updated) {
+        if (token && !user) {
             AuthService.getProfile().then(res=>{
                 if (res.success) {
-                    setUserData(res.data);
-                    setUpdated(true);
+                    dispatch(setStaffCredentials({token, user: res.data}))
                 }
-            })
+            }).catch(console.error)
         }
-    })
+        console.log(user);
+    }, [user])
     return (
         <>
             <div className="text-center">
@@ -27,10 +30,10 @@ export default function AdminBody(props) {
                     position: "sticky",
                     top: "0"
                 }}>
-                    <SideBar/>
+                    <SideBar userData={user}/>
                     <div className="router-screen">
-                        <AuthPanel changeLang={props.changeLang}/>
-                        <Outlet context={userData}/>
+                        <AuthPanel changeLang={props.changeLang} user={user}/>
+                        <Outlet context={user}/>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@ import ChatWindow from "../../common/ChatWindow";
 import { useState } from "react";
 
 export default function StudentRow(props) {
+    console.log(props)
     const [visible, setVisible] = useState(false);
     return (
         <div className="d-flex justify-content-between mx-3 my-2 p-2 align-items-center rounded bg-primary" style={{
@@ -31,12 +32,12 @@ export default function StudentRow(props) {
                       }}
                       data={{
                         user: props.userData.username,
-                        coach: props.userData.username,
+                        coach: props.userData._id,
                       }}
                       visible={visible}
                       zIndex={props.zIndex}
                       chatUsername={props.data.username}
-                      userId={props.data.id}
+                      userId={props.data._id}
                     />
                 </div>
             </div>

@@ -22,10 +22,10 @@ export default function GroupChatView(props) {
             const updatedData = props.data.map(val=>{
                 return {
                     'name': val.username,
-                    'value': val.id
+                    'value': val._id
                 }
             })
-            GroupChatService.getGroupChatsByOwner(props.userData.id).then(res=>{
+            GroupChatService.getGroupChatsByOwner(props.userData._id).then(res=>{
                 setChats(res.data);
                 setData(updatedData);
                 setUpdated(true);
@@ -37,7 +37,7 @@ export default function GroupChatView(props) {
 
     function createGroupChat(){
         const requestData = {
-            owner: props.userData.id,
+            owner: props.userData._id,
             chat_name: _groupChatName.value,
             members: _members.current.getSelectedItems().map(mem=>mem.value)
         }

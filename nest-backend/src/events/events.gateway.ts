@@ -20,10 +20,13 @@ export class EventsGateway {
 
   @SubscribeMessage('hand up')
   async handleHandUp(@MessageBody() data: any) {
+    console.log(await this.cacheManager.get('handUps'))
     if (!(await this.cacheManager.get('handUps')))
       await this.cacheManager.set('handUps', {});
+    console.log(await this.cacheManager.get('handUps'))
     const handUps = await this.cacheManager.get('handUps') as object;
     handUps[data.student] = data.handUp;
+    console.log(handUps)
     await this.cacheManager.set('handUps', handUps);
     this.server.emit('hand up', data);
   }

@@ -7,23 +7,18 @@ import {
   MDBListGroupItem
 } from 'mdb-react-ui-kit';
 import '../../style/SideBar.css';
-import AuthService from '../../services/authService';
 import { useTranslation } from 'react-i18next';
 import { Dropdown } from 'react-bootstrap';
 
-export default function SideBar() {
+export default function SideBar({userData}) {
   const {t} = useTranslation();
   const [isCoach, setIsCoach] = useState(false);
   useEffect(()=>{
-    AuthService.getProfile().then(res=>{
-        if (res.success) {
-            if (res.data.roles.includes('coach')) {
-                setIsCoach(true);
-            }
-        }
-    }).catch((err)=>{
-      console.log(err.message);
-    })
+      if (userData) {
+          if (userData.role === 'coach') {
+              setIsCoach(true);
+          }
+      }
   })
   return (
     <div className="main-div" style={

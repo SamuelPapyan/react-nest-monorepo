@@ -23,7 +23,7 @@ export class StaffController {
     ) {}
 
     @Get()
-    @Roles(StaffRole.ADMIN, StaffRole.EDITOR, StaffRole.VIEWER)
+    @Roles(StaffRole.ADMIN, StaffRole.EDITOR, StaffRole.VIEWER, StaffRole.COACH)
     async getStaff(@Query('q') query, @Query('role') role): Promise<IResponse | undefined> {
         const users = await this.staffService.getUsers({query, role});
         return this.responseManager.getResponse(users, messages.STAFF_GENERATED);

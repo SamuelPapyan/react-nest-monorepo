@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router";
 import UserService from "../../../services/userService"
 import Multiselect from "multiselect-react-dropdown";
 import {useTranslation} from "react-i18next";
+import Form from 'react-bootstrap/Form';
 
 export default function EditUser()
 {
@@ -13,7 +14,7 @@ export default function EditUser()
     const [avatarUrl, setAvatarUrl] = useState(null);
     const {id} = useParams();
     const [roles, setRoles] = useState([]);
-    let _firstName, _firstNameHy, _lastName, _lastNameHy, _email, _username, _roles = React.createRef(), _form, _avatar_preview;
+    let _firstName, _firstNameHy, _lastName, _lastNameHy, _email, _username, _roles, _form, _avatar_preview;
     const navigate = useNavigate();
 
     const rolesInput = [
@@ -37,10 +38,7 @@ export default function EditUser()
     function submitForm(event) {
         event.preventDefault();
         const formData = new FormData(_form);
-        const selectedRoles = _roles.current.getSelectedItems();
-        for (let i = 0; i < selectedRoles.length; i++) {
-            formData.append('roles', selectedRoles[i].value);
-        }
+        formData.append('role', _roles.value);
 
         UserService.updateUser(id, formData).then(res=>{
             if (res.success)
@@ -65,13 +63,13 @@ export default function EditUser()
         document.title = t("textEditStaff");
         UserService.getUserById(id).then(res=>{
             if (res.success){
-                if (_firstName) _firstName.value = res.data.first_name_en;
-                if (_firstNameHy) _firstNameHy.value = res.data.first_name_hy ?? "";
-                if (_lastName) _lastName.value = res.data.last_name_en;
-                if (_lastNameHy) _lastNameHy.value = res.data.last_name_hy ?? "";
+                if (_firstName) _firstName.value = res.data.firstName.en;
+                if (_firstNameHy) _firstNameHy.value = res.data.firstName.am ?? "";
+                if (_lastName) _lastName.value = res.data.lastName.en;
+                if (_lastNameHy) _lastNameHy.value = res.data.lastName.am ?? "";
                 if (_email) _email.value = res.data.email;
                 if (_username) _username.value = res.data.username;
-                setRoles(res.data.roles.map((value)=>{return {'name':t('text' + value.toUpperCase()), 'value':value}}));
+                setRoles(res.data.role);
                 if (res.data.avatar) {
                     setAvatarUrl(res.data.avatar);
                 }
@@ -79,7 +77,7 @@ export default function EditUser()
         }).catch((err)=>{
             setConnectionErrorMessage(<p>Connection fault: Try again later.</p>)
         });
-    })
+    }, [roles, avatarUrl])
 
     return(
         <div id="create-user-body" style={{
@@ -120,12 +118,12 @@ export default function EditUser()
                 </div>
                 <div className="form-group">
                     <label>{t("textRoles")}</label>
-                    <Multiselect
-                        options={rolesInput}
-                        selectedValues={roles}
-                        displayValue="name"
-                        ref={_roles}
-                    />
+                    <Form.Select defaultValue="" ref={a=> _roles = a}>
+                        <option value="viewer">{t("textVIEWER")}</option>
+                        <option value="editor">{t("textEDITOR")}</option>
+                        <option value="admin">{t("textADMIN")}</option>
+                        <option value="coach">{t("textCOACH")}</option>
+                    </Form.Select>
                 </div>
                 <div className="mb-2">
                     <label htmlFor="avatar-photo" className="form-label">{t("labelAvatarPhoto")}</label>

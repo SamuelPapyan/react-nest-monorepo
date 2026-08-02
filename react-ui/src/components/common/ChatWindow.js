@@ -36,7 +36,7 @@ export default function ChatWindow(props) {
                 refreshChat(null, props.chatId, props.data.coach);
             }
             else if (props.type === "common") {
-                refreshChat(null, props.data.coach + ':' + props.userId, props.userId);
+                refreshChat(null, props.data.coach._id + ':' + props.userId, props.userId);
             }
         }
     }
@@ -61,7 +61,7 @@ export default function ChatWindow(props) {
                 setUpdated(true);
             }
             else if (props.type === "common") {
-                chatId = props.data.coach + ':' + props.userId;
+                chatId = props.data.coach._id + ':' + props.userId;
                 GroupChatService.getGroupChatsByStudent(props.userId).then(res=>{
                     if (res.success) {
                         const options = res.data.map((v, i)=>{

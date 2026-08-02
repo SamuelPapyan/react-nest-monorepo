@@ -20,7 +20,7 @@ export function splitTokens(input) {
   result = result.split(" ")
   // Removing Stop Words
   result = result.filter(value=>{
-    return !STOP_WORDS.includes(value) || exceptionWords.includes(value);
+    return !Array.from(STOP_WORDS).includes(value) || exceptionWords.includes(value);
   })
   return result
 }

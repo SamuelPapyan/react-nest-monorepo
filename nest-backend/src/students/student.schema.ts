@@ -73,3 +73,15 @@ StudentSchema.pre('save', async function(next){
     }
     next();
 })
+
+StudentSchema.pre('findOneAndUpdate', async function (next) {
+    const update = this.getUpdate();
+    if (update && 'password' in update && typeof update.password === 'string') {
+        try {
+            update.password = await bcrypt.hash(update.password, 10);
+        } catch (err) {
+            return next(err);
+        }
+    }
+    next();
+})

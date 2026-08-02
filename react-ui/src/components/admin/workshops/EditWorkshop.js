@@ -87,16 +87,16 @@ export default function EditWorkshop() {
         if (!updated) {
         WorkshopsService.getWorkshopById(id).then(res=>{
             if (res.success) {
-                if (_title) _title.value = res.data.title_en;
-                if (_titleHy) _titleHy.value = res.data.title_hy ?? "";
-                if (_description) _description.value = res.data.description_en;
-                if (_descriptionHy) _descriptionHy.value = res.data.description_hy ?? "";
-                if (_startTime) _startTime.value = res.data.start_time;
-                if (_endTime) _endTime.value = res.data.end_time;
-                setDays(res.data.days.map(x=>{return {'name': x, 'value': x}}));
+                if (_title) _title.value = res.data.title.en;
+                if (_titleHy) _titleHy.value = res.data.title.am ?? "";
+                if (_description) _description.value = res.data.description.en;
+                if (_descriptionHy) _descriptionHy.value = res.data.description.am ?? "";
+                if (_startTime) _startTime.value = res.data.startTime;
+                if (_endTime) _endTime.value = res.data.endTime;
+                setDays(res.data.days.map(x=>{return {'name': x.split('T')[0], 'value': x}}));
                 setStudents(res.data.students);
-                if (res.data.cover_photo)
-                    setCoverPhoto(res.data.cover_photo);
+                if (res.data.coverPhoto)
+                    setCoverPhoto(res.data.coverPhoto);
             }
         }).catch((err)=>{
             setConnectionErrorMessage(<p>Connection fault: Try again later.</p>)
@@ -117,31 +117,31 @@ export default function EditWorkshop() {
             <form method='POST' onSubmit={submitForm} ref={a => _form = a}>
                 <div className="form-group">
                     <label htmlFor="title-en-field">{t("labelWorkshopTitleEn")}</label><br/>
-                    <input className="form-control" id="title-en-field" type="text" name="title_en" ref={(a) => _title = a}/>
+                    <input className="form-control" id="title-en-field" type="text" name="title[en]" ref={(a) => _title = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="title-hy-field">{t("labelWorkshopTitleHy")}</label><br/>
-                    <input className="form-control" id="title-hy-field" type="text" name="title_hy" ref={(a) => _titleHy = a}/>
+                    <input className="form-control" id="title-hy-field" type="text" name="title[am]" ref={(a) => _titleHy = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="description-en-field">{t("labelDescriptionEn")}</label><br/>
-                    <input className="form-control" id="description-en-field" type="text" name="description_en" ref={(a) => _description = a}/>
+                    <input className="form-control" id="description-en-field" type="text" name="description[en]" ref={(a) => _description = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="description-hy-field">{t("labelDescriptionHy")}</label><br/>
-                    <input className="form-control" id="description-hy-field" type="text" name="description_hy" ref={(a) => _descriptionHy = a}/>
+                    <input className="form-control" id="description-hy-field" type="text" name="description[am]" ref={(a) => _descriptionHy = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="start-time-field">{t("labelWorkshopStartTime")}</label><br/>
-                    <input className="form-control" id="start-time-field" type="time" name="start_time" ref={(a) => _startTime = a}/>
+                    <input className="form-control" id="start-time-field" type="time" name="startTime" ref={(a) => _startTime = a}/>
                 </div>
                 <div className="form-group">
                     <label htmlFor="end-time-field">{t("labelWorkshopEndTime")}</label><br/>
-                    <input className="form-control" id="end-time-field" type="time" name="end_time" ref={(a) => _endTime = a}/>
+                    <input className="form-control" id="end-time-field" type="time" name="endTime" ref={(a) => _endTime = a}/>
                 </div>
                 <div className="mb-2">
                     <label htmlFor="avatar-photo" className="form-label">{t("labelAvatarPhoto")}</label>
-                    <input className="form-control" type="file" id="avatar-photo" onInput={photoInputOnChange} name="cover_photo"/>
+                    <input className="form-control" type="file" id="avatar-photo" onInput={photoInputOnChange} name="coverPhoto"/>
                 </div>
                 <div className="col-12">
                     

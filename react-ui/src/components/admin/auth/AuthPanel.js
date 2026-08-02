@@ -1,49 +1,46 @@
 import React, { useState, useEffect } from 'react'
-import AuthService from '../../../services/authService';
 import { Button } from 'react-bootstrap'
 import { useNavigate } from 'react-router'; 
 import { useTranslation } from 'react-i18next';
 import Dropdown from 'react-bootstrap/Dropdown';
+import { useDispatch } from 'react-redux';
+import { staffLogout } from '../../../store/authSlice'
 
 export default function AuthPanel(props) {
+    const dispatch = useDispatch();
+    const user = props.user;
+
     const {t} = useTranslation();
     const [switchComponent, setSwitchComponent] = useState(<span></span>);
     const [dropdownComponent, setDropdownComponent] = useState(<></>)
     const [updated, setUpdated] = useState(false);
-    const [avatar, setAvatar] = useState("images/user.png");
+    const [avatar, setAvatar] = useState("/images/user.png");
     const [username, setUsername] = useState("");
     const navigate = useNavigate();
+
     const logout = () => {
-        window.localStorage.removeItem(process.env.REACT_APP_ADMIN_TOKEN);
+        dispatch(staffLogout());
         navigate('/admin/login');
     }
+
     useEffect(()=>{
-      if (!updated) {
-        if (window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)) {
-          AuthService.getProfile().then(res=>{
-              if (res.success) {
-                  setUsername(res.data.username);
-                  setDropdownComponent(
-                    <div class="d-flex p-1 flex-column">
-                      <select className="" id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
-                          <option value="en">English</option>
-                          <option value="hy">Հայերեն</option>
-                      </select>
-                      <p className="text-light text-center" style={{marginRight:10}}>{res.data.username}</p>
-                      <Button variant="danger" onClick={logout}>
-                          {t("textLogout")}
-                      </Button>
-                    </div>
-                  )
-                  if (res.data.avatar) setAvatar(res.data.avatar);
-              } else {
-                  window.localStorage.removeItem(process.env.REACT_APP_ADMIN_TOKEN);
-              }
-          })
-        }
-        setUpdated(true);
-      }
-    })
+        if (user) {
+            setUsername(user.username);
+            setDropdownComponent(
+              <div class="d-flex p-1 flex-column">
+                <select className="" id="locale-select" value={window.localStorage.getItem('react-nest-monorepo-lang') ?? "en"} onChange={props.changeLang}>
+                    <option value="en">English</option>
+                    <option value="hy">Հայերեն</option>
+                </select>
+                <p className="text-light text-center" style={{marginRight:10}}>{user.username}</p>
+                <Button variant="danger" onClick={logout}>
+                    {t("textLogout")}
+                </Button>
+              </div>
+            )
+            if (user.avatar) setAvatar(user.avatar);
+          }
+    }, [user])
   return (
     <>
       <div className="bg-dark p-2 " style={{

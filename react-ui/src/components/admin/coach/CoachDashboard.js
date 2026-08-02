@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import AuthService from '../../../services/authService';
 import StudentService from "../../../services/studentService";
 import StudentList from "./StudentList";
-import { socket } from "../../../socket";
 import { useOutletContext } from "react-router";
 import GroupChatView from "./GroupChatView";
 import { useTranslation } from "react-i18next";
+import { io } from 'socket.io-client'
+
+const URL = 'http://localhost:2023';
+
+const socket = io(URL);
 
 export default function CoachDashboard(props) {
     const {t} = useTranslation();
@@ -39,20 +42,14 @@ export default function CoachDashboard(props) {
     useEffect(()=>{
         document.title = t("textCoachDashboard")
         if (!updated) {
-            if (window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)) {
-                AuthService.getProfile().then(res=>{
+            if (userData) {
+                StudentService.getStudentsByCoach(userData._id).then(res=>{
                     if (res.success) {
-                        StudentService.getStudentsByCoach(res.data.username).then(res=>{
-                            if (res.success) {
-                                setData(res.data);
-                                setUpdated(true);
-                            }
-                        })
-                    } else {
-                        window.localStorage.removeItem(process.env.REACT_APP_ADMIN_TOKEN);
+                        setData(res.data);
+                        setUpdated(true);
                     }
                 })
-              }
+            }
         }
     })
 

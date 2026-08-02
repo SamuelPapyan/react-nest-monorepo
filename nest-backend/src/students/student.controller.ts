@@ -30,7 +30,7 @@ export class StudentController {
     ) {}
 
     @Get()
-    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN)
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
     async getStudents(
         @Query('q') query,
         @Query('best') best,

@@ -36,16 +36,16 @@ export default function UserRow(props)
 
     useEffect(()=>{
         setUserId(props.data._id);
-        setFirstName(window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.first_name_hy : props.data.first_name_en);
-        setLastName(window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.last_name_hy : props.data.last_name_en);
+        setFirstName(window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.firstName.am : props.data.firstName.en);
+        setLastName(window.localStorage.getItem("react-nest-monorepo-lang") == 'hy' ? props.data.lastName.am : props.data.lastName.en);
         setEmail(props.data.email);
         setUsername(props.data.username);
-        setRoles(props.data.roles.map(value=>t("text" + value.toUpperCase())).join(" | "));
+        setRoles(t("text" + props.data.role.toUpperCase()));
         setData({
             firstName, lastName, email, username, roles, avatar
         });
         if (props.data.avatar) setAvatar(props.data.avatar);
-    }, [props.data._id, props.data.first_name, props.data.last_name, props.data.email, props.data.username, props.data.roles]);
+    }, [props.data._id, props.data.first_name, props.data.last_name, props.data.email, props.data.username, props.data.role]);
 
     return (
         <>

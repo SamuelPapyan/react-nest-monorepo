@@ -209,11 +209,11 @@ export default class StudentService {
         });
     }
 
-    static async registerToWorkshop(username, workshopId) {
+    static async registerToWorkshop(studentId, workshopId) {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/students/workshops/${workshopId}`, {
                 method: 'PUT',
-                body: JSON.stringify({username: username}),
+                body: JSON.stringify({studentId}),
                 headers:{
                     'Accept': "application/json",
                     'Content-Type': "application/json",
@@ -227,11 +227,11 @@ export default class StudentService {
         })
     }
 
-    static async unregisterToWorkshop(username, workshopId) {
+    static async unregisterToWorkshop(studentId, workshopId) {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/students/workshops/${workshopId}`, {
                 method: 'DELETE',
-                body: JSON.stringify({username: username}),
+                body: JSON.stringify({studentId}),
                 headers:{
                     'Accept': "application/json",
                     'Content-Type': "application/json",

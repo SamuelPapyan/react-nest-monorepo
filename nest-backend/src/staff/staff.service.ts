@@ -29,7 +29,7 @@ export class StaffService {
     ): Promise<Staff | null> {
         const newStaff = new this.staffModel(staff);
         if (avatar) {
-            const avatarUrl = await this.uploadService.uploadAvatar(avatar, staff._id, UserType.STAFF);
+            const avatarUrl = await this.uploadService.uploadAvatar(avatar, staff.username, UserType.STAFF);
             newStaff.avatar = avatarUrl;
         }
         return await newStaff.save();
@@ -67,7 +67,7 @@ export class StaffService {
     ): Promise<Staff | null> {
         const updated = this.staffModel.findByIdAndUpdate(id, staff);
         if (avatar) {
-            const avatarUrl = await this.uploadService.uploadAvatar(avatar, staff._id, UserType.STAFF);
+            const avatarUrl = await this.uploadService.uploadAvatar(avatar, staff.username, UserType.STAFF);
             const user = await this.staffModel.findById(id);
             if (!user) throw new NotFoundException();
             user.avatar = avatarUrl;
