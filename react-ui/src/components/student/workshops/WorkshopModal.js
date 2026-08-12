@@ -12,7 +12,7 @@ export default function WorkshopModal(props) {
     const [unregisterModal, setUnregisterModal] = useState(false);
 
     function registerToWorkshop() {
-        StudentService.registerToWorkshop(props.data.studentName, props.data._id).then(res=>{
+        StudentService.registerToWorkshop(props.data._id).then(res=>{
             if (res.success) {
                 props.onHide();
                 setRegisterModal(true);
@@ -24,7 +24,7 @@ export default function WorkshopModal(props) {
     }
 
     function unregisterFromWorkshop() {
-        StudentService.unregisterToWorkshop(props.data.studentName, props.data._id).then(res=>{
+        StudentService.unregisterToWorkshop(props.data._id).then(res=>{
             if (res.success) {
                 props.onHide();
                 setUnregisterModal(true);

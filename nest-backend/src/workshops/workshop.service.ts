@@ -42,39 +42,43 @@ export class WorkshopService {
             }
             if (student) options['$or'].push({ 'students.username': student });   
         }
-        const workshops = await this.workshopModel.aggregate([
-            {
-                $lookup: {
-                    from: 'students',
-                    localField: 'students',
-                    foreignField: '_id',
-                    as: 'students'
-                }
-            },
-            {
-                $unwind: {
-                    path: '$students',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            {
-                $lookup: {
-                    from: 'staffs',
-                    localField: 'coach',
-                    foreignField: '_id',
-                    as: 'coach'
-                }
-            },
-            {
-                $unwind: {
-                    path: '$coach',
-                    preserveNullAndEmptyArrays: true
-                }
-            },
-            ...(Object.keys(options).length ? [{ $match: options }] : [])
-        ])
+        // const workshops = await this.workshopModel.aggregate([
+        //     {
+        //         $lookup: {
+        //             from: 'students',
+        //             localField: 'students',
+        //             foreignField: '_id',
+        //             as: 'students'
+        //         }
+        //     },
+        //     {
+        //         $unwind: {
+        //             path: '$students',
+        //             preserveNullAndEmptyArrays: true
+        //         }
+        //     },
+        //     {
+        //         $lookup: {
+        //             from: 'staffs',
+        //             localField: 'coach',
+        //             foreignField: '_id',
+        //             as: 'coach'
+        //         }
+        //     },
+        //     {
+        //         $unwind: {
+        //             path: '$coach',
+        //             preserveNullAndEmptyArrays: true
+        //         }
+        //     },
+        //     ...(Object.keys(options).length ? [{ $match: options }] : [])
+        // ])
         // return workshops;
-        return await this.workshopModel.find(Object.keys(options).length ? options : {}).populate('coach', 'username fullName email').populate('students', 'username fullName email').exec();
+        return await this.workshopModel
+            .find(Object.keys(options).length ? options : {})
+            .populate('coach', 'username fullName email')
+            .populate('students', 'username fullName email')
+            .exec();
     }
 
     async updateWorkshop(
@@ -108,7 +112,6 @@ export class WorkshopService {
         studentId: mongoose.Types.ObjectId
     ): Promise<Workshop | null> {
         const workshop = await this.workshopModel.findById(workshopId);
-        console.log(workshop?.students);
         if (!workshop) throw new NotFoundException();
         if (!workshop.students) workshop.students = [];
         if (workshop.students.some(x => x.equals(studentId)))

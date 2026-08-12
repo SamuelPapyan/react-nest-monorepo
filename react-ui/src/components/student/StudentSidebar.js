@@ -38,6 +38,12 @@ export default function StudentSidebar() {
               {t('textWorkshops')}
             </MDBListGroupItem>
           </MDBRipple>
+          
+          <MDBRipple rippleTag='span' className='bg-light'>
+            <MDBListGroupItem tag='a' href='/portfolio' className='elem border-0 rounded text-dark' active={(window.location.pathname.indexOf('/portfolio') > -1) ? true : false}>
+              {t('textPortfolio')}
+            </MDBListGroupItem>
+          </MDBRipple>
         </Dropdown.Menu>
       </Dropdown>
       <MDBCollapse tag="nav" className="d-none d-md-block bg-light sidebar">
@@ -52,6 +58,12 @@ export default function StudentSidebar() {
             <MDBRipple rippleTag='span' className='bg-light'>
               <MDBListGroupItem tag='a' href='/workshops' className='elem border-0 rounded text-dark' active={(window.location.pathname.indexOf('/workshop') > -1) ? true : false}>
                 {t('textWorkshops')}
+              </MDBListGroupItem>
+            </MDBRipple>
+            
+            <MDBRipple rippleTag='span' className='bg-light'>
+              <MDBListGroupItem tag='a' href='/portfolio' className='elem border-0 rounded text-dark' active={(window.location.pathname.indexOf('/portfolio') > -1) ? true : false}>
+                {t('textPortfolio')}
               </MDBListGroupItem>
             </MDBRipple>
           </MDBListGroup>

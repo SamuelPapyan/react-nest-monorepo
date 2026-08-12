@@ -15,12 +15,6 @@ export class AuthController {
         private mailService: MailService,
     ) {}
 
-    @UseGuards(AuthGuard)
-    @Get('profile')
-    getProfile(@Request() req): Promise<IResponse> {
-        return this.responseManager.getResponse(req.user, 'Profile got successful');
-    }
-
     @Post('send_mail')
     @UseFilters(AllExceptionFilter)
     async sendPasswordRecovery(

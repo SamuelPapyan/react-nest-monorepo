@@ -16,7 +16,7 @@ export default function StudentDashboard() {
     useEffect(()=>{
         document.title = t("textStudentDashboard");
         if (!updated && studentData)
-        StudentService.getRegisteredWorkshops(studentData.username).then(res=>{
+        StudentService.getMyWorkshops().then(res=>{
             if (res.success) {
                 const arr = res.data.map((value, index)=>{
                     return (<h3 className="text-start text-success" key={index}>{value.title}</h3>)

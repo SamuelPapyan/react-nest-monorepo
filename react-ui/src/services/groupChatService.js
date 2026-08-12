@@ -1,7 +1,7 @@
 export default class GroupChatService {
-    static async getGroupChatsByOwner(ownerId) {
+    static async getOwnerGroupChats() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/group_chat/owner/${ownerId}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/group_chat/me`, {
                 headers: {
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -15,7 +15,7 @@ export default class GroupChatService {
 
     static async getGroupChatById(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/group_chat/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/group_chat/${id}`, {
                 headers: {
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -29,7 +29,7 @@ export default class GroupChatService {
 
     static async addGroupChat(formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/group_chat`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/group_chat`, {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {
@@ -47,7 +47,7 @@ export default class GroupChatService {
 
     static async updateGroupChat(id, formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/group_chat/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/group_chat/${id}`, {
                 method: 'PUT',
                 body: JSON.stringify(formData),
                 headers: {
@@ -65,7 +65,7 @@ export default class GroupChatService {
 
     static async deleteGroupChat(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/group_chat/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/group_chat/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Accept': "application/json",
@@ -80,9 +80,9 @@ export default class GroupChatService {
         })
     }
 
-    static async getGroupChatsByStudent(studentId) {
+    static async getStudentGroupChats() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/group_chats/${studentId}`, {
+            fetch(process.env.REACT_APP_API_URL + `/students/group_chats/me`, {
                 headers: {
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN),
                 }

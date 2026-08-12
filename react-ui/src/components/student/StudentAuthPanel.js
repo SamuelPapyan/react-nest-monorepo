@@ -58,7 +58,7 @@ export default function StudentAuthPanel(props) {
 
     useEffect(()=>{
         if (!updated && props.data) {
-            StudentService.getStudentByUsername(props.data.username).then(res=>{
+            StudentService.getUserData().then(res=>{
                 if (res.success) {
                     setSwitchComponent(res.data.username);
                     setCoach(res.data.coach);

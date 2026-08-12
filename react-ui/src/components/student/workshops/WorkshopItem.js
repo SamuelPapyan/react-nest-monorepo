@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 export default function WorkshopItem(props) {
     const [modalShow, setModalShow] = useState(false);
     const {t} = useTranslation();
-    console.log(props)
 
     return (
         <>

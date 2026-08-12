@@ -23,7 +23,7 @@ export default function UserRow(props)
 
     async function removeUser() {
         try {
-            const res = await UserService.deleteUser(userId);
+            const res = await UserService.deleteStaff(userId);
             if (res.success)
                 window.location.reload();
             else

@@ -1,7 +1,7 @@
 export default class WorkshopsService {
     static async getAllWorkshops() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/workshops", {
+            fetch(process.env.REACT_APP_API_URL + "/staff/workshops", {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -15,7 +15,7 @@ export default class WorkshopsService {
 
     static async getWorkshopById(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/workshops/${id}`,{
+            fetch(process.env.REACT_APP_API_URL + `/staff/workshops/${id}`,{
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -29,7 +29,7 @@ export default class WorkshopsService {
 
     static async addWorkshop(formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/workshops", {
+            fetch(process.env.REACT_APP_API_URL + "/staff/workshops", {
                 method: 'POST',
                 body: formData,
                 headers:{
@@ -45,7 +45,7 @@ export default class WorkshopsService {
 
     static async updateWorkshop(id, formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/workshops/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/workshops/${id}`, {
                 method: 'PUT',
                 body: formData,
                 headers: {
@@ -61,7 +61,7 @@ export default class WorkshopsService {
 
     static async deleteWorkshop(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/workshops/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/workshops/${id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
@@ -76,7 +76,7 @@ export default class WorkshopsService {
 
     static async searchWorkshops(query) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/workshops?q=" + query, {
+            fetch(process.env.REACT_APP_API_URL + "/staff/workshops?q=" + query, {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }

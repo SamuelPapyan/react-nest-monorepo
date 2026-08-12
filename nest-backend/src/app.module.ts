@@ -13,7 +13,7 @@ import { EventsModule } from './events/events.module';
   imports: [
     MongooseModule.forRoot('mongodb://localhost:27017/react-nest-monorepo'),
     StudentsModule,
-    AuthModule,
+    // AuthModule,
     StaffModule,
     WorkshopModule,
     EventsModule,

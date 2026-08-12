@@ -35,7 +35,7 @@ export default class AuthService {
 
     static async getProfile() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/auth/profile", {
+            fetch(process.env.REACT_APP_API_URL + "/staff/me", {
                 method: 'GET',
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
@@ -50,7 +50,7 @@ export default class AuthService {
 
     static async sendPasswordRecoveryMail(email) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/auth/send_mail`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/reset`, {
                 method: 'POST',
                 body: JSON.stringify({email: email}),
                 headers:{
@@ -67,7 +67,7 @@ export default class AuthService {
 
     static async resetPassword(id, password) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/auth/reset/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/reset/${id}`, {
                 method: 'PUT',
                 body: JSON.stringify({password: password}),
                 headers:{
@@ -84,7 +84,7 @@ export default class AuthService {
 
     static async validateResetLink(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/auth/reset/validate/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/reset/validate/${id}`, {
                 method: 'GET',
             }).then(res=>{
                 resolve(res.json());

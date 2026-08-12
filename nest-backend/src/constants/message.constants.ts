@@ -42,6 +42,8 @@ export const messages = {
   COUNTRY_UPDATED: 'Country is updated successfully',
   COUNTRY_DELETED: 'Country is deleted successfully',
 
-  COACHES_GENERATED: 'List of coaches are get successfully'
+  COACHES_GENERATED: 'List of coaches are get successfully',
+
+  PORTFOLIO_GET: "Student Portfolio get successfully"
   
 };

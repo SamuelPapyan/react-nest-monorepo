@@ -27,7 +27,7 @@ export default function CreateUser()
     function submitForm(event) {
         event.preventDefault();
         const formData = new FormData(_form);
-        UserService.addUser(formData).then(res=>{
+        UserService.addStaff(formData).then(res=>{
             if (res.success) {
                 navigate('/admin/users');
             }

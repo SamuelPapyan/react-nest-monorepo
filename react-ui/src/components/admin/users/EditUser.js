@@ -40,7 +40,7 @@ export default function EditUser()
         const formData = new FormData(_form);
         formData.append('role', _roles.value);
 
-        UserService.updateUser(id, formData).then(res=>{
+        UserService.updateStaff(id, formData).then(res=>{
             if (res.success)
             {
                 navigate("/admin/users");
@@ -61,7 +61,7 @@ export default function EditUser()
 
     useEffect(()=>{
         document.title = t("textEditStaff");
-        UserService.getUserById(id).then(res=>{
+        UserService.getStaffById(id).then(res=>{
             if (res.success){
                 if (_firstName) _firstName.value = res.data.firstName.en;
                 if (_firstNameHy) _firstNameHy.value = res.data.firstName.am ?? "";

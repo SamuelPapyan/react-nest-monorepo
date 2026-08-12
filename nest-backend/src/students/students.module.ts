@@ -3,6 +3,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { Student, StudentSchema } from "./student.schema";
 import { ResetPassword, ResetPasswordSchema } from "src/reset-password/reset-password.schema";
 import { Workshop, WorkshopSchema } from "src/workshops/workshop.schema";
+import { Portfolio, PortfolioSchema } from "src/portfolio/portfolio.schema";
 import { GroupChat, GroupChatSchema } from "src/group-chat/group-chat.schema";
 import { JwtModule } from "@nestjs/jwt";
 import { jwtConstants } from "src/constants/auth.constants";
@@ -12,6 +13,7 @@ import { StudentsService } from "./students.service";
 import { ResponseManager } from "src/manager/response.manager";
 import { ExceptionManager } from "src/manager/exception.manager";
 import { WorkshopService } from "src/workshops/workshop.service";
+import { PortfolioService } from "src/portfolio/portfolio.service";
 import { GroupChatService } from "src/group-chat/group-chat.service";
 import { UploadService } from "src/upload/upload.service";
 import { CacheModule } from "@nestjs/cache-manager";
@@ -25,12 +27,12 @@ import KeyvRedis from "@keyv/redis";
             { name: Student.name, schema: StudentSchema },
             { name: ResetPassword.name, schema: ResetPasswordSchema },
             { name: Workshop.name, schema: WorkshopSchema },
+            { name: Portfolio.name, schema: PortfolioSchema},
             { name: GroupChat.name, schema: GroupChatSchema }
         ]),
 
         JwtModule.register({
-            global: true,
-            secret: jwtConstants.secret,
+            secret: jwtConstants.studentSecret,
             signOptions: { expiresIn: '30d'},
         }),
         MailModule,
@@ -53,6 +55,7 @@ import KeyvRedis from "@keyv/redis";
         ResponseManager,
         ExceptionManager,
         WorkshopService,
+        PortfolioService,
         GroupChatService,
         UploadService
     ]

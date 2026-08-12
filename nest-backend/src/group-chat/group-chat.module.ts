@@ -11,7 +11,6 @@ import { ResponseManager } from "src/manager/response.manager";
 import { ExceptionManager } from "src/manager/exception.manager";
 import { WorkshopService } from "src/workshops/workshop.service";
 import { ChatGateway } from "src/chat/chat.gateway";
-import { GroupChatController } from "./group-chat.controller";
 import { CacheModule } from "@nestjs/cache-manager";
 import Keyv from "keyv";
 import { CacheableMemory } from "cacheable";
@@ -48,6 +47,5 @@ import KeyvRedis from "@keyv/redis";
     WorkshopService,
     UploadService
   ],
-  controllers: [GroupChatController],
 })
 export class GroupChatModule {}

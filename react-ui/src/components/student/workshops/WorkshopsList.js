@@ -18,6 +18,7 @@ export default function WorkshopsList() {
         document.title = t("textWorkshops");
         if (!updated) {
             StudentService.getWorkshops().then((res)=>{
+                console.log(res);
                 if (res.success) {
                     const arr = res.data.map(elem=>{
                         return <WorkshopItem key={elem._id} setUpdated={setUpdated} data={{...elem, studentName: studentData._id}}/>
@@ -26,7 +27,7 @@ export default function WorkshopsList() {
                     setUpdated(true);
                 }
             }).catch(e=>{
-    
+                
             })
         }
     });

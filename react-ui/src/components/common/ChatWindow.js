@@ -62,7 +62,7 @@ export default function ChatWindow(props) {
             }
             else if (props.type === "common") {
                 chatId = props.data.coach._id + ':' + props.userId;
-                GroupChatService.getGroupChatsByStudent(props.userId).then(res=>{
+                GroupChatService.getStudentGroupChats().then(res=>{
                     if (res.success) {
                         const options = res.data.map((v, i)=>{
                             return (<option key={i + 2} value={v._id}>{v.chat_name}</option>)

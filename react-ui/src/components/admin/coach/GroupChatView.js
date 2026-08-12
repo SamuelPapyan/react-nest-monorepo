@@ -25,7 +25,7 @@ export default function GroupChatView(props) {
                     'value': val._id
                 }
             })
-            GroupChatService.getGroupChatsByOwner(props.userData._id).then(res=>{
+            GroupChatService.getOwnerGroupChats().then(res=>{
                 setChats(res.data);
                 setData(updatedData);
                 setUpdated(true);
