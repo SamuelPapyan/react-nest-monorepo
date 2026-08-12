@@ -1,6 +1,25 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, Query, UploadedFile, UseFilters, UseInterceptors } from "@nestjs/common";
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Inject,
+    NotFoundException, 
+    Param, 
+    Post, 
+    Put, 
+    Query, 
+    UploadedFile, 
+    UseFilters, 
+    UseGuards, 
+    UseInterceptors 
+} from "@nestjs/common";
 import { AllExceptionFilter } from "src/filters/all-exception.filter";
 import { StaffService } from "./staff.service";
+import { StudentsService } from "src/students/students.service";
+import { WorkshopService } from "src/workshops/workshop.service";
+import { GroupChatService } from "src/group-chat/group-chat.service";
+import { MailService } from 'src/mail/mail.service';
 import { ResponseManager } from "src/manager/response.manager";
 import { ExceptionManager } from "src/manager/exception.manager";
 import { Roles } from "src/roles/roles.decorator";
@@ -11,15 +30,26 @@ import mongoose from "mongoose";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { IStaff } from "./staff.interface";
 import { ICountry } from "src/country/country.interface";
-import { Staff } from "./staff.schema";
+import { AuthGuard } from 'src/guards/auth.guard'
+import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
+import { GetUser } from 'src/decorators/user.decorator'
+import { IStudent } from "src/students/student.interface";
+import { IGroupChat } from "src/group-chat/group-chat.interface";
+import { IWorkshop } from 'src/workshops/workshop.interface'
+import { UserType } from "src/enums/user-type.enum";
 
 @Controller('staff')
 @UseFilters(AllExceptionFilter)
 export class StaffController {
     constructor(
+        private readonly studentService: StudentsService,
+        private readonly workshopService: WorkshopService,
         private readonly staffService: StaffService,
+        private readonly groupChatService: GroupChatService,
         private readonly responseManager: ResponseManager,
         private readonly exceptionManager: ExceptionManager,
+        private readonly mailService: MailService,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) {}
 
     @Get()
@@ -27,6 +57,381 @@ export class StaffController {
     async getStaff(@Query('q') query, @Query('role') role): Promise<IResponse | undefined> {
         const users = await this.staffService.getUsers({query, role});
         return this.responseManager.getResponse(users, messages.STAFF_GENERATED);
+    }
+
+    @Post()
+    @Roles(StaffRole.ADMIN)
+    @UseInterceptors(FileInterceptor('avatar'))
+    async addStaff(
+        @UploadedFile() avatar: Express.Multer.File,
+        @Body() userDto: IStaff
+    ):Promise<IResponse | undefined> {
+        try {
+        const user = await this.staffService.addStaff(
+            userDto,
+            avatar
+        );
+        return this.responseManager.getResponse(user, 'USER_ADDED');
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Get('me')
+    @Roles(StaffRole.ADMIN, StaffRole.EDITOR, StaffRole.VIEWER, StaffRole.COACH)
+    getProfile(@GetUser() user): Promise<IResponse> {
+        console.log("ROLE GUARD");
+        console.log(user);
+        return this.responseManager.getResponse(user, 'Profile got successful');
+    }
+
+    @Get('students')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async getStudents(
+        @Query('q') query,
+        @Query('best') best,
+        @Query('count') count,
+        @Query('coach') coachId
+    ): Promise<IResponse | null> {
+        const students = await this.studentService.getStudents({
+            query,
+            best,
+            count,
+            coachId
+        });
+        return this.responseManager.getResponse(
+            students,
+            messages.STUDENT_GENERATED
+        )
+    }
+
+    // @UseGuards(AuthGuard)
+    @Get('students/coach')
+    @Roles(StaffRole.COACH)
+        async getCoachStudents(
+            @GetUser() user
+        ): Promise<IResponse | undefined> {
+            try {
+                const data = await this.studentService.getStudents({coachId: user._id});
+                if (!(await this.cacheManager.get('handUps')))
+                    await this.cacheManager.set('handUps', {})
+                const handUps = await this.cacheManager.get('handUps') as object;
+                const responseData = data.map((value)=> {
+                    return {
+                        ...(value ? value : {}),
+                        handUps: value ? (handUps[value.username] ? true : false) : false,
+                    }
+                })
+                return this.responseManager.getResponse(
+                    responseData,
+                    messages.COACH_STUDENTS_GET_SUCCESSFULLY
+                )
+            } catch (e) {
+                this.exceptionManager.throwException(e);
+            }
+        }
+    
+    @Get('students/:id')
+    @Roles(StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async getStudentById(@Param('id') id: string): Promise<IResponse | undefined> {
+        try {
+            const mongoId = new mongoose.Types.ObjectId(id);
+            const student = await this.studentService.getById(mongoId);
+            if (!student) {
+                throw new NotFoundException(messages.STUDENT_NOT_FOUND);
+            }
+            return this.responseManager.getResponse(student, messages.STUDENT_GET);
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Post('students')
+    @Roles(StaffRole.ADMIN)
+    @UseInterceptors(FileInterceptor('avatar'))
+    async addStudent(
+        @UploadedFile() avatar: Express.Multer.File,
+        @Body() studentDto,
+    ): Promise<IResponse | undefined> {
+        try {
+            const student = await this.studentService.addStudent(
+                studentDto,
+                avatar,
+            );
+            return this.responseManager.getResponse(student, messages.STUDENT_ADDED);
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Put('students/:id')
+    @UseInterceptors(FileInterceptor('avatar'))
+    @Roles(StaffRole.ADMIN, StaffRole.EDITOR)
+    async updateStudent(
+        @UploadedFile() avatar: Express.Multer.File,
+        @Body() studentDto: IStudent,
+        @Param('id') id: string,
+    ): Promise<IResponse | undefined> {
+        try {
+            const mongoId = new mongoose.Types.ObjectId(id);
+            const student = await this.studentService.updateStudent(
+            mongoId,
+            studentDto,
+            avatar
+            );
+            if (!student) {
+            throw new NotFoundException(messages.STUDENT_NOT_FOUND);
+            }
+            return this.responseManager.getResponse(
+            student,
+            messages.STUDENT_UPDATED,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Delete('students/:id')
+    @Roles(StaffRole.ADMIN)
+    async deleteStudent(@Param('id') id: string): Promise<IResponse | undefined> {
+        try {
+        const mongoId = new mongoose.Types.ObjectId(id);
+        const student = await this.studentService.deleteStudent(mongoId);
+        if (!student) {
+            throw new NotFoundException(messages.STUDENT_NOT_FOUND);
+        }
+        return this.responseManager.getResponse(
+            student,
+            messages.STUDENT_DELETED,
+        );
+        } catch (e) {
+        this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Get('workshops')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async getWorkshops(
+        @Query('q') query,
+    ): Promise<IResponse> {
+        const workshops = await this.workshopService.getWorkshops({query})
+        return this.responseManager.getResponse(
+            workshops,
+            messages.WORKSHOPS_GENERATED_SUCCESSFULLY
+        );
+    }
+
+    
+    @Get('workshops/:id')
+    @Roles(StaffRole.EDITOR, StaffRole.ADMIN)
+    async getWorkshopById(@Param('id') id: string): Promise<IResponse | undefined> {
+        try {
+            const mongoId = new mongoose.Types.ObjectId(id);
+            const workshop = await this.workshopService.getById(mongoId);
+            if (!workshop) {
+                throw new NotFoundException();
+            }
+            return this.responseManager.getResponse(workshop, messages.WORKSHOP_NOT_FOUND);
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Post('workshops')
+    @Roles(StaffRole.ADMIN)
+    @UseInterceptors(FileInterceptor('cover_photo'))
+    async addWorkshop(
+        @UploadedFile() cover_photo: Express.Multer.File,
+        @Body() workshopDto: IWorkshop,
+    ): Promise<IResponse | undefined> {
+        try {
+            const workshop = await this.workshopService.addWorkshop(
+                workshopDto,
+                cover_photo
+            );
+            return this.responseManager.getResponse(workshop, 'WORKSHOP ADDED SUCCESSFULLY');
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Put('workshops/:id')
+    @Roles(StaffRole.ADMIN, StaffRole.EDITOR)
+    @UseInterceptors(FileInterceptor('cover_photo'))
+    async updateWorkshop(
+        @UploadedFile() cover_photo: Express.Multer.File,
+        @Body() workshopDto: IWorkshop,
+        @Param('id') id: string,
+    ): Promise<IResponse | undefined> {
+        try {
+            const mongoId = new mongoose.Types.ObjectId(id);
+            const workshop = await this.workshopService.updateWorkshop(
+                mongoId,
+                workshopDto,
+                cover_photo
+            );
+            if (!workshop){
+                throw new NotFoundException(messages.WORKSHOP_NOT_FOUND);
+            }
+            return this.responseManager.getResponse(
+                workshop,
+                messages.WORKSHOP_UPDATED_SUCCESSFULLY
+            )
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Delete('workshops/:id')
+    @Roles(StaffRole.ADMIN)
+    async deleteWorkshop(@Param('id') id: string): Promise<IResponse | undefined> {
+        try {
+            const mongoId = new mongoose.Types.ObjectId(id);
+            const workshop = await this.workshopService.deleteWorkshop(mongoId);
+            if (!workshop) {
+                throw new NotFoundException(messages.WORKSHOP_NOT_FOUND)
+            }
+            return this.responseManager.getResponse(
+                workshop,
+                messages.WORKSHOP_DELETED_SUCCESSFULLY
+            )
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    // @UseGuards(AuthGuard)
+    @Get('group_chat/me')
+    @Roles(StaffRole.COACH)
+    async getGroupChatsByOwner(
+        @GetUser() user
+      ): Promise<IResponse | undefined> {
+        try {
+          const mongoId = new mongoose.Types.ObjectId(user._id);
+          const groupChats = await this.groupChatService.getByOwnerId(mongoId);
+          return this.responseManager.getResponse(
+            groupChats,
+            messages.GROUP_CHATS_GET,
+          );
+        } catch (e) {
+          this.exceptionManager.throwException(e);
+        }
+      }
+
+    @Get('group_chat/:id')
+    @Roles(StaffRole.COACH)
+    async getGroupChatById(
+        @Param('id') id: string,
+    ): Promise<IResponse | undefined> {
+        try {
+            const mongoId = new mongoose.Types.ObjectId(id);
+            const groupChat = await this.groupChatService.getById(mongoId);
+            if (!groupChat) {
+                throw new NotFoundException(messages.GROUP_CHAT_NOT_FOUND);
+            }
+            return this.responseManager.getResponse(groupChat, messages.GROUP_CHAT_GET);
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Post('group_chat')
+    @Roles(StaffRole.COACH)
+    async addGroupChat(@Body() dto: IGroupChat): Promise<IResponse | undefined> {
+        try {
+            const groupChat = await this.groupChatService.addGroupChat(dto);
+            return this.responseManager.getResponse(groupChat, messages.GROUP_CHAT_ADDED);
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Put('group_chat/:id')
+    @Roles(StaffRole.COACH)
+    async updateGroupChat(
+        @Body() dto: IGroupChat,
+        @Param('id') id: string,
+    ): Promise<IResponse | undefined> {
+        try {
+        const mongoId = new mongoose.Types.ObjectId(id);
+        const groupChat = await this.groupChatService.updateGroupChat(mongoId, dto);
+        if (!groupChat) {
+            throw new NotFoundException(messages.GROUP_CHAT_NOT_FOUND);
+        }
+        return this.responseManager.getResponse(groupChat, messages.GROUP_CHAT_UPDATED)
+        } catch (e) {
+        this.exceptionManager.throwException(e);
+        }
+    }
+
+
+    @Delete('group_chat/:id')
+    @Roles(StaffRole.COACH)
+    async deleteGroupChat(
+        @Param('id') id: string,
+    ): Promise<IResponse | undefined> {
+        try {
+            const mongoId = new mongoose.Types.ObjectId(id);
+            const groupChat = await this.groupChatService.deleteGroupChat(mongoId);
+            if (!groupChat) {
+                throw new NotFoundException(messages.GROUP_CHAT_NOT_FOUND);
+            }
+            return this.responseManager.getResponse(groupChat, messages.GROUP_CHAT_DELETED)
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Get('reset/validate/:id')
+    async validateResetLink(@Param('id') id: string): Promise<IResponse | undefined> {
+        try {
+            const data = await this.staffService.getResetPasswordDto(id);
+            let bool = true;
+            if (!data || data.is_used || data.expiration_date < Date.now())
+                bool = false;
+            return  this.responseManager.getResponse(
+                { user_id: data?.user_id, isValid: bool },
+                messages.LINK_VALIDATION,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Post('reset')
+    @UseFilters(AllExceptionFilter)
+    async sendPasswordRecovery(
+        @Body() body: Record<string, any>
+    ): Promise<IResponse | undefined> {
+        try {
+            const data = await this.mailService.sendPasswordRecovery(
+                body.email,
+                UserType.STAFF
+            );
+            return this.responseManager.getResponse(
+                data,
+                'EMAIL_SENT'
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Put('reset/:id')
+    async resetPassword(
+        @Param('id') id: string,
+        @Body() body: Record<string, any>,
+    ): Promise<IResponse | undefined> {
+        try {
+            const mongoId = new mongoose.Types.ObjectId(id);
+            const user = await this.staffService.resetPassword(
+                mongoId,
+                body.password,
+            );
+            return this.responseManager.getResponse(user, messages.PASSWORD_RESET);
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
     }
 
     @Get('coaches')
@@ -44,6 +449,7 @@ export class StaffController {
         @Body() signInDto: Record<string, any>
     ): Promise<IResponse | undefined> {
         try {
+            console.log("STAFF LOGIN!!", signInDto)
             const payload = await this.staffService.signIn(
                 signInDto.username,
                 signInDto.password,
@@ -116,28 +522,10 @@ export class StaffController {
         }
     }
 
-    @Post()
-    @Roles(StaffRole.ADMIN)
-    @UseInterceptors(FileInterceptor('avatar'))
-    async addUser(
-        @UploadedFile() avatar: Express.Multer.File,
-        @Body() userDto: IStaff
-    ):Promise<IResponse | undefined> {
-        try {
-        const user = await this.staffService.addStaff(
-            userDto,
-            avatar
-        );
-        return this.responseManager.getResponse(user, 'USER_ADDED');
-        } catch (e) {
-            this.exceptionManager.throwException(e);
-        }
-    }
-
-    @Put(':id')
+        @Put(':id')
     @UseInterceptors(FileInterceptor('avatar'))
     @Roles(StaffRole.ADMIN)
-    async updateUser(
+    async updateStaff(
         @UploadedFile() avatar: Express.Multer.File,
         @Body() userDto: IStaff,
         @Param('id') id: string,
@@ -171,6 +559,5 @@ export class StaffController {
         } catch (e) {
             this.exceptionManager.throwException(e);
         }
-
     }
 }

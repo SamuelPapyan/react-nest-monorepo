@@ -18,7 +18,7 @@ export default function UserList()
     useEffect(()=>{
         if (!updated) {
             document.title = t("textStaffList");
-            UserService.getAllUsers().then(res=>{
+            UserService.getAllStaff().then(res=>{
                 if (res.success){
                     setData(res.data);
                 }

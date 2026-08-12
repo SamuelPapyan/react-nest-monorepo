@@ -43,7 +43,7 @@ export default function CoachDashboard(props) {
         document.title = t("textCoachDashboard")
         if (!updated) {
             if (userData) {
-                StudentService.getStudentsByCoach(userData._id).then(res=>{
+                StudentService.getMyStudents().then(res=>{
                     if (res.success) {
                         setData(res.data);
                         setUpdated(true);

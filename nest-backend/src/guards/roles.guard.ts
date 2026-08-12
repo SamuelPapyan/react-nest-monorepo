@@ -14,7 +14,10 @@ import { Request } from 'express';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private reflector: Reflector,
+    private jwtService: JwtService,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredRole = this.reflector.getAllAndOverride<Role[]>(ROLES_KEY, [
@@ -30,9 +33,10 @@ export class RolesGuard implements CanActivate {
       throw new UnauthorizedException();
     }
     try {
-      const payload = await new JwtService().verifyAsync(token, {
-        secret: jwtConstants.secret,
+      const payload = await this.jwtService.verifyAsync(token, {
+        secret: jwtConstants.staffSecret,
       });
+      request['user'] = payload;
       return requiredRole.includes(payload.role);
     } catch {
       throw new ForbiddenException();

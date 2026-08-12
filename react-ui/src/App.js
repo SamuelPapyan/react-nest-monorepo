@@ -22,13 +22,14 @@ import EditUser from "./components/admin/users/EditUser";
 import ResetPassword from './components/admin/auth/ResetPassword';
 import StudentBody from './components/student/StudentBody';
 import StudentDashboard from './components/student/Dashboard';
-import StudentService from './services/studentService';
 import ResetStudentPassword from './components/student/ResetStudentPassword';
 import WorkshopsList from "./components/admin/workshops/WorkshopsList";
 import CreateWorkshop from "./components/admin/workshops/CreateWorkshop";
 import EditWorkshop from "./components/admin/workshops/EditWorkshop";
-import SWorkshopsList from './components/student/workshops/WorkshopsList';
 import CoachDashboard from './components/admin/coach/CoachDashboard';
+import { Portfolio } from './components/student/portfolio/Portfolio'
+
+
 import { useSelector } from 'react-redux'
 
 import { useTranslation } from 'react-i18next';
@@ -70,7 +71,8 @@ function App() {
           <Route element={<ProtectedRoute user={studentToken} redirectPath='/login'/>}>
             <Route element={<StudentBody changeLang={handleChangeLanguage}/>}>
               <Route exact path="" element={<StudentDashboard/>}/>
-              <Route path="workshops" element={<SWorkshopsList/>}/>
+              <Route path="workshops" element={<WorkshopsList/>}/>
+              <Route path="portfolio" element={<Portfolio/>}/>
             </Route>
           </Route>
         </Route>

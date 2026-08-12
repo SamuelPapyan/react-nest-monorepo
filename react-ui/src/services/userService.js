@@ -1,5 +1,5 @@
 export default class UserService {
-    static async getAllUsers() {
+    static async getAllStaff() {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + "/staff",{
                 headers:{
@@ -27,7 +27,7 @@ export default class UserService {
         });
     }
 
-    static async getUserById(id) {
+    static async getStaffById(id) {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/staff/${id}`,{
                 headers: {
@@ -41,7 +41,7 @@ export default class UserService {
         });
     }
 
-    static async addUser(formData) {
+    static async addStaff(formData) {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + "/staff", {
                 method: 'POST',
@@ -57,7 +57,7 @@ export default class UserService {
         });
     }
 
-    static async updateUser(id, formData) {
+    static async updateStaff(id, formData) {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/staff/${id}`, {
                 method: 'PUT',
@@ -73,7 +73,7 @@ export default class UserService {
         });
     }
 
-    static async deleteUser(id) {
+    static async deleteStaff(id) {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/staff/${id}`, {
                 method: 'DELETE',

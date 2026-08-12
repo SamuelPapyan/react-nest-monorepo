@@ -122,7 +122,7 @@ export class StudentsService {
     }
 
     async signIn(username: string, password: string): Promise<any> {
-        const student = await this.studentModel.findOne({username}).populate('coach');
+        const student = await this.studentModel.findOne({username}).populate('coach', 'username firstName lastName email');
         if (!student) throw new NotFoundException();
         if (!(await bcrypt.compare(password, student.password)))
             throw new UnauthorizedException();
@@ -147,7 +147,7 @@ export class StudentsService {
         const student = await this.studentModel.findById(id);
         if (!student) 
             throw new NotFoundException();
-        student.password = await bcrypt.hash(password, 10);
+        student.password = password
         await this.resetPasswordModel.findOneAndUpdate(
             { user_id: id, user_type: 'student' },
             { is_used: true },

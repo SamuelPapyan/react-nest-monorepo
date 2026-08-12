@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { jwtConstants } from "src/constants/auth.constants";
 import { MailModule } from "src/mail/mail.module";
-import { StaffModule } from "src/staff/staff.module";
 import { AuthController } from "./auth.controller";
 import { StaffService } from "src/staff/staff.service";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -22,8 +21,7 @@ import { Country, CountrySchema } from "src/country/country.schema";
         ]),
         UploadModule,
         JwtModule.register({
-            global: true,
-            secret: jwtConstants.secret,
+            secret: jwtConstants.staffSecret,
             signOptions: { expiresIn: '30d' }
         }),
         MailModule

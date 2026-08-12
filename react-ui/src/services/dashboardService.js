@@ -5,7 +5,7 @@ import WorkshopsService from './workshopsService'
 export default class DashboardServices {
     static async getDashboardData() {
         const students = await StudentService.getAllStudents();
-        const staff = await UserService.getAllUsers();
+        const staff = await UserService.getAllStaff();
         const workshops = await WorkshopsService.getAllWorkshops();
         const top3BestStudents = await StudentService.getBestStudents(3);
         if ([students, staff, workshops, top3BestStudents].every(elem=>elem.success)) {

@@ -1,7 +1,7 @@
 export default class StudentService {
     static async getAllStudents() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/students", {
+            fetch(process.env.REACT_APP_API_URL + "/staff/students", {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -15,7 +15,7 @@ export default class StudentService {
 
     static async getStudentById(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/students/${id}`, {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -27,9 +27,9 @@ export default class StudentService {
         });
     }
 
-    static async getStudentByUsername(username) {
+    static async getUserData() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/username/${username}`, {
+            fetch(process.env.REACT_APP_API_URL + `/students/me/data`, {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
                 }
@@ -43,7 +43,7 @@ export default class StudentService {
 
     static async addStudent(formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/students", {
+            fetch(process.env.REACT_APP_API_URL + "/staff/students", {
                 method: 'POST',
                 body: formData,
                 headers:{
@@ -59,7 +59,7 @@ export default class StudentService {
 
     static async updateStudent(id, formData) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/students/${id}`, {
                 method: 'PUT',
                 body: formData,
                 headers:{
@@ -75,7 +75,7 @@ export default class StudentService {
 
     static async deleteStudent(id) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/${id}`, {
+            fetch(process.env.REACT_APP_API_URL + `/staff/students/${id}`, {
                 method: 'DELETE',
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
@@ -90,7 +90,7 @@ export default class StudentService {
 
     static async searchStudents(query) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/students?q=" + query, {
+            fetch(process.env.REACT_APP_API_URL + "/staff/students?q=" + query, {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -104,7 +104,7 @@ export default class StudentService {
 
     static async getBestStudents(count) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/students?best=true&count=" + count, {
+            fetch(process.env.REACT_APP_API_URL + "/staff/students?best=true&count=" + count, {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -135,7 +135,7 @@ export default class StudentService {
 
     static async getProfile() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/auth/profile", {
+            fetch(process.env.REACT_APP_API_URL + "/students/me", {
                 method: 'GET',
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
@@ -150,7 +150,7 @@ export default class StudentService {
 
     static async sendPasswordRecoveryMail(email) {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + `/students/send_mail`, {
+            fetch(process.env.REACT_APP_API_URL + `/students/reset`, {
                 method: 'POST',
                 body: JSON.stringify({email: email}),
                 headers:{
@@ -209,11 +209,10 @@ export default class StudentService {
         });
     }
 
-    static async registerToWorkshop(studentId, workshopId) {
+    static async registerToWorkshop(workshopId) {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/students/workshops/${workshopId}`, {
                 method: 'PUT',
-                body: JSON.stringify({studentId}),
                 headers:{
                     'Accept': "application/json",
                     'Content-Type': "application/json",
@@ -227,11 +226,10 @@ export default class StudentService {
         })
     }
 
-    static async unregisterToWorkshop(studentId, workshopId) {
+    static async unregisterToWorkshop(workshopId) {
         return new Promise((resolve, reject)=>{
             fetch(process.env.REACT_APP_API_URL + `/students/workshops/${workshopId}`, {
                 method: 'DELETE',
-                body: JSON.stringify({studentId}),
                 headers:{
                     'Accept': "application/json",
                     'Content-Type': "application/json",
@@ -244,9 +242,9 @@ export default class StudentService {
             })
         })
     }
-    static async getRegisteredWorkshops(student) {
+    static async getMyWorkshops() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/students/workshops?studentName=" + student, {
+            fetch(process.env.REACT_APP_API_URL + "/students/workshops/me", {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
                 }
@@ -257,9 +255,9 @@ export default class StudentService {
             })
         });
     }
-    static async getStudentsByCoach(coach) {
+    static async getMyStudents() {
         return new Promise((resolve, reject)=>{
-            fetch(process.env.REACT_APP_API_URL + "/students/coach/" + coach, {
+            fetch(process.env.REACT_APP_API_URL + "/staff/students/coach", {
                 headers:{
                     'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_ADMIN_TOKEN)
                 }
@@ -269,5 +267,20 @@ export default class StudentService {
                 reject(err);
             })
         });
+    }
+
+    static async getPortfolio() {
+        return new Promise((resolve, reject)=>{
+            fetch(process.env.REACT_APP_API_URL + "/students/portfolio", {
+                headers:{
+                    'Authorization': "Bearer " + window.localStorage.getItem(process.env.REACT_APP_STUDENT_TOKEN)
+                }
+            }).then(res=>{
+                resolve(res.json());
+            }).catch(err=>{
+                console.log(err.message)
+                reject(err);
+            })
+        })
     }
 }

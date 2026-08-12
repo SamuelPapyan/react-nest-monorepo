@@ -3,8 +3,11 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import StudentService from "../../services/studentService"
 import { useTranslation } from "react-i18next";
+import { useDispatch } from 'react-redux';
+import { setStudentCredentials } from '../../store/authSlice'
 
 export default function StudentLogin(props) {
+    const dispatch = useDispatch();
     let _username, _password, _loginMessage, _emailMessage, _email;
 
     const { t } = useTranslation();
@@ -71,6 +74,7 @@ export default function StudentLogin(props) {
         event.preventDefault();
         StudentService.login(_username.value, _password.value).then(res=>{
             if (res.success) {
+                dispatch(setStudentCredentials({user: null, token: res.data}))
                 if (location.state && location.state.from && !location.state.from !== '/login')
                     navigate(location.state.from)
                 else

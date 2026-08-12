@@ -120,6 +120,7 @@ export class StaffService {
             throw new UnauthorizedException();
         
         const {_id, firstName, lastName, email, role} = staff;
+        console.log({_id, firstName, lastName, email, role})
         return {
             access_token: await this.jwtService.signAsync({
                 _id,
@@ -127,7 +128,7 @@ export class StaffService {
                 lastName,
                 email,
                 role,
-                username: staff.username
+                username
             })
         };
     }

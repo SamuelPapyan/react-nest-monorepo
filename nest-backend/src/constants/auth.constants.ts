@@ -1,4 +1,6 @@
 export const jwtConstants = {
-  secret:
+  staffSecret:
     'gsbdauignsdiofnuiewbgoindshvgbn254jk43b5k2n3jk53146b523jkrnficn24bu92n34fcpo32f0ng4ind3o2uogbfuip2ncd32ngbjkpwefsncisdnguipbsad',
+  studentSecret:
+    'gsbdnasoidmeoihivbnewpnfvhiewbvuipqwrhvjhr9pfn34uigbfn34uigb9834fnuoi134fn9341fn2o3ib98c21f023nf9d12h3f8j1239dfn129fn13guipbsad'
 };
