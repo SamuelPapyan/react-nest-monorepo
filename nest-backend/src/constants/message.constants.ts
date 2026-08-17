@@ -44,6 +44,24 @@ export const messages = {
 
   COACHES_GENERATED: 'List of coaches are get successfully',
 
-  PORTFOLIO_GET: "Student Portfolio get successfully"
+  PORTFOLIO_GET: "Student Portfolio get successfully",
+
+  WORKSHOP_DETAILS_GET: "Workshop details get successfully",
+  ANNOUNCEMENT_GET: "Announcement get successfully",
+  ANNOUNCEMENT_POST: "Announcement created successfully",
+  ASSIGNMENT_POST: "Assignment created successfully",
+  ANNOUNCEMENT_PUT: "Announcement updated successfully",
+  ASSIGNMENT_PUT: "Assignment updated successfully",
+  ASSIGNMENT_WORK_GRADE: "Assignment work graded successfully",
+  ANNOUNCEMENT_DELETE: "Announcement deleted successfully",
+  ASSIGNMENT_DELETE: "Assignment deleted successfully",
+  ANNOUNCEMENT_COMMENT_POST: "Comment to an announcement posted successfully",
+  ASSIGNMENT_COMMENT_POST: "Comment to an assignment posted successfully",
+  PRIVATE_COMMENT_POST: "Private comment to an assignment posted successfully",
+  ONGOING_ASSIGNMENT_GET: "Ongoing ssignment get successfully",
+  WORKSHOP_ATTENDEES_GET: "Workshop attendees get successfully",
+  ASSIGNMENT_GET: "Assignment get successfully",
+  ASSIGNMENT_UPLOAD: "Assignment work uploaded successfully",
+  ATTENDEE_PUT: "Attendee status set successfully"
   
 };

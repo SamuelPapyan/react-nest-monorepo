@@ -9,9 +9,9 @@ import {
     Post, 
     Put, 
     Query, 
-    UploadedFile, 
-    UseFilters, 
-    UseGuards, 
+    UploadedFile,
+    UploadedFiles,
+    UseFilters,
     UseInterceptors 
 } from "@nestjs/common";
 import { AllExceptionFilter } from "src/filters/all-exception.filter";
@@ -27,16 +27,16 @@ import { StaffRole } from "src/enums/staff-role.enum";
 import { IResponse } from "src/interfaces/response.interface";
 import { messages } from "src/constants/message.constants";
 import mongoose from "mongoose";
-import { FileInterceptor } from "@nestjs/platform-express";
+import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { IStaff } from "./staff.interface";
 import { ICountry } from "src/country/country.interface";
-import { AuthGuard } from 'src/guards/auth.guard'
 import { CACHE_MANAGER, Cache } from "@nestjs/cache-manager";
 import { GetUser } from 'src/decorators/user.decorator'
 import { IStudent } from "src/students/student.interface";
 import { IGroupChat } from "src/group-chat/group-chat.interface";
 import { IWorkshop } from 'src/workshops/workshop.interface'
 import { UserType } from "src/enums/user-type.enum";
+import { IAttendee } from 'src/workshops/attendee.interface'
 
 @Controller('staff')
 @UseFilters(AllExceptionFilter)
@@ -221,6 +221,44 @@ export class StaffController {
         );
     }
 
+    @Get('workshops/announcements/:id')
+      async loadAnnouncement(
+        @Param('id') id
+      ) {
+        try {
+            const announId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.loadAnnouncement(announId);
+            if (!data) {
+                throw new NotFoundException('ANNOUNCEMENT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ANNOUNCEMENT_GET,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Get('workshops/assignments/:id')
+      async loadAssignment(
+        @Param('id') id
+      ) {
+        try {
+            const assignId = new mongoose.Types.ObjectId(id);
+            const data = await this.workshopService.loadAssignment(assignId);
+            if (!data) {
+                throw new NotFoundException('ASSIGNMENT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ASSIGNMENT_GET,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
     
     @Get('workshops/:id')
     @Roles(StaffRole.EDITOR, StaffRole.ADMIN)
@@ -232,6 +270,184 @@ export class StaffController {
                 throw new NotFoundException();
             }
             return this.responseManager.getResponse(workshop, messages.WORKSHOP_NOT_FOUND);
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Get('workshop/:id/details')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+      async loadWorkshopDashboard(
+        @Param('id') id
+      ) {
+        try {
+          const workshopId = new mongoose.Types.ObjectId(id);
+          const workshopDetail = this.workshopService.loadWorkshopDashboard(workshopId)
+          if (!workshopDetail) {
+            throw new NotFoundException('WORKSHOP_DETAILS_NOT_FOUND');
+          }
+          return this.responseManager.getResponse(
+            workshopDetail,
+            messages.WORKSHOP_DETAILS_GET,
+          );
+        } catch (e) {
+          this.exceptionManager.throwException(e);
+        }
+      }
+
+    @Get('workshop/:id/attendance')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async loadAttendanceList(
+        @Param('id') id
+    ) {
+        try {
+            const workshopId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.loadAttendees(workshopId)
+            if (!data) {
+                throw new NotFoundException('WORKSHOP_ATTENDEES_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.WORKSHOP_ATTENDEES_GET,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Post('workshops/announcements/:id/comments')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async leaveCommentInAnnouncement(
+        @Param('id') id,
+        @Body() body,
+        @GetUser() user
+    ) {
+        try {
+            const announId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.leaveCommentInAnnouncement(
+                new mongoose.Types.ObjectId(user._id),
+                UserType.STAFF,
+                announId,
+                body.content
+            )
+            if (!data) {
+                throw new NotFoundException('ANNOUNCEMNT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ANNOUNCEMENT_COMMENT_POST,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Post('workshops/assignments/:id/comments')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async leaveCommentInAssignment(
+        @Param('id') id,
+        @Body() body,
+        @GetUser() user
+    ) {
+        try {
+            const assignId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.leaveCommentInAssignment(
+                new mongoose.Types.ObjectId(user._id),
+                UserType.STAFF,
+                assignId,
+                body.content
+            )
+            if (!data) {
+                throw new NotFoundException('ASSIGNMENT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ASSIGNMENT_COMMENT_POST,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Post('workshops/announcements/:id/private_comments')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async leavePrivateComment(
+        @Param('id') id,
+        @Body() body,
+        @GetUser() user
+    ) {
+        try {
+            const assignId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.leavePrivateComment(
+                new mongoose.Types.ObjectId(user._id),
+                UserType.STAFF,
+                assignId,
+                body.content
+            )
+            if (!data) {
+                throw new NotFoundException('ASSIGNMENT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.PRIVATE_COMMENT_POST,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Post('workshops/:id/announcements')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    @UseInterceptors(FilesInterceptor('files', 10))
+    async createAnnouncement(
+        @Param('id') id,
+        @Body() body,
+        @GetUser() user,
+        @UploadedFiles() files: Array<Express.Multer.File> 
+    ) {
+        try {
+            const workshopId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.createAnnouncement(
+                workshopId,
+                new mongoose.Types.ObjectId(user._id),
+                UserType.STAFF,
+                body.content,
+                files
+            )
+            if (!data) {
+                throw new NotFoundException('ANNOUNCEMENT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ANNOUNCEMENT_POST,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Post('workshops/:id/assignments')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async createAssignment(
+        @Param('id') id,
+        @Body() body,
+        @GetUser() user
+    ) {
+        try {
+            const workshopId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.createAssignment(
+                workshopId,
+                new mongoose.Types.ObjectId(user._id),
+                body.content,
+                body.deadline
+            )
+            if (!data) {
+                throw new NotFoundException('ANNOUNCEMENT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ASSIGNMENT_POST,
+            );
         } catch (e) {
             this.exceptionManager.throwException(e);
         }
@@ -250,6 +466,74 @@ export class StaffController {
                 cover_photo
             );
             return this.responseManager.getResponse(workshop, 'WORKSHOP ADDED SUCCESSFULLY');
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Put('workshops/announcements/:id')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async editAnnouncement(
+        @Param('id') id,
+        @Body() body,
+        @GetUser() user
+    ) {
+        try {
+            const announId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.editAnnouncement(announId, body.content)
+            if (!data) {
+                throw new NotFoundException('ANNOUNCEMENT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ANNOUNCEMENT_PUT,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Put('workshops/assignments/work/:id/grade')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async gradeWork(
+        @Param('id') id,
+        @Body() body
+    ) {
+        try {
+            const workId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.gradeWork(
+                workId,
+                body.score as number
+            )
+            if (!data) {
+                throw new NotFoundException('ASSIGNMENT_WORK_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ASSIGNMENT_WORK_GRADE,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
+    @Put('workshops/assignments/:id')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async editAssignment(
+        @Param('id') id,
+        @Body() body,
+        @GetUser() user
+    ) {
+        try {
+            const assignId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.editAssignment(assignId, body.content, body.deadline)
+            if (!data) {
+                throw new NotFoundException('ANNOUNCEMENT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ASSIGNMENT_PUT,
+            );
         } catch (e) {
             this.exceptionManager.throwException(e);
         }
@@ -282,6 +566,69 @@ export class StaffController {
         }
     }
 
+    @Put('workshop/:id/attendance')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+      async setAttendanceStatus(
+        @Param('id') id,
+        @Body() body: IAttendee
+      ) {
+        try {
+          const workshopId = new mongoose.Types.ObjectId(id);
+          const data = this.workshopService.setAttendanceStatus(
+            workshopId, new mongoose.Types.ObjectId(body.user), body.date, body.status
+          )
+          if (!data) {
+            throw new NotFoundException('ATTENDANCE_STATUS_NOT_FOUND');
+          }
+          return this.responseManager.getResponse(
+            data,
+            messages.ATTENDEE_PUT,
+          );
+        } catch (e) {
+          this.exceptionManager.throwException(e);
+        }
+      }
+
+    @Delete('workshops/announcements/:id')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async deleteAnnouncement(
+        @Param('id') id
+    ) {
+        try {
+            const announId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.deleteAnnouncement(announId)
+            if (!data) {
+                throw new NotFoundException('ANNOUNCEMENT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ANNOUNCEMENT_DELETE,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+    
+    @Delete('workshops/assignments/:id')
+    @Roles(StaffRole.VIEWER, StaffRole.EDITOR, StaffRole.ADMIN, StaffRole.COACH)
+    async deleteAssignment(
+        @Param('id') id
+    ) {
+        try {
+            const assignId = new mongoose.Types.ObjectId(id);
+            const data = this.workshopService.deleteAssignment(assignId)
+            if (!data) {
+                throw new NotFoundException('ANNOUNCEMENT_NOT_FOUND');
+            }
+            return this.responseManager.getResponse(
+                data,
+                messages.ASSIGNMENT_DELETE,
+            );
+        } catch (e) {
+            this.exceptionManager.throwException(e);
+        }
+    }
+
     @Delete('workshops/:id')
     @Roles(StaffRole.ADMIN)
     async deleteWorkshop(@Param('id') id: string): Promise<IResponse | undefined> {
@@ -300,7 +647,6 @@ export class StaffController {
         }
     }
 
-    // @UseGuards(AuthGuard)
     @Get('group_chat/me')
     @Roles(StaffRole.COACH)
     async getGroupChatsByOwner(

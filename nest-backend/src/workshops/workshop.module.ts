@@ -11,7 +11,6 @@ import { UploadService } from "src/upload/upload.service";
     imports: [
         MongooseModule.forFeature([{ name: Workshop.name, schema: WorkshopSchema }])
     ],
-    controllers: [WorkshopController],
     providers: [WorkshopService, ResponseManager, ExceptionManager, UploadService]
 })
 export class WorkshopModule {}

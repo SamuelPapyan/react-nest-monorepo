@@ -1,6 +1,12 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { Student, StudentSchema } from "src/students/student.schema";
+import { WorkshopDetails, WorkshopDetailsSchema } from "src/workshops/workshop-details.schema";
+import { Announcement, AnnouncementSchema } from "src/workshops/announcement.schema";
+import { Assignment, AssignmentSchema } from "src/workshops/assignment.schema";
+import { AssignmentUpload, AssignmentUploadSchema } from "src/workshops/assignment-upload.schema";
+import { Attendee, AttendeeSchema } from "src/workshops/attendee.schema";
+import { Comment, CommentSchema } from "src/workshops/comment.schema";
 import { UploadService } from "src/upload/upload.service";
 import { GroupChat, GroupChatSchema } from "./group-chat.schema";
 import { Workshop, WorkshopSchema } from "src/workshops/workshop.schema";
@@ -24,6 +30,13 @@ import KeyvRedis from "@keyv/redis";
       { name: Workshop.name, schema: WorkshopSchema },
       { name: Staff.name, schema: StaffSchema },
       { name: Student.name, schema: StudentSchema },
+      { name: GroupChat.name, schema: GroupChatSchema },
+      { name: WorkshopDetails.name, schema: WorkshopDetailsSchema },
+      { name: Announcement.name, schema: AnnouncementSchema },
+      { name: Assignment.name, schema: AssignmentSchema },
+      { name: AssignmentUpload.name, schema: AssignmentUploadSchema },
+      { name: Attendee.name, schema: AttendeeSchema },
+      { name: Comment.name, schema: CommentSchema },
     ]),
     CacheModule.registerAsync({
       useFactory: async () => {

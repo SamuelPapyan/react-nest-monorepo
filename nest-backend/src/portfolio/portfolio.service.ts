@@ -14,15 +14,9 @@ export class PortfolioService {
     ) {}
 
     async addPortfolio(
-        portfolio: IPortfolio,
-        photo: Express.Multer.File
+        portfolio: IPortfolio
     ): Promise<Portfolio | null> {
-        const newPortfolio = new this.portfolioModel(portfolio);
-        if (photo) {
-            const imgUrl = await this.uploadService.uploadImg(photo, portfolio.workshop + "_" + portfolio.student);
-            newPortfolio.photo = imgUrl;
-        }
-        return await newPortfolio.save();
+        return await this.portfolioModel.create(portfolio)
     }
 
     async getById(id: mongoose.Types.ObjectId): Promise<Portfolio | null> {

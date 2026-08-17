@@ -15,7 +15,7 @@ import { EventsModule } from './events/events.module';
     StudentsModule,
     // AuthModule,
     StaffModule,
-    WorkshopModule,
+    // WorkshopModule,
     EventsModule,
     GroupChatModule,
   ],

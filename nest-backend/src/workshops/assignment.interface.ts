@@ -1,8 +1,10 @@
 import { Types } from 'mongoose'
 
-interface IAssignmentUpload {
+export interface IAssignmentUpload {
+    _id?: Types.ObjectId;
     user: Types.ObjectId;
     files: string[];
+    score: number;
 }
 
 export class IAssignment {

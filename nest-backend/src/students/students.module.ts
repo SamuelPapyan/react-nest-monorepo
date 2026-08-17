@@ -5,6 +5,12 @@ import { ResetPassword, ResetPasswordSchema } from "src/reset-password/reset-pas
 import { Workshop, WorkshopSchema } from "src/workshops/workshop.schema";
 import { Portfolio, PortfolioSchema } from "src/portfolio/portfolio.schema";
 import { GroupChat, GroupChatSchema } from "src/group-chat/group-chat.schema";
+import { WorkshopDetails, WorkshopDetailsSchema } from "src/workshops/workshop-details.schema";
+import { Announcement, AnnouncementSchema } from "src/workshops/announcement.schema";
+import { Assignment, AssignmentSchema } from "src/workshops/assignment.schema";
+import { AssignmentUpload, AssignmentUploadSchema } from "src/workshops/assignment-upload.schema";
+import { Attendee, AttendeeSchema } from "src/workshops/attendee.schema";
+import { Comment, CommentSchema } from "src/workshops/comment.schema";
 import { JwtModule } from "@nestjs/jwt";
 import { jwtConstants } from "src/constants/auth.constants";
 import { MailModule } from "src/mail/mail.module";
@@ -28,7 +34,13 @@ import KeyvRedis from "@keyv/redis";
             { name: ResetPassword.name, schema: ResetPasswordSchema },
             { name: Workshop.name, schema: WorkshopSchema },
             { name: Portfolio.name, schema: PortfolioSchema},
-            { name: GroupChat.name, schema: GroupChatSchema }
+            { name: GroupChat.name, schema: GroupChatSchema },
+            { name: WorkshopDetails.name, schema: WorkshopDetailsSchema },
+            { name: Announcement.name, schema: AnnouncementSchema },
+            { name: Assignment.name, schema: AssignmentSchema },
+            { name: AssignmentUpload.name, schema: AssignmentUploadSchema },
+            { name: Attendee.name, schema: AttendeeSchema },
+            { name: Comment.name, schema: CommentSchema },
         ]),
 
         JwtModule.register({

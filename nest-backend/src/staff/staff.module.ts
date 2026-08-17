@@ -8,6 +8,12 @@ import { StaffService } from "./staff.service";
 import { StudentsService } from "src/students/students.service";
 import { WorkshopService } from "src/workshops/workshop.service";
 import { GroupChatService } from "src/group-chat/group-chat.service";
+import { WorkshopDetails, WorkshopDetailsSchema } from "src/workshops/workshop-details.schema";
+import { Announcement, AnnouncementSchema } from "src/workshops/announcement.schema";
+import { Assignment, AssignmentSchema } from "src/workshops/assignment.schema";
+import { AssignmentUpload, AssignmentUploadSchema } from "src/workshops/assignment-upload.schema";
+import { Attendee, AttendeeSchema } from "src/workshops/attendee.schema";
+import { Comment, CommentSchema } from "src/workshops/comment.schema";
 import { MailService } from "src/mail/mail.service";
 import { GroupChat, GroupChatSchema } from "src/group-chat/group-chat.schema";
 import { ResponseManager } from "src/manager/response.manager";
@@ -33,6 +39,12 @@ import KeyvRedis from "@keyv/redis";
             { name: ResetPassword.name, schema: ResetPasswordSchema },
             { name: Country.name, schema: CountrySchema },
             { name: GroupChat.name, schema: GroupChatSchema },
+            { name: WorkshopDetails.name, schema: WorkshopDetailsSchema },
+            { name: Announcement.name, schema: AnnouncementSchema },
+            { name: Assignment.name, schema: AssignmentSchema },
+            { name: AssignmentUpload.name, schema: AssignmentUploadSchema },
+            { name: Attendee.name, schema: AttendeeSchema },
+            { name: Comment.name, schema: CommentSchema },
         ]),
         JwtModule.register({
             secret: jwtConstants.staffSecret,
